@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Engelsystem;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
