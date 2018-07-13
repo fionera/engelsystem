@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity
  */
-class Privilege
+class Permission
 {
     /**
      * @var int
@@ -30,7 +30,7 @@ class Privilege
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", nullable=false)
+     * @ORM\Column(name="description", type="string", nullable=true)
      */
     private $description;
 
@@ -63,4 +63,8 @@ class Privilege
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

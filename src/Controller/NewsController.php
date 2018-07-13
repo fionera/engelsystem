@@ -6,6 +6,7 @@ use Engelsystem\Entity\News;
 use Engelsystem\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class NewsController extends Controller
 {
@@ -14,18 +15,23 @@ class NewsController extends Controller
      */
     public function news()
     {
-        return $this->render('news/index.html.twig', [
-            'newsList' => [
+        $news = $this->getDoctrine()->getRepository(News::class)->findBy([], null, 10);
+
+        $news = array_map(function (News $news) {
+            return
                 [
-                    'id' => 0,
-                    'subject' => 'Test Title',
-                    'meeting' => true,
-                    'message' => 'Toller Text',
-                    'author' => 'admin',
-                    'comments' => []
-                ]
-            ],
-            'canPost' => ''
+                    'id' => $news->getId(),
+                    'subject' => $news->getSubject(),
+                    'meeting' => $news->getMeeting(),
+                    'message' => $news->getMessage(),
+                    'author' => $news->getAuthor()->getUsername(),
+                    'commentAmount' => \count($news->getComments()),
+                    'date' => $news->getDate()
+                ];
+        }, $news);
+
+        return $this->render('news/index.html.twig', [
+            'newsList' => $news
         ]);
     }
 
@@ -103,7 +109,7 @@ class NewsController extends Controller
     private function userHasPrivilege(User $user, string $searchedPrivilege): bool
     {
         foreach ($user->getGroups() as $group) {
-            foreach ($group->getPrivileges() as $privilege) {
+            foreach ($group->getPermissions() as $privilege) {
                 if ($privilege->getName() === $searchedPrivilege) {
                     return true;
                 }

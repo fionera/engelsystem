@@ -11,7 +11,7 @@ abstract class PrivilegeVoter extends Voter
 {
     public function groupHasPrivilege(Group $group, string $searchedPrivilege): bool
     {
-        foreach ($group->getPrivileges() as $privilege) {
+        foreach ($group->getPermissions() as $privilege) {
             if ($privilege->getName() === $searchedPrivilege) {
                 return true;
             }
@@ -23,7 +23,7 @@ abstract class PrivilegeVoter extends Voter
     public function userHasPrivilege(User $user, string $searchedPrivilege): bool
     {
         foreach ($user->getGroups() as $group) {
-            foreach ($group->getPrivileges() as $privilege) {
+            foreach ($group->getPermissions() as $privilege) {
                 if ($privilege->getName() === $searchedPrivilege) {
                     return true;
                 }

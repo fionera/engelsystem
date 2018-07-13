@@ -30,18 +30,18 @@ class Group
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Privilege")
-     * @ORM\JoinTable(name="GroupPrivileges",
+     * @ORM\ManyToMany(targetEntity="Permission")
+     * @ORM\JoinTable(name="GroupPermissions",
      *      joinColumns={@ORM\JoinColumn(name="privilege_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
      *      )
-     * @var Privilege[]
+     * @var Permission[]
      */
-    private $privileges;
+    private $permissions;
 
     public function __construct()
     {
-        $this->privileges = new ArrayCollection();
+        $this->permissions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -62,29 +62,39 @@ class Group
     }
 
     /**
-     * @return Collection|Privilege[]
+     * @return Collection|Permission[]
      */
-    public function getPrivileges(): Collection
+    public function getPermissions(): Collection
     {
-        return $this->privileges;
+        return $this->permissions;
     }
 
-    public function addPrivilege(Privilege $privilege): self
+    public function addPermission(Permission $privilege): self
     {
-        if (!$this->privileges->contains($privilege)) {
-            $this->privileges[] = $privilege;
+        if (!$this->permissions->contains($privilege)) {
+            $this->permissions[] = $privilege;
         }
 
         return $this;
     }
 
-    public function removePrivilege(Privilege $privilege): self
+    public function removePermission(Permission $privilege): self
     {
-        if ($this->privileges->contains($privilege)) {
-            $this->privileges->removeElement($privilege);
+        if ($this->permissions->contains($privilege)) {
+            $this->permissions->removeElement($privilege);
         }
 
         return $this;
+    }
+
+    public function hasPermission(string $wantedPermission) {
+        foreach ($this->getPermissions() as $permission) {
+            if ($permission->getName() === $wantedPermission) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function __toString()

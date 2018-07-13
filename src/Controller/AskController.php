@@ -5,15 +5,15 @@ namespace Engelsystem\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class AtomController extends Controller
+class AskController extends Controller
 {
     /**
-     * @Route("/atom", name="atom")
+     * @Route("/ask", name="ask")
      */
     public function index()
     {
-        return $this->render('atom/index.html.twig', [
-            'controller_name' => 'AtomController',
+        return $this->render('ask/index.html.twig', [
+            'controller_name' => 'AskController',
         ]);
     }
 }

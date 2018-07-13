@@ -317,6 +317,16 @@ class User implements UserInterface, \Serializable
         }, $this->getGroups()->getValues());
     }
 
+    public function hasPermission(string $wantedPermission) {
+        foreach ($this->getGroups() as $group) {
+            if ($group->hasPermission($wantedPermission)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Returns the salt that was originally used to encode the password.
      *

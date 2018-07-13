@@ -56,7 +56,14 @@ class News
      *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * })
      */
-    private $user;
+    private $author;
+
+    /**
+     * @var NewsComment[]
+     *
+     * @ORM\OneToMany(targetEntity="NewsComment", mappedBy="id")
+     */
+    private $comments;
 
     public function getId(): ?int
     {
@@ -111,16 +118,32 @@ class News
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getAuthor(): ?User
     {
-        return $this->user;
+        return $this->author;
     }
 
-    public function setUser(?User $user): self
+    public function setAuthor(?User $author): self
     {
-        $this->user = $user;
+        $this->author = $author;
 
         return $this;
+    }
+
+    /**
+     * @return NewsComment[]
+     */
+    public function getComments(): ?array
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param NewsComment[] $comments
+     */
+    public function setComments(array $comments): void
+    {
+        $this->comments = $comments;
     }
 
 }

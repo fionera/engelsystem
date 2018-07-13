@@ -5,15 +5,15 @@ namespace Engelsystem\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class FAQController extends Controller
+class FaqController extends Controller
 {
     /**
-     * @Route("/FAQ", name="FAQ")
+     * @Route("/faq", name="faq")
      */
     public function index()
     {
         return $this->render('faq/index.html.twig', [
-            'controller_name' => 'FAQController',
+            'controller_name' => 'FaqController',
         ]);
     }
 }

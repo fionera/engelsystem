@@ -12,7 +12,7 @@ easy_admin:
         - Engelsystem\Entity\NeededAngelTypes
         - Engelsystem\Entity\News
         - Engelsystem\Entity\NewsComment
-        - Engelsystem\Entity\Privilege
+        - Engelsystem\Entity\Permission
         - Engelsystem\Entity\Questions
         - Engelsystem\Entity\Room
         - Engelsystem\Entity\Shift
