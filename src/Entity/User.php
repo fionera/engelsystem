@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
@@ -25,20 +26,13 @@ class User implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="nick", type="string", length=23, nullable=false)
-     */
-    private $nick;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="username", type="string", nullable=true)
+     * @ORM\Column(name="username", type="string", length=23, nullable=false)
      */
     private $username;
 
     /**
      * @ORM\ManyToMany(targetEntity="Group")
-     * @ORM\JoinTable(name="UsersGroups",
+     * @ORM\JoinTable(name="user_groups",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
      *      )
@@ -52,6 +46,13 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(name="prename", type="string", nullable=true)
      */
     private $prename;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="surname", type="string", nullable=true)
+     */
+    private $surname;
 
     /**
      * @var int|null
@@ -110,6 +111,12 @@ class User implements UserInterface, \Serializable
     private $size;
 
     /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max=4096)
+     */
+    private $plainPassword;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(name="password", type="string", nullable=true)
@@ -142,7 +149,7 @@ class User implements UserInterface, \Serializable
      *
      * @ORM\Column(name="force_active", type="boolean", nullable=false)
      */
-    private $forceActive;
+    private $forceActive = false;
 
     /**
      * @var bool|null
@@ -163,7 +170,7 @@ class User implements UserInterface, \Serializable
      *
      * @ORM\Column(name="language", type="string", nullable=false, options={"fixed"=true})
      */
-    private $language;
+    private $language = 'en';
 
     /**
      * @var string
@@ -175,7 +182,7 @@ class User implements UserInterface, \Serializable
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="last_login", type="datetime", nullable=false)
+     * @ORM\Column(name="last_login", type="datetime", nullable=true)
      */
     private $lastLogin;
 
@@ -219,7 +226,7 @@ class User implements UserInterface, \Serializable
      *
      * @ORM\Column(name="got_voucher", type="integer", nullable=false)
      */
-    private $gotVoucher;
+    private $gotVoucher = false;
 
     /**
      * @var \DateTime|null
@@ -253,6 +260,7 @@ class User implements UserInterface, \Serializable
     {
         $this->groups = new ArrayCollection();
     }
+
     /**
      * String representation of object
      * @link http://php.net/manual/en/serializable.serialize.php
@@ -263,37 +271,8 @@ class User implements UserInterface, \Serializable
     {
         return serialize([
             $this->id,
-            $this->nick,
             $this->username,
-            $this->prename,
-            $this->age,
-            $this->phone,
-            $this->dect,
-            $this->mobile,
-            $this->email,
-            $this->emailShiftinfo,
-            $this->jabber,
-            $this->size,
             $this->password,
-            $this->passwordRecoveryToken,
-            $this->arrived,
-            $this->active,
-            $this->forceActive,
-            $this->tShirt,
-            $this->color,
-            $this->language,
-            $this->menu,
-            $this->lastLogin,
-            $this->createDate,
-            $this->type,
-            $this->comment,
-            $this->hometown,
-            $this->apiKey,
-            $this->gotVoucher,
-            $this->arrivalDate,
-            $this->plannedArrivalDate,
-            $this->plannedDepartureDate,
-            $this->emailByHumanAllowed
         ]);
     }
 
@@ -310,37 +289,8 @@ class User implements UserInterface, \Serializable
     {
         [
             $this->id,
-            $this->nick,
             $this->username,
-            $this->prename,
-            $this->age,
-            $this->phone,
-            $this->dect,
-            $this->mobile,
-            $this->email,
-            $this->emailShiftinfo,
-            $this->jabber,
-            $this->size,
             $this->password,
-            $this->passwordRecoveryToken,
-            $this->arrived,
-            $this->active,
-            $this->forceActive,
-            $this->tShirt,
-            $this->color,
-            $this->language,
-            $this->menu,
-            $this->lastLogin,
-            $this->createDate,
-            $this->type,
-            $this->comment,
-            $this->hometown,
-            $this->apiKey,
-            $this->gotVoucher,
-            $this->arrivalDate,
-            $this->plannedArrivalDate,
-            $this->plannedDepartureDate,
-            $this->emailByHumanAllowed
         ] = unserialize($serialized, array('allowed_classes' => false));
     }
 
@@ -364,7 +314,7 @@ class User implements UserInterface, \Serializable
     {
         return array_map(function (Group $group) {
             return $group->getName();
-        }, $this->getGroups());
+        }, $this->getGroups()->getValues());
     }
 
     /**
@@ -387,7 +337,7 @@ class User implements UserInterface, \Serializable
      */
     public function eraseCredentials()
     {
-
+        $this->plainPassword = null;
     }
 
     public function getPassword(): ?string
@@ -405,14 +355,14 @@ class User implements UserInterface, \Serializable
         return $this->id;
     }
 
-    public function getNick(): ?string
+    public function getSurname(): ?string
     {
-        return $this->nick;
+        return $this->surname;
     }
 
-    public function setNick(string $nick): self
+    public function setSurname(string $surname): self
     {
-        $this->nick = $nick;
+        $this->surname = $surname;
 
         return $this;
     }
@@ -537,6 +487,16 @@ class User implements UserInterface, \Serializable
         $this->password = $password;
 
         return $this;
+    }
+
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword($plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
     }
 
     public function getPasswordRecoveryToken(): ?string

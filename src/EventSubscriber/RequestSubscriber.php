@@ -58,8 +58,10 @@ class RequestSubscriber implements EventSubscriberInterface
         if ($eventConfig !== null) {
             $config['eventConfig'] = [
                 'name' => $eventConfig->getEventName(),
+                'buildUpStart' => $eventConfig->getBuildupStartDate(),
                 'startDate' => $eventConfig->getEventStartDate(),
                 'endDate' => $eventConfig->getEventEndDate(),
+                'buildUpEnd' => $eventConfig->getEventEndDate(),
             ];
         }
 

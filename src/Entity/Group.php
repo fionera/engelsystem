@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Groups
- *
+ * @ORM\Table(name="`group`")
  * @ORM\Entity
  */
 class Group
@@ -87,4 +87,8 @@ class Group
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

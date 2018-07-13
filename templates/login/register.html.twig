@@ -1,0 +1,195 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>Register</h1>
+        By completing this form you're registering as a Chaos-Angel. This script will create you an account in the angel
+        task scheduler.
+        {{ form_start(registerForm) }}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            {{ form_label(registerForm.username, 'Username') }}
+                            <span class="text-info glyphicon glyphicon-warning-sign"></span>
+                            {{ form_errors(registerForm.username) }}
+                            {{ form_widget(registerForm.username) }}
+                            {{ form_help(registerForm.username) }}
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            {{ form_label(registerForm.email, 'E-Mail') }}
+                            <span class="text-info glyphicon glyphicon-warning-sign"></span>
+                            {{ form_errors(registerForm.email) }}
+                            {{ form_widget(registerForm.email) }}
+                            {{ form_help(registerForm.email) }}
+                        </div>
+                        <div class="checkbox">
+                            {{ form_errors(registerForm.emailShiftinfo) }}
+                            {{ form_widget(registerForm.emailShiftinfo, {'label': 'The engelsystem is allowed to send me an email (e.g. when my shifts change)'}) }}
+                            {{ form_help(registerForm.emailShiftinfo) }}
+                        </div>
+                        <div class="checkbox">
+                            {{ form_errors(registerForm.emailByHumanAllowed) }}
+                            {{ form_widget(registerForm.emailByHumanAllowed, {'label': 'Humans are allowed to send me an email (e.g. for ticket vouchers)'}) }}
+                            {{ form_help(registerForm.emailByHumanAllowed) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_label(registerForm.plannedArrivalDate, 'Planned date of arrival') }}
+                            <span class="text-info glyphicon glyphicon-warning-sign"></span>
+                            {{ form_errors(registerForm.plannedArrivalDate) }}
+                            <div class="input-group date" id="planned_arrival_date-date">
+                                {{ form_widget(registerForm.plannedArrivalDate) }}
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                            </div>false
+                            {{ form_help(registerForm.plannedArrivalDate) }}
+                            {#<script type="text/javascript">#}
+                                {#$(function () {#}
+                                    {#$("#planned_arrival_date-date").datepicker({#}
+                                        {#language: "en",#}
+                                        {#todayBtn: "linked",#}
+                                        {#format: "yyyy-mm-dd",#}
+                                        {#{% if eventConfig is defined %}#}
+                                        {#{% if eventConfig.buildUpStart is defined %}#}
+                                        {#startDate: "{{ eventConfig.buildUpStart|date('y-m-d') }}",#}
+                                        {#{% endif %}#}
+                                        {#{% if eventConfig.buildUpEnd is defined %}#}
+                                        {#endDate: "{{ eventConfig.buildUpEnd|date('y-m-d') }}",#}
+                                        {#{% endif %}#}
+                                        {#{% endif %}#}
+                                        {#orientation: "bottom"#}
+                                    {#});#}
+                                {#});#}
+                            {#</script>#}
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_label(registerForm.size, 'Shirt size') }}
+                            <span class="text-info glyphicon glyphicon-warning-sign"></span>
+                            {{ form_errors(registerForm.size) }}
+                            {{ form_widget(registerForm.size) }}
+                            {{ form_help(registerForm.size) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_label(registerForm.plainPassword.first, 'Password') }}
+                            <span class="text-info glyphicon glyphicon-warning-sign"></span>
+                            {{ form_errors(registerForm.plainPassword.first) }}
+                            {{ form_widget(registerForm.plainPassword.first) }}
+                            {{ form_help(registerForm.plainPassword.first) }}
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_label(registerForm.plainPassword.second, 'Repeat Password') }}
+                            <span class="text-info glyphicon glyphicon-warning-sign"></span>
+                            {{ form_errors(registerForm.plainPassword.second) }}
+                            {{ form_widget(registerForm.plainPassword.second) }}
+                            {{ form_help(registerForm.plainPassword.second) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="">What do you want to do? (<a href="https://engel.ctdo.de/angeltypes?action=about">Description of jobtypes</a>)</label>
+                </div>
+                {#<div class="checkbox">#}
+                    {#<label><input type="checkbox" id="angel_types_4" name="angel_types_4"#}
+                                                    {#value="checked" checked="checked"/>TODO: Engeltype</label>#}
+                {#</div>#}
+
+                <span class="help-block"><span class="glyphicon glyphicon-info-sign"></span> Restricted angel types need will be confirmed later by a supporter. You can change your selection in the options section.</span>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            {{ form_label(registerForm.dect, 'DECT') }}
+                            {{ form_errors(registerForm.dect) }}
+                            {{ form_widget(registerForm.dect) }}
+                            {{ form_help(registerForm.dect) }}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            {{ form_label(registerForm.mobile, 'Mobile') }}
+                            {{ form_errors(registerForm.mobile) }}
+                            {{ form_widget(registerForm.mobile) }}
+                            {{ form_help(registerForm.mobile) }}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            {{ form_label(registerForm.phone, 'Phone') }}
+                            {{ form_errors(registerForm.phone) }}
+                            {{ form_widget(registerForm.phone) }}
+                            {{ form_help(registerForm.phone) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(registerForm.jabber, 'Jabber') }}
+                    {{ form_errors(registerForm.jabber) }}
+                    {{ form_widget(registerForm.jabber) }}
+                    {{ form_help(registerForm.jabber) }}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {{ form_label(registerForm.prename, 'Prename') }}
+                                {{ form_errors(registerForm.prename) }}
+                                {{ form_widget(registerForm.prename) }}
+                                {{ form_help(registerForm.prename) }}
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {{ form_label(registerForm.surname, 'Surname') }}
+                                {{ form_errors(registerForm.surname) }}
+                                {{ form_widget(registerForm.surname) }}
+                                {{ form_help(registerForm.surname) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                {{ form_label(registerForm.age, 'Age') }}
+                                {{ form_errors(registerForm.age) }}
+                                {{ form_widget(registerForm.age) }}
+                                {{ form_help(registerForm.age) }}
+                            </div>
+                        </div>
+                        <div class="col-sm-9">
+                            <div class="form-group">
+                                {{ form_label(registerForm.hometown, 'Hometown') }}
+                                {{ form_errors(registerForm.hometown) }}
+                                {{ form_widget(registerForm.hometown) }}
+                                {{ form_help(registerForm.hometown) }}
+                            </div>
+                        </div>
+                    </div>
+                    <h4><span class="text-info glyphicon glyphicon-warning-sign"></span> = Entry required!</h4>
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form_label(registerForm.register, 'Register') }}
+                {{ form_widget(registerForm.register, {'attr': {'class': 'btn-primary'} }) }}
+            </div>
+        </div>
+    </div>
+    {{ form_widget(registerForm) }}
+    {{ form_end(registerForm) }}
+    {% endblock %}
