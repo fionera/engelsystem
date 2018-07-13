@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * News
  *
- * @ORM\Table(name="News", indexes={@ORM\Index(name="UID", columns={"UID"})})
  * @ORM\Entity
  */
 class News
@@ -15,7 +14,7 @@ class News
     /**
      * @var int
      *
-     * @ORM\Column(name="ID", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,105 +23,104 @@ class News
     /**
      * @var int
      *
-     * @ORM\Column(name="Datum", type="integer", nullable=false)
+     * @ORM\Column(name="date", type="datetime", nullable=false)
      */
-    private $datum;
+    private $date;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Betreff", type="string", length=150, nullable=false)
+     * @ORM\Column(name="subject", type="string", nullable=false)
      */
-    private $betreff = '';
+    private $subject;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Text", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="message", type="text", nullable=false)
      */
-    private $text;
+    private $message;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="Treffen", type="boolean", nullable=false)
+     * @ORM\Column(name="meeting", type="boolean", nullable=false)
      */
-    private $treffen = '0';
+    private $meeting;
 
     /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="UID", referencedColumnName="UID")
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * })
      */
-    private $uid;
+    private $user;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDatum(): ?int
+    public function getDate(): ?\DateTimeInterface
     {
-        return $this->datum;
+        return $this->date;
     }
 
-    public function setDatum(int $datum): self
+    public function setDate(\DateTimeInterface $date): self
     {
-        $this->datum = $datum;
+        $this->date = $date;
 
         return $this;
     }
 
-    public function getBetreff(): ?string
+    public function getSubject(): ?string
     {
-        return $this->betreff;
+        return $this->subject;
     }
 
-    public function setBetreff(string $betreff): self
+    public function setSubject(string $subject): self
     {
-        $this->betreff = $betreff;
+        $this->subject = $subject;
 
         return $this;
     }
 
-    public function getText(): ?string
+    public function getMessage(): ?string
     {
-        return $this->text;
+        return $this->message;
     }
 
-    public function setText(string $text): self
+    public function setMessage(string $message): self
     {
-        $this->text = $text;
+        $this->message = $message;
 
         return $this;
     }
 
-    public function getTreffen(): ?bool
+    public function getMeeting(): ?bool
     {
-        return $this->treffen;
+        return $this->meeting;
     }
 
-    public function setTreffen(bool $treffen): self
+    public function setMeeting(bool $meeting): self
     {
-        $this->treffen = $treffen;
+        $this->meeting = $meeting;
 
         return $this;
     }
 
-    public function getUid(): ?User
+    public function getUser(): ?User
     {
-        return $this->uid;
+        return $this->user;
     }
 
-    public function setUid(?User $uid): self
+    public function setUser(?User $user): self
     {
-        $this->uid = $uid;
+        $this->user = $user;
 
         return $this;
     }
-
 
 }

@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ShiftEntry
  *
- * @ORM\Table(name="ShiftEntry", indexes={@ORM\Index(name="TID", columns={"TID"}), @ORM\Index(name="UID", columns={"UID"}), @ORM\Index(name="SID", columns={"SID", "TID"}), @ORM\Index(name="freeloaded", columns={"freeloaded"}), @ORM\Index(name="IDX_CDA1BE70C1B1383E", columns={"SID"})})
  * @ORM\Entity
  */
 class ShiftEntry
@@ -24,14 +23,14 @@ class ShiftEntry
     /**
      * @var string|null
      *
-     * @ORM\Column(name="Comment", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="comment", type="text", nullable=true)
      */
     private $comment;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="freeload_comment", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="freeload_comment", type="text", nullable=true)
      */
     private $freeloadComment;
 
@@ -43,34 +42,34 @@ class ShiftEntry
     private $freeloaded;
 
     /**
-     * @var Shifts
+     * @var Shift
      *
-     * @ORM\ManyToOne(targetEntity="Shifts")
+     * @ORM\ManyToOne(targetEntity="Shift")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="SID", referencedColumnName="SID")
+     *   @ORM\JoinColumn(name="shift_id", referencedColumnName="id")
      * })
      */
-    private $sid;
+    private $shift;
 
     /**
-     * @var \User
+     * @var User
      *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="UID", referencedColumnName="UID")
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * })
      */
-    private $uid;
+    private $user;
 
     /**
-     * @var \Angeltypes
+     * @var Angeltype
      *
-     * @ORM\ManyToOne(targetEntity="AngelTypes")
+     * @ORM\ManyToOne(targetEntity="AngelType")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="TID", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="angel_type_id", referencedColumnName="id")
      * })
      */
-    private $tid;
+    private $angelType;
 
     public function getId(): ?int
     {
@@ -113,41 +112,40 @@ class ShiftEntry
         return $this;
     }
 
-    public function getSid(): ?Shifts
+    public function getShift(): ?Shift
     {
-        return $this->sid;
+        return $this->shift;
     }
 
-    public function setSid(?Shifts $sid): self
+    public function setShift(?Shift $shift): self
     {
-        $this->sid = $sid;
+        $this->shift = $shift;
 
         return $this;
     }
 
-    public function getUid(): ?User
+    public function getUser(): ?User
     {
-        return $this->uid;
+        return $this->user;
     }
 
-    public function setUid(?User $uid): self
+    public function setUser(?User $user): self
     {
-        $this->uid = $uid;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getTid(): ?AngelTypes
+    public function getAngelType(): ?AngelType
     {
-        return $this->tid;
+        return $this->angelType;
     }
 
-    public function setTid(?AngelTypes $tid): self
+    public function setAngelType(?AngelType $angelType): self
     {
-        $this->tid = $tid;
+        $this->angelType = $angelType;
 
         return $this;
     }
-
 
 }

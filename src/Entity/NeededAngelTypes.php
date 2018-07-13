@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * NeededAngelTypes
  *
- * @ORM\Table(name="NeededAngelTypes", indexes={@ORM\Index(name="room_id", columns={"room_id", "angel_type_id"}), @ORM\Index(name="shift_id", columns={"shift_id"}), @ORM\Index(name="angel_type_id", columns={"angel_type_id"}), @ORM\Index(name="count", columns={"count"}), @ORM\Index(name="IDX_C2AA7D0254177093", columns={"room_id"})})
  * @ORM\Entity
  */
 class NeededAngelTypes
@@ -29,29 +28,29 @@ class NeededAngelTypes
     private $count;
 
     /**
-     * @var \Room
+     * @var Room
      *
      * @ORM\ManyToOne(targetEntity="Room")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="room_id", referencedColumnName="RID")
+     *   @ORM\JoinColumn(name="room_id", referencedColumnName="id")
      * })
      */
     private $room;
 
     /**
-     * @var \Shifts
+     * @var Shift
      *
-     * @ORM\ManyToOne(targetEntity="Shifts")
+     * @ORM\ManyToOne(targetEntity="Shift")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="shift_id", referencedColumnName="SID")
+     *   @ORM\JoinColumn(name="shift_id", referencedColumnName="id")
      * })
      */
     private $shift;
 
     /**
-     * @var \Angeltypes
+     * @var Angeltype
      *
-     * @ORM\ManyToOne(targetEntity="AngelTypes")
+     * @ORM\ManyToOne(targetEntity="AngelType")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="angel_type_id", referencedColumnName="id")
      * })
@@ -87,29 +86,28 @@ class NeededAngelTypes
         return $this;
     }
 
-    public function getShift(): ?Shifts
+    public function getShift(): ?Shift
     {
         return $this->shift;
     }
 
-    public function setShift(?Shifts $shift): self
+    public function setShift(?Shift $shift): self
     {
         $this->shift = $shift;
 
         return $this;
     }
 
-    public function getAngelType(): ?AngelTypes
+    public function getAngelType(): ?AngelType
     {
         return $this->angelType;
     }
 
-    public function setAngelType(?AngelTypes $angelType): self
+    public function setAngelType(?AngelType $angelType): self
     {
         $this->angelType = $angelType;
 
         return $this;
     }
-
 
 }

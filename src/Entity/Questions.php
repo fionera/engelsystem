@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Questions
  *
- * @ORM\Table(name="Questions", indexes={@ORM\Index(name="UID", columns={"UID"}), @ORM\Index(name="AID", columns={"AID"})})
  * @ORM\Entity
  */
 class Questions
@@ -24,14 +23,14 @@ class Questions
     /**
      * @var string
      *
-     * @ORM\Column(name="Question", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="Question", type="text", nullable=false)
      */
     private $question;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="Answer", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="Answer", type="text", nullable=true)
      */
     private $answer;
 
@@ -40,20 +39,20 @@ class Questions
      *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="UID", referencedColumnName="UID")
+     *   @ORM\JoinColumn(name="ask_user_id", referencedColumnName="id")
      * })
      */
-    private $uid;
+    private $ask_user;
 
     /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="AID", referencedColumnName="UID")
+     *   @ORM\JoinColumn(name="answer_user_id", referencedColumnName="id")
      * })
      */
-    private $aid;
+    private $answer_user;
 
     public function getQid(): ?int
     {
@@ -84,29 +83,28 @@ class Questions
         return $this;
     }
 
-    public function getUid(): ?User
+    public function getAskUser(): ?User
     {
-        return $this->uid;
+        return $this->ask_user;
     }
 
-    public function setUid(?User $uid): self
+    public function setAskUser(?User $ask_user): self
     {
-        $this->uid = $uid;
+        $this->ask_user = $ask_user;
 
         return $this;
     }
 
-    public function getAid(): ?User
+    public function getAnswerUser(): ?User
     {
-        return $this->aid;
+        return $this->answer_user;
     }
 
-    public function setAid(?User $aid): self
+    public function setAnswerUser(?User $answer_user): self
     {
-        $this->aid = $aid;
+        $this->answer_user = $answer_user;
 
         return $this;
     }
-
 
 }

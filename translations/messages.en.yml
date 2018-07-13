@@ -1,0 +1,23 @@
+'Welcome to the %name%': 'Welcome to the %name%'
+ENGELSYSTEM!: ENGELSYSTEM!
+'Buildup starts': 'Buildup starts'
+'{0} today |{1} in %count% day |]1,Inf[ in %count% days': '{0} today |{1} in %count% day |]1,Inf[ in %count% days'
+'Event starts': 'Event starts'
+'Event ends': 'Event ends'
+'Teardown ends': 'Teardown ends'
+'Welcome to the': 'Welcome to the'
+Nick: Nick
+Password: Password
+Login: Login
+'Please note: You have to activate cookies!': 'Please note: You have to activate cookies!'
+Register: Register
+'Please sign up, if you want to help us!': 'Please sign up, if you want to help us!'
+'Register »': 'Register »'
+'What can I do?': 'What can I do?'
+'Please read about the jobs you can do to help us.': 'Please read about the jobs you can do to help us.'
+'Teams/Job description »': 'Teams/Job description »'
+Logout: Logout
+'%name%, starting %startDate% to %endDate%': '%name%, starting %startDate% to %endDate%'
+'%name%, starting %startDate%': '%name%, starting %startDate%'
+'Event from %startDate% to %endDate%': 'Event from %startDate% to %endDate%'
+en: English

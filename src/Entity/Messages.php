@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Messages
  *
- * @ORM\Table(name="Messages", indexes={@ORM\Index(name="Datum", columns={"Datum"}), @ORM\Index(name="SUID", columns={"SUID"}), @ORM\Index(name="RUID", columns={"RUID"})})
  * @ORM\Entity
  */
 class Messages
@@ -24,108 +23,126 @@ class Messages
     /**
      * @var int
      *
-     * @ORM\Column(name="Datum", type="integer", nullable=false)
+     * @ORM\Column(name="send_date", type="datetime", nullable=false)
      */
-    private $datum;
+    private $sendDate;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="read_date", type="datetime", nullable=false)
+     */
+    private $readDate;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="isRead", type="string", length=1, nullable=false, options={"default"="N","fixed"=true})
+     * @ORM\Column(name="is_read", type="boolean", nullable=false)
      */
-    private $isread = 'N';
+    private $isRead;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Text", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="message", type="text", nullable=false)
      */
-    private $text;
+    private $message;
 
     /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="SUID", referencedColumnName="UID")
+     *   @ORM\JoinColumn(name="sender_user_id", referencedColumnName="id")
      * })
      */
-    private $suid;
+    private $sender;
 
     /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="RUID", referencedColumnName="UID")
+     *   @ORM\JoinColumn(name="recipient_user_id", referencedColumnName="id")
      * })
      */
-    private $ruid;
+    private $recipient;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDatum(): ?int
+    public function getSendDate(): ?\DateTimeInterface
     {
-        return $this->datum;
+        return $this->sendDate;
     }
 
-    public function setDatum(int $datum): self
+    public function setSendDate(\DateTimeInterface $sendDate): self
     {
-        $this->datum = $datum;
+        $this->sendDate = $sendDate;
 
         return $this;
     }
 
-    public function getIsread(): ?string
+    public function getReadDate(): ?\DateTimeInterface
     {
-        return $this->isread;
+        return $this->readDate;
     }
 
-    public function setIsread(string $isread): self
+    public function setReadDate(\DateTimeInterface $readDate): self
     {
-        $this->isread = $isread;
+        $this->readDate = $readDate;
 
         return $this;
     }
 
-    public function getText(): ?string
+    public function getIsRead(): ?bool
     {
-        return $this->text;
+        return $this->isRead;
     }
 
-    public function setText(string $text): self
+    public function setIsRead(bool $isRead): self
     {
-        $this->text = $text;
+        $this->isRead = $isRead;
 
         return $this;
     }
 
-    public function getSuid(): ?User
+    public function getMessage(): ?string
     {
-        return $this->suid;
+        return $this->message;
     }
 
-    public function setSuid(?User $suid): self
+    public function setMessage(string $message): self
     {
-        $this->suid = $suid;
+        $this->message = $message;
 
         return $this;
     }
 
-    public function getRuid(): ?User
+    public function getSender(): ?User
     {
-        return $this->ruid;
+        return $this->sender;
     }
 
-    public function setRuid(?User $ruid): self
+    public function setSender(?User $sender): self
     {
-        $this->ruid = $ruid;
+        $this->sender = $sender;
 
         return $this;
     }
 
+    public function getRecipient(): ?User
+    {
+        return $this->recipient;
+    }
+
+    public function setRecipient(?User $recipient): self
+    {
+        $this->recipient = $recipient;
+
+        return $this;
+    }
 
 }

@@ -1,0 +1,129 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                {% if eventConfig is defined %}
+                    {% if eventConfig.name is defined %}
+                        <div class="col-sm-12 text-center">
+                            <h2>
+                                {% trans with {'%name%': eventConfig.name} %}
+                                    Welcome to the %name%
+                                {% endtrans %}
+                                <span class="icon-icon_angel"></span>
+                                {% trans %}
+                                    ENGELSYSTEM!
+                                {% endtrans %}
+                            </h2>
+                        </div>
+                    {% endif %}
+                    {% if eventConfig.buildUpStart is defined %}
+                        <div class="col-sm-3 text-center hidden-xs"><h4>{% trans %}Buildup starts{% endtrans %}</h4>
+                            <span class="moment-countdown text-big" data-timestamp="{{ eventConfig.buildUpStart }}">
+                                {% transchoice count %}
+                                    {0} today |{1} in %count% day |]1,Inf[ in %count% days
+                                {% endtranschoice %}
+                            </span>
+                            <small>{{ eventConfig.buildUpStart|date('y-m-d') }}</small>
+                        </div>
+                    {% endif %}
+                    {% if eventConfig.startDate is defined %}
+                        <div class="col-sm-3 text-center hidden-xs"><h4>{% trans %}Event starts{% endtrans %}</h4>
+                            <span class="moment-countdown text-big" data-timestamp="{{ eventConfig.startDate }}">
+                                {% transchoice count %}
+                                    {0} today |{1} in %count% day |]1,Inf[ in %count% days
+                                {% endtranschoice %}
+                            </span>
+                            <small>{{ eventConfig.startDate|date('y-m-d') }}</small>
+                        </div>
+                    {% endif %}
+                    {% if eventConfig.endDate is defined %}
+                        <div class="col-sm-3 text-center hidden-xs"><h4>{% trans %}Event ends{% endtrans %}</h4>
+                            <span class="moment-countdown text-big" data-timestamp="{{ eventConfig.endDate }}">
+                                {% transchoice count %}
+                                    {0} today |{1} in %count% day |]1,Inf[ in %count% days
+                                {% endtranschoice %}
+                            </span>
+                            <small>{{ eventConfig.endDate|date('y-m-d') }}</small>
+                        </div>
+                    {% endif %}
+                    {% if eventConfig.buildUpEnd is defined %}
+                        <div class="col-sm-3 text-center hidden-xs"><h4>{% trans %}Teardown ends{% endtrans %}</h4>
+                            <span class="moment-countdown text-big" data-timestamp="{{ eventConfig.buildUpEnd }}">
+                                {% transchoice count %}
+                                    {0} today |{1} in %count% day |]1,Inf[ in %count% days
+                                {% endtranschoice %}
+                            </span>
+                            <small>{{ eventConfig.buildUpEnd|date('y-m-d') }}</small>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="col-sm-12 text-center">
+                        <h2>
+                            {% trans %}
+                                Welcome to the
+                            {% endtrans %}
+                            <span class="icon-icon_angel"></span>
+                            {% trans %}
+                                ENGELSYSTEM!
+                            {% endtrans %}
+                        </h2>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                    <div class="panel panel-primary first">
+                        <div class="panel-heading"><span class="icon-icon_angel"></span> Login</div>
+                        <div class="panel-body">
+                            {% if error %}
+                                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                            {% endif %}
+
+                            <form action="{{ path('login') }}" enctype="multipart/form-data" method="post">
+                                <div class="form-group"><input class="form-control" id="form_nick" type="text"
+                                                               name="_username" value="{{ last_username }}" placeholder="{% trans %}Nick{% endtrans %}"></div>
+                                <div class="form-group"><input class="form-control" id="form_password"
+                                                               type="password" name="_password" value=""
+                                                               placeholder="{% trans %}Password{% endtrans %}"></div>
+                                <input type="hidden" name="_csrf_token"
+                                       value="{{ csrf_token('authenticate') }}">
+                                <div class="form-group"><label for="">
+                                        <button class="btn btn-primary" type="submit" name="submit">{% trans %}Login{% endtrans %}</button>
+                                    </label></div>
+                            </form>
+                        </div>
+                        <div class="panel-footer"><span class="glyphicon glyphicon-info-sign"></span>
+                            {% trans %}
+                                Please note: You have to activate cookies!
+                            {% endtrans %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 text-center"><h2>{% trans %}Register{% endtrans %}</h2>
+                    <p>{% trans %}Please sign up, if you want to help us!{% endtrans %}</p>
+                    <div class="form-group">
+                        <div class="btn-group"><a href="{{ url('register') }}" class="btn btn-default ">
+                                {% trans %}Register »{% endtrans %}
+                            </a></div>
+                    </div>
+                </div>
+                <div class="col-sm-6 text-center"><h2>{% trans %}What can I do?{% endtrans %}</h2>
+                    <p>{% trans %}Please read about the jobs you can do to help us.{% endtrans %}</p>
+                    <div class="form-group">
+                        <div class="btn-group">
+                            <a href="https://engel.ctdo.de/angeltypes?action=about" class="btn btn-default ">
+                                {% trans %}Teams/Job description »{% endtrans %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

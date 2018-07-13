@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * UserAngelTypes
  *
- * @ORM\Table(name="UserAngelTypes", indexes={@ORM\Index(name="user_id", columns={"user_id", "angeltype_id", "confirm_user_id"}), @ORM\Index(name="angeltype_id", columns={"angeltype_id"}), @ORM\Index(name="confirm_user_id", columns={"confirm_user_id"}), @ORM\Index(name="coordinator", columns={"supporter"}), @ORM\Index(name="IDX_A40E5E17A76ED395", columns={"user_id"})})
  * @ORM\Entity
  */
 class UserAngelTypes
@@ -33,17 +32,17 @@ class UserAngelTypes
      *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="UID")
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * })
      */
     private $user;
 
     /**
-     * @var Angeltypes
+     * @var AngelType
      *
-     * @ORM\ManyToOne(targetEntity="AngelTypes")
+     * @ORM\ManyToOne(targetEntity="AngelType")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="angeltype_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="angel_type_id", referencedColumnName="id")
      * })
      */
     private $angeltype;
@@ -53,7 +52,7 @@ class UserAngelTypes
      *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="confirm_user_id", referencedColumnName="UID")
+     *   @ORM\JoinColumn(name="confirm_user_id", referencedColumnName="id")
      * })
      */
     private $confirmUser;
@@ -87,12 +86,12 @@ class UserAngelTypes
         return $this;
     }
 
-    public function getAngeltype(): ?AngelTypes
+    public function getAngeltype(): ?AngelType
     {
         return $this->angeltype;
     }
 
-    public function setAngeltype(?AngelTypes $angeltype): self
+    public function setAngeltype(?AngelType $angeltype): self
     {
         $this->angeltype = $angeltype;
 
@@ -110,6 +109,5 @@ class UserAngelTypes
 
         return $this;
     }
-
 
 }

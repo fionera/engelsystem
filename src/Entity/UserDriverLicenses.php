@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * UserDriverLicenses
  *
- * @ORM\Table(name="UserDriverLicenses")
  * @ORM\Entity
  */
 class UserDriverLicenses
@@ -61,7 +60,7 @@ class UserDriverLicenses
      * @ORM\GeneratedValue(strategy="NONE")
      * @ORM\OneToOne(targetEntity="User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="UID")
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * })
      */
     private $user;
@@ -149,6 +148,5 @@ class UserDriverLicenses
 
         return $this;
     }
-
 
 }

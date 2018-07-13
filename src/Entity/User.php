@@ -2,73 +2,84 @@
 
 namespace Engelsystem\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * User
- *
- * @ORM\Table(name="User", uniqueConstraints={@ORM\UniqueConstraint(name="Nick", columns={"Nick"})}, indexes={@ORM\Index(name="api_key", columns={"api_key"}), @ORM\Index(name="password_recovery_token", columns={"password_recovery_token"}), @ORM\Index(name="force_active", columns={"force_active"}), @ORM\Index(name="arrival_date", columns={"arrival_date", "planned_arrival_date"}), @ORM\Index(name="planned_departure_date", columns={"planned_departure_date"})})
  * @ORM\Entity
  */
-class User
+class User implements UserInterface, \Serializable
 {
     /**
      * @var int
      *
-     * @ORM\Column(name="UID", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $uid;
+    private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Nick", type="string", length=23, nullable=false)
+     * @ORM\Column(name="nick", type="string", length=23, nullable=false)
      */
-    private $nick = '';
+    private $nick;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="Name", type="string", length=23, nullable=true)
+     * @ORM\Column(name="username", type="string", nullable=true)
      */
-    private $name;
+    private $username;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Group")
+     * @ORM\JoinTable(name="UsersGroups",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
+     *      )
+     * @var Group[]
+     */
+    private $groups;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="Vorname", type="string", length=23, nullable=true)
+     * @ORM\Column(name="prename", type="string", nullable=true)
      */
-    private $vorname;
+    private $prename;
 
     /**
      * @var int|null
      *
-     * @ORM\Column(name="Alter", type="integer", nullable=true)
+     * @ORM\Column(name="age", type="integer", nullable=true)
      */
-    private $alter;
+    private $age;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="Telefon", type="string", length=40, nullable=true)
+     * @ORM\Column(name="phone", type="string", length=40, nullable=true)
      */
-    private $telefon;
+    private $phone;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="DECT", type="string", length=5, nullable=true)
+     * @ORM\Column(name="dect", type="string", length=5, nullable=true)
      */
     private $dect;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="Handy", type="string", length=40, nullable=true)
+     * @ORM\Column(name="mobile", type="string", length=40, nullable=true)
      */
-    private $handy;
+    private $mobile;
 
     /**
      * @var string|null
@@ -82,7 +93,7 @@ class User
      *
      * @ORM\Column(name="email_shiftinfo", type="boolean", nullable=false, options={"comment"="User wants to be informed by mail about changes in his shifts"})
      */
-    private $emailShiftinfo = '0';
+    private $emailShiftinfo = false;
 
     /**
      * @var string|null
@@ -94,37 +105,37 @@ class User
     /**
      * @var string|null
      *
-     * @ORM\Column(name="Size", type="string", length=4, nullable=true)
+     * @ORM\Column(name="size", type="string", length=4, nullable=true)
      */
     private $size;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="Passwort", type="string", length=128, nullable=true)
+     * @ORM\Column(name="password", type="string", nullable=true)
      */
-    private $passwort;
+    private $password;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="password_recovery_token", type="string", length=32, nullable=true)
+     * @ORM\Column(name="password_recovery_token", type="string", nullable=true)
      */
     private $passwordRecoveryToken;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="Gekommen", type="boolean", nullable=false)
+     * @ORM\Column(name="arrived", type="boolean", nullable=false)
      */
-    private $gekommen = '0';
+    private $arrived = false;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="Aktiv", type="boolean", nullable=false)
+     * @ORM\Column(name="active", type="boolean", nullable=false)
      */
-    private $aktiv = '0';
+    private $active = false;
 
     /**
      * @var bool
@@ -136,9 +147,9 @@ class User
     /**
      * @var bool|null
      *
-     * @ORM\Column(name="Tshirt", type="boolean", nullable=true)
+     * @ORM\Column(name="t_shirt", type="boolean", nullable=false)
      */
-    private $tshirt = '0';
+    private $tShirt = false;
 
     /**
      * @var bool|null
@@ -150,56 +161,56 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="Sprache", type="string", length=64, nullable=false, options={"fixed"=true})
+     * @ORM\Column(name="language", type="string", nullable=false, options={"fixed"=true})
      */
-    private $sprache;
+    private $language;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Menu", type="string", length=1, nullable=false, options={"default"="L","fixed"=true})
+     * @ORM\Column(name="menu", type="string", length=1, nullable=false, options={"default"="L","fixed"=true})
      */
     private $menu = 'L';
 
     /**
-     * @var int
+     * @var \DateTime
      *
-     * @ORM\Column(name="lastLogIn", type="integer", nullable=false)
+     * @ORM\Column(name="last_login", type="datetime", nullable=false)
      */
-    private $lastlogin;
+    private $lastLogin;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="CreateDate", type="datetime", nullable=false, options={"default"="1000-01-01 00:00:00"})
+     * @ORM\Column(name="create_date", type="datetime", nullable=false)
      */
-    private $createdate = '1000-01-01 00:00:00';
+    private $createDate;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="Art", type="string", length=30, nullable=true)
+     * @ORM\Column(name="type", type="string", length=30, nullable=true)
      */
-    private $art;
+    private $type;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="kommentar", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="comment", type="text", nullable=true)
      */
-    private $kommentar;
+    private $comment;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Hometown", type="string", length=255, nullable=false)
+     * @ORM\Column(name="hometown", type="string", length=255, nullable=false)
      */
     private $hometown = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="api_key", type="string", length=32, nullable=false)
+     * @ORM\Column(name="api_key", type="string", nullable=false)
      */
     private $apiKey;
 
@@ -211,23 +222,23 @@ class User
     private $gotVoucher;
 
     /**
-     * @var int|null
+     * @var \DateTime|null
      *
-     * @ORM\Column(name="arrival_date", type="integer", nullable=true)
+     * @ORM\Column(name="arrival_date", type="datetime", nullable=true)
      */
     private $arrivalDate;
 
     /**
-     * @var int
+     * @var \DateTime
      *
-     * @ORM\Column(name="planned_arrival_date", type="integer", nullable=false)
+     * @ORM\Column(name="planned_arrival_date", type="datetime", nullable=false)
      */
     private $plannedArrivalDate;
 
     /**
-     * @var int|null
+     * @var \DateTime|null
      *
-     * @ORM\Column(name="planned_departure_date", type="integer", nullable=true)
+     * @ORM\Column(name="planned_departure_date", type="datetime", nullable=true)
      */
     private $plannedDepartureDate;
 
@@ -238,9 +249,160 @@ class User
      */
     private $emailByHumanAllowed;
 
-    public function getUid(): ?int
+    public function __construct()
     {
-        return $this->uid;
+        $this->groups = new ArrayCollection();
+    }
+    /**
+     * String representation of object
+     * @link http://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     * @since 5.1.0
+     */
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->nick,
+            $this->username,
+            $this->prename,
+            $this->age,
+            $this->phone,
+            $this->dect,
+            $this->mobile,
+            $this->email,
+            $this->emailShiftinfo,
+            $this->jabber,
+            $this->size,
+            $this->password,
+            $this->passwordRecoveryToken,
+            $this->arrived,
+            $this->active,
+            $this->forceActive,
+            $this->tShirt,
+            $this->color,
+            $this->language,
+            $this->menu,
+            $this->lastLogin,
+            $this->createDate,
+            $this->type,
+            $this->comment,
+            $this->hometown,
+            $this->apiKey,
+            $this->gotVoucher,
+            $this->arrivalDate,
+            $this->plannedArrivalDate,
+            $this->plannedDepartureDate,
+            $this->emailByHumanAllowed
+        ]);
+    }
+
+    /**
+     * Constructs the object
+     * @link http://php.net/manual/en/serializable.unserialize.php
+     * @param string $serialized <p>
+     * The string representation of the object.
+     * </p>
+     * @return void
+     * @since 5.1.0
+     */
+    public function unserialize($serialized)
+    {
+        [
+            $this->id,
+            $this->nick,
+            $this->username,
+            $this->prename,
+            $this->age,
+            $this->phone,
+            $this->dect,
+            $this->mobile,
+            $this->email,
+            $this->emailShiftinfo,
+            $this->jabber,
+            $this->size,
+            $this->password,
+            $this->passwordRecoveryToken,
+            $this->arrived,
+            $this->active,
+            $this->forceActive,
+            $this->tShirt,
+            $this->color,
+            $this->language,
+            $this->menu,
+            $this->lastLogin,
+            $this->createDate,
+            $this->type,
+            $this->comment,
+            $this->hometown,
+            $this->apiKey,
+            $this->gotVoucher,
+            $this->arrivalDate,
+            $this->plannedArrivalDate,
+            $this->plannedDepartureDate,
+            $this->emailByHumanAllowed
+        ] = unserialize($serialized, array('allowed_classes' => false));
+    }
+
+    /**
+     * Returns the roles granted to the user.
+     *
+     * <code>
+     * public function getRoles()
+     * {
+     *     return array('ROLE_USER');
+     * }
+     * </code>
+     *
+     * Alternatively, the roles might be stored on a ``roles`` property,
+     * and populated in any number of different ways when the user object
+     * is created.
+     *
+     * @return (Role|string)[] The user roles
+     */
+    public function getRoles()
+    {
+        return array_map(function (Group $group) {
+            return $group->getName();
+        }, $this->getGroups());
+    }
+
+    /**
+     * Returns the salt that was originally used to encode the password.
+     *
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
+     */
+    public function getSalt()
+    {
+        return null;
+    }
+
+    /**
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials()
+    {
+
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getNick(): ?string
@@ -255,50 +417,45 @@ class User
         return $this;
     }
 
-    public function getName(): ?string
+    public function setUsername(?string $username): self
     {
-        return $this->name;
-    }
-
-    public function setName(?string $name): self
-    {
-        $this->name = $name;
+        $this->username = $username;
 
         return $this;
     }
 
-    public function getVorname(): ?string
+    public function getPrename(): ?string
     {
-        return $this->vorname;
+        return $this->prename;
     }
 
-    public function setVorname(?string $vorname): self
+    public function setPrename(?string $prename): self
     {
-        $this->vorname = $vorname;
+        $this->prename = $prename;
 
         return $this;
     }
 
-    public function getAlter(): ?int
+    public function getAge(): ?int
     {
-        return $this->alter;
+        return $this->age;
     }
 
-    public function setAlter(?int $alter): self
+    public function setAge(?int $age): self
     {
-        $this->alter = $alter;
+        $this->age = $age;
 
         return $this;
     }
 
-    public function getTelefon(): ?string
+    public function getPhone(): ?string
     {
-        return $this->telefon;
+        return $this->phone;
     }
 
-    public function setTelefon(?string $telefon): self
+    public function setPhone(?string $phone): self
     {
-        $this->telefon = $telefon;
+        $this->phone = $phone;
 
         return $this;
     }
@@ -315,14 +472,14 @@ class User
         return $this;
     }
 
-    public function getHandy(): ?string
+    public function getMobile(): ?string
     {
-        return $this->handy;
+        return $this->mobile;
     }
 
-    public function setHandy(?string $handy): self
+    public function setMobile(?string $mobile): self
     {
-        $this->handy = $handy;
+        $this->mobile = $mobile;
 
         return $this;
     }
@@ -375,14 +532,9 @@ class User
         return $this;
     }
 
-    public function getPasswort(): ?string
+    public function setPassword(?string $password): self
     {
-        return $this->passwort;
-    }
-
-    public function setPasswort(?string $passwort): self
-    {
-        $this->passwort = $passwort;
+        $this->password = $password;
 
         return $this;
     }
@@ -399,26 +551,26 @@ class User
         return $this;
     }
 
-    public function getGekommen(): ?bool
+    public function getArrived(): ?bool
     {
-        return $this->gekommen;
+        return $this->arrived;
     }
 
-    public function setGekommen(bool $gekommen): self
+    public function setArrived(bool $arrived): self
     {
-        $this->gekommen = $gekommen;
+        $this->arrived = $arrived;
 
         return $this;
     }
 
-    public function getAktiv(): ?bool
+    public function getActive(): ?bool
     {
-        return $this->aktiv;
+        return $this->active;
     }
 
-    public function setAktiv(bool $aktiv): self
+    public function setActive(bool $active): self
     {
-        $this->aktiv = $aktiv;
+        $this->active = $active;
 
         return $this;
     }
@@ -435,14 +587,14 @@ class User
         return $this;
     }
 
-    public function getTshirt(): ?bool
+    public function getTShirt(): ?bool
     {
-        return $this->tshirt;
+        return $this->tShirt;
     }
 
-    public function setTshirt(?bool $tshirt): self
+    public function setTShirt(bool $tShirt): self
     {
-        $this->tshirt = $tshirt;
+        $this->tShirt = $tShirt;
 
         return $this;
     }
@@ -459,14 +611,14 @@ class User
         return $this;
     }
 
-    public function getSprache(): ?string
+    public function getLanguage(): ?string
     {
-        return $this->sprache;
+        return $this->language;
     }
 
-    public function setSprache(string $sprache): self
+    public function setLanguage(string $language): self
     {
-        $this->sprache = $sprache;
+        $this->language = $language;
 
         return $this;
     }
@@ -483,50 +635,50 @@ class User
         return $this;
     }
 
-    public function getLastlogin(): ?int
+    public function getLastLogin(): ?\DateTimeInterface
     {
-        return $this->lastlogin;
+        return $this->lastLogin;
     }
 
-    public function setLastlogin(int $lastlogin): self
+    public function setLastLogin(\DateTimeInterface $lastLogin): self
     {
-        $this->lastlogin = $lastlogin;
+        $this->lastLogin = $lastLogin;
 
         return $this;
     }
 
-    public function getCreatedate(): ?\DateTimeInterface
+    public function getCreateDate(): ?\DateTimeInterface
     {
-        return $this->createdate;
+        return $this->createDate;
     }
 
-    public function setCreatedate(\DateTimeInterface $createdate): self
+    public function setCreateDate(\DateTimeInterface $createDate): self
     {
-        $this->createdate = $createdate;
+        $this->createDate = $createDate;
 
         return $this;
     }
 
-    public function getArt(): ?string
+    public function getType(): ?string
     {
-        return $this->art;
+        return $this->type;
     }
 
-    public function setArt(?string $art): self
+    public function setType(?string $type): self
     {
-        $this->art = $art;
+        $this->type = $type;
 
         return $this;
     }
 
-    public function getKommentar(): ?string
+    public function getComment(): ?string
     {
-        return $this->kommentar;
+        return $this->comment;
     }
 
-    public function setKommentar(?string $kommentar): self
+    public function setComment(?string $comment): self
     {
-        $this->kommentar = $kommentar;
+        $this->comment = $comment;
 
         return $this;
     }
@@ -567,36 +719,36 @@ class User
         return $this;
     }
 
-    public function getArrivalDate(): ?int
+    public function getArrivalDate(): ?\DateTimeInterface
     {
         return $this->arrivalDate;
     }
 
-    public function setArrivalDate(?int $arrivalDate): self
+    public function setArrivalDate(?\DateTimeInterface $arrivalDate): self
     {
         $this->arrivalDate = $arrivalDate;
 
         return $this;
     }
 
-    public function getPlannedArrivalDate(): ?int
+    public function getPlannedArrivalDate(): ?\DateTimeInterface
     {
         return $this->plannedArrivalDate;
     }
 
-    public function setPlannedArrivalDate(int $plannedArrivalDate): self
+    public function setPlannedArrivalDate(\DateTimeInterface $plannedArrivalDate): self
     {
         $this->plannedArrivalDate = $plannedArrivalDate;
 
         return $this;
     }
 
-    public function getPlannedDepartureDate(): ?int
+    public function getPlannedDepartureDate(): ?\DateTimeInterface
     {
         return $this->plannedDepartureDate;
     }
 
-    public function setPlannedDepartureDate(?int $plannedDepartureDate): self
+    public function setPlannedDepartureDate(?\DateTimeInterface $plannedDepartureDate): self
     {
         $this->plannedDepartureDate = $plannedDepartureDate;
 
@@ -615,5 +767,29 @@ class User
         return $this;
     }
 
+    /**
+     * @return Collection|Group[]
+     */
+    public function getGroups(): Collection
+    {
+        return $this->groups;
+    }
 
+    public function addGroup(Group $group): self
+    {
+        if (!$this->groups->contains($group)) {
+            $this->groups[] = $group;
+        }
+
+        return $this;
+    }
+
+    public function removeGroup(Group $group): self
+    {
+        if ($this->groups->contains($group)) {
+            $this->groups->removeElement($group);
+        }
+
+        return $this;
+    }
 }

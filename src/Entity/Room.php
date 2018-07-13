@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Room
  *
- * @ORM\Table(name="Room", uniqueConstraints={@ORM\UniqueConstraint(name="Name", columns={"Name"})})
  * @ORM\Entity
  */
 class Room
@@ -15,43 +14,43 @@ class Room
     /**
      * @var int
      *
-     * @ORM\Column(name="RID", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $rid;
+    private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Name", type="string", length=35, nullable=false)
+     * @ORM\Column(name="name", type="string", nullable=false)
      */
-    private $name = '';
+    private $name;
 
     /**
      * @var bool
      *
      * @ORM\Column(name="from_frab", type="boolean", nullable=false)
      */
-    private $fromFrab;
+    private $fromFrab; //TODO: Whats Frab?
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="map_url", type="string", length=300, nullable=true)
+     * @ORM\Column(name="map_url", type="string", nullable=true)
      */
     private $mapUrl;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 
-    public function getRid(): ?int
+    public function getId(): ?int
     {
-        return $this->rid;
+        return $this->id;
     }
 
     public function getName(): ?string
@@ -101,6 +100,5 @@ class Room
 
         return $this;
     }
-
 
 }

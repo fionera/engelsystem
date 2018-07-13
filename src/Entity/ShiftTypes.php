@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ShiftTypes
  *
- * @ORM\Table(name="ShiftTypes", indexes={@ORM\Index(name="angeltype_id", columns={"angeltype_id"})})
  * @ORM\Entity
  */
 class ShiftTypes
@@ -24,26 +23,26 @@ class ShiftTypes
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @ORM\Column(name="name", type="string", nullable=false)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="description", type="text", nullable=false)
      */
     private $description;
 
     /**
-     * @var Angeltypes
+     * @var AngelType
      *
-     * @ORM\ManyToOne(targetEntity="AngelTypes")
+     * @ORM\ManyToOne(targetEntity="AngelType")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="angeltype_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="angel_type_id", referencedColumnName="id")
      * })
      */
-    private $angeltype;
+    private $angelType;
 
     public function getId(): ?int
     {
@@ -74,17 +73,16 @@ class ShiftTypes
         return $this;
     }
 
-    public function getAngeltype(): ?AngelTypes
+    public function getAngelType(): ?AngelType
     {
-        return $this->angeltype;
+        return $this->angelType;
     }
 
-    public function setAngeltype(?AngelTypes $angeltype): self
+    public function setAngelType(?AngelType $angelType): self
     {
-        $this->angeltype = $angeltype;
+        $this->angelType = $angelType;
 
         return $this;
     }
-
 
 }

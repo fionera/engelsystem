@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * UserWorkLog
  *
- * @ORM\Table(name="UserWorkLog", indexes={@ORM\Index(name="user_id", columns={"user_id"}), @ORM\Index(name="created_user_id", columns={"created_user_id"}), @ORM\Index(name="created_timestamp", columns={"created_timestamp"})})
  * @ORM\Entity
  */
 class UserWorkLog
@@ -24,7 +23,7 @@ class UserWorkLog
     /**
      * @var int
      *
-     * @ORM\Column(name="work_timestamp", type="integer", nullable=false)
+     * @ORM\Column(name="work_timestamp", type="datetime", nullable=false)
      */
     private $workTimestamp;
 
@@ -38,14 +37,14 @@ class UserWorkLog
     /**
      * @var string
      *
-     * @ORM\Column(name="comment", type="string", length=200, nullable=false)
+     * @ORM\Column(name="comment", type="string", nullable=false)
      */
     private $comment;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="created_timestamp", type="integer", nullable=false)
+     * @ORM\Column(name="created_timestamp", type="datetime", nullable=false)
      */
     private $createdTimestamp;
 
@@ -54,7 +53,7 @@ class UserWorkLog
      *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="created_user_id", referencedColumnName="UID")
+     *   @ORM\JoinColumn(name="created_user_id", referencedColumnName="id")
      * })
      */
     private $createdUser;
@@ -64,7 +63,7 @@ class UserWorkLog
      *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="UID")
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * })
      */
     private $user;
@@ -74,12 +73,12 @@ class UserWorkLog
         return $this->id;
     }
 
-    public function getWorkTimestamp(): ?int
+    public function getWorkTimestamp(): ?\DateTimeInterface
     {
         return $this->workTimestamp;
     }
 
-    public function setWorkTimestamp(int $workTimestamp): self
+    public function setWorkTimestamp(\DateTimeInterface $workTimestamp): self
     {
         $this->workTimestamp = $workTimestamp;
 
@@ -110,12 +109,12 @@ class UserWorkLog
         return $this;
     }
 
-    public function getCreatedTimestamp(): ?int
+    public function getCreatedTimestamp(): ?\DateTimeInterface
     {
         return $this->createdTimestamp;
     }
 
-    public function setCreatedTimestamp(int $createdTimestamp): self
+    public function setCreatedTimestamp(\DateTimeInterface $createdTimestamp): self
     {
         $this->createdTimestamp = $createdTimestamp;
 
@@ -145,6 +144,5 @@ class UserWorkLog
 
         return $this;
     }
-
 
 }

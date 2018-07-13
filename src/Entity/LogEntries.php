@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LogEntries
  *
- * @ORM\Table(name="LogEntries", indexes={@ORM\Index(name="timestamp", columns={"timestamp"})})
  * @ORM\Entity
  */
 class LogEntries
@@ -22,23 +21,23 @@ class LogEntries
     private $id;
 
     /**
-     * @var int
+     * @var \DateTime
      *
-     * @ORM\Column(name="timestamp", type="integer", nullable=false)
+     * @ORM\Column(name="timestamp", type="datetime", nullable=false)
      */
     private $timestamp;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="level", type="string", length=20, nullable=false)
+     * @ORM\Column(name="level", type="integer", nullable=false)
      */
     private $level;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="message", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="message", type="text", nullable=false)
      */
     private $message;
 
@@ -47,24 +46,24 @@ class LogEntries
         return $this->id;
     }
 
-    public function getTimestamp(): ?int
+    public function getTimestamp(): ?\DateTimeInterface
     {
         return $this->timestamp;
     }
 
-    public function setTimestamp(int $timestamp): self
+    public function setTimestamp(\DateTimeInterface $timestamp): self
     {
         $this->timestamp = $timestamp;
 
         return $this;
     }
 
-    public function getLevel(): ?string
+    public function getLevel(): ?int
     {
         return $this->level;
     }
 
-    public function setLevel(string $level): self
+    public function setLevel(int $level): self
     {
         $this->level = $level;
 
@@ -82,6 +81,4 @@ class LogEntries
 
         return $this;
     }
-
-
 }

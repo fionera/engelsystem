@@ -1,12 +1,102 @@
+<body>
+</body>
+</html>
+
+
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<head>
+    {% block head %}
+        <title>{% block title %}{% endblock %} - Engelsystem</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/' ~ theme ~ '.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('vendor/icomoon/style.css') }}"/>
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('vendor/bootstrap-datepicker-1.7.1/css/bootstrap-datepicker3.min.css') }}"/>
+        <script type="text/javascript" src="{{ asset('vendor/jquery-2.1.1.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('vendor/jquery-ui.min.js') }}"></script>
+    {% endblock %}
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed"
+                        data-toggle="collapse" data-target="#navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url('index') }}">
+                    <span class="icon-icon_angel"></span> <strong class="visible-lg-inline">ENGELSYSTEM</strong>
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                {% block menu %}
+                    {% include 'header/menu.html.twig' %}
+                {% endblock %}
+                {% block header_toolbar %}
+                    {% include 'header/header_toolbar.html.twig' %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            {% block content %}
+            {% endblock %}
+        </div>
+        <div class="row" id="footer">
+            <div class="col-md-12">
+                <hr/>
+                <div class="text-center footer" style="margin-bottom: 10px;">
+                    {% if eventConfig is defined %}
+                        {% if eventConfig.name is defined and eventConfig.startDate is defined and eventConfig.endDate is defined %}
+                            {% trans with {'%name%': eventConfig.name, '%startDate%': eventConfig.startDate, '%endDate%': eventConfig.endDate} %}
+                                %name%, starting %startDate% to %endDate%
+                            {% endtrans %}
+                        {% elseif eventConfig.name is defined and eventConfig.startDate is defined %}
+                            {% trans with {'%name%': eventConfig.name, '%startDate%': eventConfig.startDate} %}
+                                %name%, starting %startDate%
+                            {% endtrans %}
+                        {% elseif eventConfig.startDate is defined and eventConfig.endDate is defined %}
+                            {% trans with {'%startDate%': eventConfig.startDate, '%endDate%': eventConfig.endDate} %}
+                                Event from %startDate% to %endDate%
+                            {% endtrans %}
+                        {% elseif eventConfig.name is defined %}
+                            {{ eventConfig.name }}
+                        {% endif %}
+                    {% endif %}
+                    <a href="{{ url('FAQ') }}">FAQ</a>
+                    · <a href="%contact_email%"><span class="glyphicon glyphicon-envelope"></span> Contact</a>
+                    · <a href="https://github.com/engelsystem/engelsystem/issues">Bugs / Features</a>
+                    · <a href="https://github.com/engelsystem/engelsystem/">Development Platform</a>
+                    · <a href="{{ url('credits') }}">Credits</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% block javascripts %}
+    <script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="vendor/bootstrap-datepicker-1.7.1/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript"
+            src="vendor/bootstrap-datepicker-1.7.1/locales/bootstrap-datepicker.de.min.js"></script>
+    <script type="text/javascript" src="vendor/Chart.min.js"></script>
+    <script type="text/javascript" src="js/forms.js"></script>
+    <script type="text/javascript" src="vendor/moment-with-locales.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            moment.locale("%locale%");
+        });
+    </script>
+    <script type="text/javascript" src="js/moment-countdown.js"></script>
+    <script type="text/javascript" src="js/sticky-headers.js"></script>
+{% endblock %}
+{% endblock %}
+</body>
 </html>
