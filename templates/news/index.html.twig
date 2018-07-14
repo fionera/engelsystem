@@ -27,7 +27,7 @@
                             <span class="icon-icon_angel"></span> {{ news.author }}</a>&emsp;<a
                                 href="{{ url('news_comments', {id: news.id}) }}">
                             <span class="glyphicon glyphicon-comment"></span> {% trans %}Comments »{% endtrans %}</a>
-                        <span class="badge">{{ news.comments|length }}</span>
+                        <span class="badge">{{ news.commentAmount }}</span>
                     </div>
                 </div>
             {% endfor %}
@@ -39,24 +39,9 @@
             {% if hasPermission('news_post') %}
                 <hr>
                 <h2>Create news:</h2>
-                <form action="" enctype="multipart/form-data" method="post">
-                    <div class="form-group">
-                        <label for="form_betreff">Subject</label>
-                        <input class="form-control" id="form_betreff" type="text" name="betreff" value="">
-                    </div>
-                    <div class="form-group">
-                        <label for="form_text">Message</label>
-                        <textarea rows="5" class="form-control" id="form_text" name="text"></textarea>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" id="treffen" name="treffen" value="1">
-                            Meeting</label>
-                    </div>
-                    <div class="form-group"><label for="">
-                            <button class="btn btn-primary" type="submit" name="submit">Save</button>
-                        </label></div>
-                </form>
+                {{ form_start(newsForm) }}
+                {{ form_widget(newsForm) }}
+                {{ form_end(newsForm) }}
             {% endif %}
         </div>
     </div>

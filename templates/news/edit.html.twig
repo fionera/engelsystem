@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}News{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <h1>Edit News:</h1>
+        {{ form_start(newsForm) }}
+        {{ form_widget(newsForm) }}
+        {{ form_end(newsForm) }}
+        <a class="btn btn-danger" href="{{ url('news_delete', {'id': news.id}) }}">
+            <span class="glyphicon glyphicon-trash"></span> Delete
+        </a>
+    </div>
+
+{% endblock %}

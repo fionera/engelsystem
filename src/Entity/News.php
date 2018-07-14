@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -61,7 +62,7 @@ class News
     /**
      * @var NewsComment[]
      *
-     * @ORM\OneToMany(targetEntity="NewsComment", mappedBy="id")
+     * @ORM\OneToMany(targetEntity="NewsComment", mappedBy="news")
      */
     private $comments;
 
@@ -131,9 +132,9 @@ class News
     }
 
     /**
-     * @return NewsComment[]
+     * @return Collection|NewsComment[]
      */
-    public function getComments(): ?array
+    public function getComments(): Collection
     {
         return $this->comments;
     }
