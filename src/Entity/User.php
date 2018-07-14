@@ -210,7 +210,7 @@ class User implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="hometown", type="string", length=255, nullable=false)
+     * @ORM\Column(name="hometown", type="string", length=255, nullable=true)
      */
     private $hometown = '';
 
@@ -610,7 +610,7 @@ class User implements UserInterface, \Serializable
         return $this->lastLogin;
     }
 
-    public function setLastLogin(\DateTimeInterface $lastLogin): self
+    public function setLastLogin(?\DateTimeInterface $lastLogin): self
     {
         $this->lastLogin = $lastLogin;
 
@@ -658,7 +658,7 @@ class User implements UserInterface, \Serializable
         return $this->hometown;
     }
 
-    public function setHometown(string $hometown): self
+    public function setHometown(?string $hometown): self
     {
         $this->hometown = $hometown;
 

@@ -3,13 +3,27 @@
 namespace Engelsystem\Controller;
 
 use Engelsystem\Entity\News;
+use Engelsystem\Entity\NewsComment;
+use Engelsystem\Form\NewsCommentType;
 use Engelsystem\Form\NewsType;
+use Parsedown;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class NewsController extends Controller
 {
+    private $parsedown;
+
+    /**
+     * NewsController constructor.
+     */
+    public function __construct()
+    {
+        $this->parsedown = new Parsedown();
+    }
+
+
     /**
      * @Route("/news/{page<\d+>?1}", name="news")
      */
@@ -96,10 +110,69 @@ class NewsController extends Controller
      * @param int $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function news_comments(int $id)
+    public function news_comments(int $id, Request $request)
     {
-        return $this->render('news/comments.html.twig', [
+        $news = $this->getDoctrine()->getRepository(News::class)->find($id);
 
+        if ($news === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $newsComment = new NewsComment();
+        $newsCommentForm = $this->createForm(NewsCommentType::class, $newsComment);
+
+        $newsCommentForm->handleRequest($request);
+        if ($newsCommentForm->isSubmitted() && $newsCommentForm->isValid()) {
+
+            $newsComment->setNews($news);
+            $newsComment->setAuthor($this->getUser());
+            $newsComment->setDate(new \DateTime());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($newsComment);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('news_comments', ['id' => $news->getId()]);
+        }
+
+        $this->addFlash('success', 'news_edit_successfully');
+
+        return $this->render('news/comments.html.twig', [
+            'news' => $this->getNewsStruct($news),
+            'newsCommentForm' => $newsCommentForm->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/news/comments/{id}", name="news_comments_edit")
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function news_comments_edit(int $id = 0, Request $request)
+    {
+        $newsComment = $this->getDoctrine()->getRepository(NewsComment::class)->find($id);
+
+        if ($newsComment === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $newsCommentForm = $this->createForm(NewsCommentType::class, $newsComment);
+
+        $newsCommentForm->handleRequest($request);
+        if ($newsCommentForm->isSubmitted() && $newsCommentForm->isValid()) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($newsComment);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('news_comments', ['id' => $newsComment->getNews()->getId()]);
+        }
+
+        $this->addFlash('success', 'news_edit_successfully');
+
+        return $this->render('news/comments.html.twig', [
+            'news' => $this->getNewsStruct($newsComment->getNews()),
+            'newsCommentForm' => $newsCommentForm->createView()
         ]);
     }
 
@@ -110,10 +183,21 @@ class NewsController extends Controller
                 'id' => $news->getId(),
                 'subject' => $news->getSubject(),
                 'meeting' => $news->getMeeting(),
-                'message' => $news->getMessage(),
+                'message' => $this->parsedown->parse($news->getMessage()),
                 'author' => $news->getAuthor()->getUsername(),
-                'commentAmount' => \count($news->getComments()),
+                'comments' => array_map([$this, 'getCommentStruct'], $news->getComments()->toArray()),
                 'date' => $news->getDate()
+            ];
+    }
+
+    private function getCommentStruct(NewsComment $newsComment)
+    {
+        return
+            [
+                'id' => $newsComment->getId(),
+                'message' => $this->parsedown->parse($newsComment->getMessage()),
+                'author' => $newsComment->getAuthor()->getUsername(),
+                'date' => $newsComment->getDate()
             ];
     }
 

@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ news.subject }} - News{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>News</h1>
+            <div class="panel panel-info">
+                <div class="panel-heading"><h3 class="panel-title">
+                        {% if news.meeting == true %}
+                            {% trans %}[Meeting]{% endtrans %}
+                        {% endif %}
+                        {{ news.subject }}
+                    </h3></div>
+                <div class="panel-body">{{ news.message|raw }}</div>
+                <div class="panel-footer text-muted">
+                    <div class="pull-right">
+                        <a href="{{ url('news_edit', {id: news.id}) }}" class="btn btn-default btn-xs">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </a>
+                    </div>
+                    <span class="glyphicon glyphicon-time"></span>
+                    {{ news.date|date('Y-m-d H:m') }}&emsp;
+                    <a class="text-muted" href="https://engel.ctdo.de/users?action=view&amp;user_id=2">
+                        <span class="icon-icon_angel"></span> {{ news.author }}</a>
+                </div>
+            </div>
+
+
+            {% for comment in news.comments %}
+                <div class="panel panel-">
+                    <div class="panel-body">{{ comment.message|raw }}</div>
+                    <div class="panel-footer text-muted">
+                        {% if hasPermission('news_comment_edit_all') or hasPermission('news_comment_edit') and comment.author == user.username %}
+                            <div class="pull-right">
+                                <a href="{{ url('news_comments_edit', {'id': comment.id}) }}"
+                                   class="btn btn-default btn-xs">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </a>
+                            </div>
+                        {% endif %}
+                        <span class="glyphicon glyphicon-time"></span>
+                        {{ comment.date|date('Y-m-d H:m') }}&emsp;
+                        <a class="text-muted" href="https://engel.ctdo.de/users?action=view&amp;user_id=2">
+                            <span class="icon-icon_angel"></span> {{ comment.author }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+
+
+            {% if hasPermission('news_comment_post') %}
+                <hr>
+                <h2>New Comment:</h2>
+                {{ form_start(newsCommentForm) }}
+                {{ form_widget(newsCommentForm) }}
+                {{ form_end(newsCommentForm) }}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

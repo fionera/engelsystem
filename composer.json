@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "easycorp/easyadmin-bundle": "^1.17",
+        "erusev/parsedown": "^1.7",
         "symfony/asset": "^4.1",
         "symfony/console": "^4.1",
         "symfony/flex": "^1.0",

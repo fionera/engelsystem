@@ -14,20 +14,22 @@
                             {% endif %}
                             {{ news.subject }}
                         </h3></div>
-                    <div class="panel-body">{{ news.message }}</div>
+                    <div class="panel-body">{{ news.message|raw }}</div>
                     <div class="panel-footer text-muted">
-                        <div class="pull-right">
-                            <a href="{{ url('news_edit', {id: news.id}) }}" class="btn btn-default btn-xs">
-                                <span class="glyphicon glyphicon-edit"></span>
-                            </a>
-                        </div>
+                        {% if hasPermission('news_post') %}
+                            <div class="pull-right">
+                                <a href="{{ url('news_edit', {id: news.id}) }}" class="btn btn-default btn-xs">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </a>
+                            </div>
+                        {% endif %}
                         <span class="glyphicon glyphicon-time"></span>
-                        {{ news.date|date('Y-m-d h:m') }}&emsp;
+                        {{ news.date|date('Y-m-d H:m') }}&emsp;
                         <a class="text-muted" href="https://engel.ctdo.de/users?action=view&amp;user_id=2">
                             <span class="icon-icon_angel"></span> {{ news.author }}</a>&emsp;<a
                                 href="{{ url('news_comments', {id: news.id}) }}">
                             <span class="glyphicon glyphicon-comment"></span> {% trans %}Comments »{% endtrans %}</a>
-                        <span class="badge">{{ news.commentAmount }}</span>
+                        <span class="badge">{{ news.comments|length }}</span>
                     </div>
                 </div>
             {% endfor %}

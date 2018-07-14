@@ -2,11 +2,14 @@
 
 namespace Engelsystem\EventSubscriber;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Engelsystem\Entity\EventConfig;
+use Engelsystem\Entity\User;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Twig\Environment;
 
 class RequestSubscriber implements EventSubscriberInterface
@@ -19,23 +22,44 @@ class RequestSubscriber implements EventSubscriberInterface
      * @var EntityManagerInterface
      */
     private $entityManager;
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
 
     /**
      * RequestSubscriber constructor.
      * @param Environment $environment
      * @param EntityManagerInterface $entityManager
+     * @param TokenStorage $tokenStorage
      */
-    public function __construct(Environment $environment, EntityManagerInterface $entityManager)
+    public function __construct(Environment $environment, EntityManagerInterface $entityManager, ContainerInterface $container)
     {
         $this->environment = $environment;
         $this->entityManager = $entityManager;
+        $this->container = $container;
     }
 
     public function onKernelRequest(GetResponseEvent $event)
     {
+
+        $user = [];
+        if (null !== $token = $this->container->get('security.token_storage')->getToken()) {
+            /** @var UserInterface $user */
+            $authUser = $token->getUser();
+
+            if ($authUser instanceof User) {
+                $user = [
+                    'username' => $authUser->getUsername()
+                ];
+            }
+        }
+
+
         $config = [
             'theme' => getenv('DEFAULT_THEME'),
-            'locales' => $this->getAvailableLanguages()
+            'locales' => $this->getAvailableLanguages(),
+            'user' => $user
 //            'atom_link' => ($page == 'news' || $page == 'user_meetings')
 //                ? ' <link href="'
 //                . page_link_to('atom', $parameters)
@@ -102,7 +126,7 @@ class RequestSubscriber implements EventSubscriberInterface
         if (isset($_SERVER['LANG_ORDER'])) {
             $languageOrder = explode(',', $_SERVER['LANG_ORDER']);
         }
-        $translationFiles = scandir(__DIR__.'/../../translations', SCANDIR_SORT_NONE);
+        $translationFiles = scandir(__DIR__ . '/../../translations', SCANDIR_SORT_NONE);
         $languages = array();
         $otherLangs = array();
         foreach ($translationFiles as $file) {
