@@ -37,10 +37,7 @@ class NewsComment
     /**
      * @var News
      *
-     * @ORM\ManyToOne(targetEntity="News")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="news_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity="News", inversedBy="comments")
      */
     private $news;
 
@@ -48,9 +45,6 @@ class NewsComment
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     * })
      */
     private $author;
 

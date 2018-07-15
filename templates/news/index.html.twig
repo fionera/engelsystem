@@ -7,11 +7,8 @@
         <div class="col-md-12">
             <h1>News</h1>
             {% for news in newsList %}
-                <div class="panel panel-info">
+                <div class="panel panel-default">
                     <div class="panel-heading"><h3 class="panel-title">
-                            {% if news.meeting == true %}
-                                {% trans %}[Meeting]{% endtrans %}
-                            {% endif %}
                             {{ news.subject }}
                         </h3></div>
                     <div class="panel-body">{{ news.message|raw }}</div>

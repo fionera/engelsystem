@@ -28,9 +28,9 @@ class AngelType
     private $name;
 
     /**
-     * @var int
+     * @var boolean
      *
-     * @ORM\Column(name="restricted", type="integer", nullable=false)
+     * @ORM\Column(name="restricted", type="boolean", nullable=false)
      */
     private $restricted;
 
@@ -100,12 +100,12 @@ class AngelType
         return $this;
     }
 
-    public function getRestricted(): ?int
+    public function getRestricted(): ?bool
     {
         return $this->restricted;
     }
 
-    public function setRestricted(int $restricted): self
+    public function setRestricted(?bool $restricted): self
     {
         $this->restricted = $restricted;
 
@@ -194,5 +194,10 @@ class AngelType
         $this->showOnDashboard = $showOnDashboard;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }

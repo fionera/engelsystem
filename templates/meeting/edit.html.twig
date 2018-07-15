@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Meeting{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <h1>Edit Meetings:</h1>
+        {{ form_start(meetingForm) }}
+        {{ form_widget(meetingForm) }}
+        {{ form_end(meetingForm) }}
+        <a class="btn btn-danger" href="{{ url('meeting_delete', {'id': meeting.id}) }}">
+            <span class="glyphicon glyphicon-trash"></span> Delete
+        </a>
+    </div>
+
+{% endblock %}

@@ -41,6 +41,12 @@ class User implements UserInterface, \Serializable
     private $groups;
 
     /**
+     * @ORM\OneToMany(targetEntity="Engelsystem\Entity\UserAngelTypes", mappedBy="user")
+     * @var UserAngelTypes[]|Collection
+     */
+    private $userAngelTypes;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(name="prename", type="string", nullable=true)
@@ -761,5 +767,44 @@ class User implements UserInterface, \Serializable
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|UserAngelTypes[]
+     */
+    public function getUserAngelTypes()
+    {
+        return $this->userAngelTypes;
+    }
+
+    /**
+     * @param Collection|UserAngelTypes[] $userAngelTypes
+     */
+    public function setUserAngelTypes($userAngelTypes): void
+    {
+        $this->userAngelTypes = $userAngelTypes;
+    }
+
+    public function addUserAngelTypes(UserAngelTypes $userAngelTypes): self
+    {
+        if (!$this->groups->contains($userAngelTypes)) {
+            $this->groups[] = $userAngelTypes;
+        }
+
+        return $this;
+    }
+
+    public function removeUserAngelTypes(UserAngelTypes $userAngelTypes): self
+    {
+        if ($this->groups->contains($userAngelTypes)) {
+            $this->groups->removeElement($userAngelTypes);
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->username;
     }
 }

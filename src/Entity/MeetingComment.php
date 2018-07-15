@@ -2,20 +2,20 @@
 
 namespace Engelsystem\Entity;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
- * News
+ * MeetingComment
  *
  * @ORM\Entity
  */
-class News
+class MeetingComment
 {
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -31,16 +31,16 @@ class News
     /**
      * @var string
      *
-     * @ORM\Column(name="subject", type="string", nullable=false)
-     */
-    private $subject;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="message", type="text", nullable=false)
      */
     private $message;
+
+    /**
+     * @var Meeting
+     *
+     * @ORM\ManyToOne(targetEntity="Meeting", inversedBy="comments")
+     */
+    private $meeting;
 
     /**
      * @var User
@@ -48,13 +48,6 @@ class News
      * @ORM\ManyToOne(targetEntity="User")
      */
     private $author;
-
-    /**
-     * @var NewsComment[]
-     *
-     * @ORM\OneToMany(targetEntity="NewsComment", mappedBy="news")
-     */
-    private $comments;
 
     public function getId(): ?int
     {
@@ -73,18 +66,6 @@ class News
         return $this;
     }
 
-    public function getSubject(): ?string
-    {
-        return $this->subject;
-    }
-
-    public function setSubject(string $subject): self
-    {
-        $this->subject = $subject;
-
-        return $this;
-    }
-
     public function getMessage(): ?string
     {
         return $this->message;
@@ -93,6 +74,18 @@ class News
     public function setMessage(string $message): self
     {
         $this->message = $message;
+
+        return $this;
+    }
+
+    public function getMeeting(): ?Meeting
+    {
+        return $this->meeting;
+    }
+
+    public function setMeeting(?Meeting $meeting): self
+    {
+        $this->meeting = $meeting;
 
         return $this;
     }
@@ -107,22 +100,6 @@ class News
         $this->author = $author;
 
         return $this;
-    }
-
-    /**
-     * @return Collection|NewsComment[]
-     */
-    public function getComments(): Collection
-    {
-        return $this->comments;
-    }
-
-    /**
-     * @param NewsComment[] $comments
-     */
-    public function setComments(array $comments): void
-    {
-        $this->comments = $comments;
     }
 
 }

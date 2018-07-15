@@ -21,19 +21,17 @@ class UserAngelTypes
     private $id;
 
     /**
-     * @var bool|null
+     * @var bool
      *
-     * @ORM\Column(name="supporter", type="boolean", nullable=true)
+     * @ORM\Column(name="coordinator", type="boolean", nullable=false)
      */
-    private $supporter;
+    private $coordinator;
 
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
 
@@ -41,19 +39,15 @@ class UserAngelTypes
      * @var AngelType
      *
      * @ORM\ManyToOne(targetEntity="AngelType")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="angel_type_id", referencedColumnName="id")
-     * })
+     * @ORM\JoinColumn(name="angel_type_id", referencedColumnName="id", nullable=false)
      */
-    private $angeltype;
+    private $angelType;
 
     /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="confirm_user_id", referencedColumnName="id")
-     * })
+     * @ORM\JoinColumn(name="confirm_user_id", referencedColumnName="id", nullable=true)
      */
     private $confirmUser;
 
@@ -62,14 +56,14 @@ class UserAngelTypes
         return $this->id;
     }
 
-    public function getSupporter(): ?bool
+    public function isCoordinator(): bool
     {
-        return $this->supporter;
+        return $this->coordinator;
     }
 
-    public function setSupporter(?bool $supporter): self
+    public function setCoordinator(?bool $coordinator): self
     {
-        $this->supporter = $supporter;
+        $this->coordinator = $coordinator;
 
         return $this;
     }
@@ -86,14 +80,14 @@ class UserAngelTypes
         return $this;
     }
 
-    public function getAngeltype(): ?AngelType
+    public function getAngelType(): ?AngelType
     {
-        return $this->angeltype;
+        return $this->angelType;
     }
 
-    public function setAngeltype(?AngelType $angeltype): self
+    public function setAngelType(?AngelType $angelType): self
     {
-        $this->angeltype = $angeltype;
+        $this->angelType = $angelType;
 
         return $this;
     }

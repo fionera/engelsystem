@@ -6,11 +6,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * News
+ * Meeting
  *
  * @ORM\Entity
  */
-class News
+class Meeting
 {
     /**
      * @var int
@@ -50,9 +50,9 @@ class News
     private $author;
 
     /**
-     * @var NewsComment[]
+     * @var MeetingComment[]
      *
-     * @ORM\OneToMany(targetEntity="NewsComment", mappedBy="news")
+     * @ORM\OneToMany(targetEntity="MeetingComment", mappedBy="meeting")
      */
     private $comments;
 
@@ -110,7 +110,7 @@ class News
     }
 
     /**
-     * @return Collection|NewsComment[]
+     * @return Collection|MeetingComment[]
      */
     public function getComments(): Collection
     {
@@ -118,7 +118,7 @@ class News
     }
 
     /**
-     * @param NewsComment[] $comments
+     * @param MeetingComment[] $comments
      */
     public function setComments(array $comments): void
     {

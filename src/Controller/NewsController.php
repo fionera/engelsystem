@@ -36,7 +36,7 @@ class NewsController extends Controller
         if ($newsForm->isSubmitted() && $newsForm->isValid()) {
 
             $news->setAuthor($this->getUser());
-            $news->setDate(new \DateTime());
+            $news->setPostDate(new \DateTime());
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($news);
@@ -182,11 +182,10 @@ class NewsController extends Controller
             [
                 'id' => $news->getId(),
                 'subject' => $news->getSubject(),
-                'meeting' => $news->getMeeting(),
                 'message' => $this->parsedown->parse($news->getMessage()),
                 'author' => $news->getAuthor()->getUsername(),
                 'comments' => array_map([$this, 'getCommentStruct'], $news->getComments()->toArray()),
-                'date' => $news->getDate()
+                'date' => $news->getPostDate()
             ];
     }
 
@@ -201,9 +200,9 @@ class NewsController extends Controller
             ];
     }
 
-    private function getNews()
+    protected function getNews()
     {
-        $news = $this->getDoctrine()->getRepository(News::class)->findBy([], null, 10);
+        $news = $this->getDoctrine()->getRepository(News::class)->findBy([], ['postDate' => 'desc'], 10);
 
         return array_map([$this, 'getNewsStruct'], $news);
     }

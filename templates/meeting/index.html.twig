@@ -1,20 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}Meeting{% endblock %}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'src/Controller/MeetingController.php'|file_link(0) }}">src/Controller/MeetingController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'templates/meeting/index.html.twig'|file_link(0) }}">templates/meeting/index.html.twig</a></code></li>
-    </ul>
-</div>
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Meetings</h1>
+            {% for meeting in meetingList %}
+                <div class="panel panel-info">
+                    <div class="panel-heading"><h3 class="panel-title">
+                            {{ meeting.subject }}
+                        </h3></div>
+                    <div class="panel-body">{{ meeting.message|raw }}</div>
+                    <div class="panel-footer text-muted">
+                        {% if hasPermission('meeting_post') %}
+                            <div class="pull-right">
+                                <a href="{{ url('meeting_edit', {id: meeting.id}) }}" class="btn btn-default btn-xs">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </a>
+                            </div>
+                        {% endif %}
+                        <span class="glyphicon glyphicon-time"></span>
+                        {{ meeting.date|date('Y-m-d H:m') }}&emsp;
+                        <a class="text-muted" href="https://engel.ctdo.de/users?action=view&amp;user_id=2">
+                            <span class="icon-icon_angel"></span> {{ meeting.author }}</a>&emsp;<a
+                                href="{{ url('meeting_comments', {id: meeting.id}) }}">
+                            <span class="glyphicon glyphicon-comment"></span> {% trans %}Comments »{% endtrans %}</a>
+                        <span class="badge">{{ meeting.comments|length }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="text-center">
+                <ul class="pagination">
+                    <li class="active"><a href="https://engel.ctdo.de/meeting?page=0">1</a></li>
+                </ul>
+            </div>
+            {% if hasPermission('meeting_post') %}
+                <hr>
+                <h2>Create meeting:</h2>
+                {{ form_start(meetingForm) }}
+                {{ form_widget(meetingForm) }}
+                {{ form_end(meetingForm) }}
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

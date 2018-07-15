@@ -1,20 +1,69 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}Angeltypes{% endblock %}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'src/Controller/AngeltypesController.php'|file_link(0) }}">src/Controller/AngeltypesController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'templates/angeltypes/index.html.twig'|file_link(0) }}">templates/angeltypes/index.html.twig</a></code></li>
-    </ul>
-</div>
+{% block content %}
+    <div class="col-md-12"><h1>Angeltypes</h1>
+        <div class="form-group">
+            <div class="btn-group">
+                <a href="https://engel.ctdo.de/angeltypes?action=edit" class="btn btn-default add">New angeltype</a>
+                <a href="https://engel.ctdo.de/angeltypes?action=about" class="btn btn-default ">Teams/Job
+                    description</a>
+            </div>
+        </div>
+        <table class="table table-striped data">
+            <thead>
+            <tr>
+                <th class="column_name">Name</th>
+                <th class="column_restricted"><span class="glyphicon glyphicon-lock"></span> Restricted</th>
+                <th class="column_no_self_signup"><span class="glyphicon glyphicon-share"></span> Self Sign Up Allowed
+                </th>
+                <th class="column_membership">Membership</th>
+                <th class="column_actions"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for angelType in angelTypeList %}
+                <tr>
+                    <td class="column_name">
+                        <a href="https://engel.ctdo.de/angeltypes?action=view&amp;angeltype_id=11">{{ angelType.name }}</a>
+                    </td>
+                    <td class="column_restricted">
+                        {% if angelType.restricted %}
+                            <span class="glyphicon glyphicon-lock"></span>
+                        {% endif %}
+                    </td>
+                    <td class="column_no_self_signup">
+                        {% if angelType.noSelfSignup %}
+                            <span class="text-danger"><span class="glyphicon glyphicon-remove"></span></span>
+                        {% else %}
+                            <span class="text-success"><span class="glyphicon glyphicon-ok"></span></span>
+                        {% endif %}
+                    </td>
+                    <td class="column_membership">
+                        {% if angelType.member and angelType.memberAwait %}
+                            <span class="glyphicon glyphicon-lock"></span>
+                        {% elseif angelType.member and not angelType.memberAwait %}
+                            <span class="text-success"><span class="glyphicon glyphicon-ok"></span></span>
+                        {% else %}
+                            <span class="text-danger"><span class="glyphicon glyphicon-remove"></span></span>
+                        {% endif %}
+                    </td>
+                    <td class="column_actions">
+                        <div class="btn-group">
+                            <a href="https://engel.ctdo.de/angeltypes?action=view&amp;angeltype_id=11"
+                               class="btn btn-default btn-xs">view</a>
+                            <a href="https://engel.ctdo.de/angeltypes?action=edit&amp;angeltype_id=11"
+                               class="btn btn-default btn-xs">edit</a>
+                            <a href="https://engel.ctdo.de/angeltypes?action=delete&amp;angeltype_id=11"
+                               class="btn btn-default btn-xs">delete</a>
+                            <a href="https://engel.ctdo.de/user-angeltypes?action=add&amp;angeltype_id=11"
+                               class="btn btn-default btn-xs">join</a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
