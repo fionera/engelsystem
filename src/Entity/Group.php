@@ -30,6 +30,13 @@ class Group
     private $name;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="display_name", type="string", nullable=true)
+     */
+    private $displayName;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Permission")
      * @ORM\JoinTable(name="GroupPermissions",
      *      joinColumns={@ORM\JoinColumn(name="privilege_id", referencedColumnName="id")},
@@ -59,6 +66,22 @@ class Group
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisplayName(): ?string
+    {
+        return $this->displayName;
+    }
+
+    /**
+     * @param string $displayName
+     */
+    public function setDisplayName(?string $displayName): void
+    {
+        $this->displayName = $displayName;
     }
 
     /**

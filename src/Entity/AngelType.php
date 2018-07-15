@@ -2,6 +2,8 @@
 
 namespace Engelsystem\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -82,6 +84,13 @@ class AngelType
      * @ORM\Column(name="show_on_dashboard", type="boolean", nullable=false)
      */
     private $showOnDashboard;
+
+    /**
+     * @var UserAngelTypes[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="Engelsystem\Entity\UserAngelTypes", mappedBy="angelType")
+     */
+    private $userAngelTypes;
 
     public function getId(): ?int
     {
@@ -194,6 +203,14 @@ class AngelType
         $this->showOnDashboard = $showOnDashboard;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|UserAngelTypes[]
+     */
+    public function getUserAngelTypes()
+    {
+        return $this->userAngelTypes ?? new ArrayCollection();
     }
 
     public function __toString()

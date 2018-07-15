@@ -6,6 +6,7 @@ use Engelsystem\Entity\News;
 use Engelsystem\Entity\NewsComment;
 use Engelsystem\Form\NewsCommentType;
 use Engelsystem\Form\NewsType;
+use Engelsystem\Service\StructService;
 use Parsedown;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,16 +14,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class NewsController extends Controller
 {
-    private $parsedown;
+    /**
+     * @var StructService
+     */
+    private $structService;
 
     /**
      * NewsController constructor.
+     * @param StructService $structService
      */
-    public function __construct()
+    public function __construct(StructService $structService)
     {
-        $this->parsedown = new Parsedown();
+        $this->structService = $structService;
     }
-
 
     /**
      * @Route("/news/{page<\d+>?1}", name="news")
@@ -52,7 +56,7 @@ class NewsController extends Controller
     }
 
     /**
-     * @Route("/news/{id}/edit", name="news_edit")
+     * @Route("/news/{id<\d+>}/edit", name="news_edit")
      * @param int $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -80,12 +84,12 @@ class NewsController extends Controller
 
         return $this->render('news/edit.html.twig', [
             'newsForm' => $newsForm->createView(),
-            'news' => $this->getNewsStruct($news)
+            'news' => $this->structService->getNewsStruct($news)
         ]);
     }
 
     /**
-     * @Route("/news/{id}/delete", name="news_delete")
+     * @Route("/news/{id<\d+>}/delete", name="news_delete")
      * @param int $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -106,7 +110,7 @@ class NewsController extends Controller
     }
 
     /**
-     * @Route("/news/{id}/comments", name="news_comments")
+     * @Route("/news/{id<\d+>}/comments", name="news_comments")
      * @param int $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -138,13 +142,13 @@ class NewsController extends Controller
         $this->addFlash('success', 'news_edit_successfully');
 
         return $this->render('news/comments.html.twig', [
-            'news' => $this->getNewsStruct($news),
+            'news' => $this->structService->getNewsStruct($news),
             'newsCommentForm' => $newsCommentForm->createView()
         ]);
     }
 
     /**
-     * @Route("/news/comments/{id}", name="news_comments_edit")
+     * @Route("/news/comments/{id<\d+>}", name="news_comments_edit")
      * @param int $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -171,39 +175,15 @@ class NewsController extends Controller
         $this->addFlash('success', 'news_edit_successfully');
 
         return $this->render('news/comments.html.twig', [
-            'news' => $this->getNewsStruct($newsComment->getNews()),
+            'news' => $this->structService->getNewsStruct($newsComment->getNews()),
             'newsCommentForm' => $newsCommentForm->createView()
         ]);
-    }
-
-    private function getNewsStruct(News $news): array
-    {
-        return
-            [
-                'id' => $news->getId(),
-                'subject' => $news->getSubject(),
-                'message' => $this->parsedown->parse($news->getMessage()),
-                'author' => $news->getAuthor()->getUsername(),
-                'comments' => array_map([$this, 'getCommentStruct'], $news->getComments()->toArray()),
-                'date' => $news->getPostDate()
-            ];
-    }
-
-    private function getCommentStruct(NewsComment $newsComment)
-    {
-        return
-            [
-                'id' => $newsComment->getId(),
-                'message' => $this->parsedown->parse($newsComment->getMessage()),
-                'author' => $newsComment->getAuthor()->getUsername(),
-                'date' => $newsComment->getDate()
-            ];
     }
 
     protected function getNews()
     {
         $news = $this->getDoctrine()->getRepository(News::class)->findBy([], ['postDate' => 'desc'], 10);
 
-        return array_map([$this, 'getNewsStruct'], $news);
+        return array_map([$this->structService, 'getNewsStruct'], $news);
     }
 }

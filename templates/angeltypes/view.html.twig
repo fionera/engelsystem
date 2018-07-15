@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ angelType.name }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12"><h1>{{ angelType.name }}</h1>
+            <div class="form-group">
+                <div class="btn-group">
+                    <a href="{{ url('angeltypes') }}" class="btn btn-default back">Angeltypes</a>
+
+                    {% if (hasPermission('angeltype_edit') and angelType.coordinator) or hasPermission('angeltype_edit_all') %}
+                        <a href="{{ url('angeltypes_edit', {'id': angelType.id}) }}"
+                           class="btn btn-default edit">Edit</a>
+                    {% endif %}
+
+                    {% if hasPermission('angeltype_delete_all') %}
+                        <a href="{{ url('angeltypes_delete', {'id': angelType.id}) }}" class="btn btn-default delete">Delete</a>
+                    {% endif %}
+
+                    {% if hasPermission('angeltype_join') and not (angelType.member or angelType.memberAwait) %}
+                        <a href="{{ url('angeltypes_join', {'id': angelType.id, 'redirect': url('angeltypes_view', {'id': angelType.id})}) }}"
+                           class="btn btn-default add">Join</a>
+                    {% endif %}
+
+                    {% if hasPermission('angeltype_leave') and (angelType.member or angelType.memberAwait) %}
+                        <a href="{{ url('angeltypes_leave', {'id': angelType.id, 'redirect': url('angeltypes_view', {'id': angelType.id})}) }}" class="btn btn-default leave">Leave</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#Info" aria-controls="Info" role="tab" data-toggle="tab">Info</a></li>
+                    <li role="presentation" class="">
+                        <a href="#Shifts" aria-controls="Shifts" role="tab" data-toggle="tab">Shifts</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="Info">
+                        <h3>Description</h3>
+                        <div class="well">
+                            {{ angelType.description|raw }}
+                        </div>
+                        <h3>Members</h3>
+                        <div class="form-group">
+                            <div class="btn-group">
+                                <a href="{{ url('angeltypes_add', {'id': angelType.id}) }}" class="btn btn-default add">Add</a>
+                            </div>
+                        </div>
+                        <table class="table table-striped data">
+                            <thead>
+                            <tr>
+                                <th class="column_Nick">Nick</th>
+                                <th class="column_DECT">DECT</th>
+                                <th class="column_actions"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for userAngelType in angelType.userAngelTypes %}
+                                <tr>
+                                    <td class="column_Nick">
+                                        <a class="text-muted" href="{{ url('user_view', {'id': userAngelType.user.id}) }}">
+                                            <span class="icon-icon_angel"></span> {{ userAngelType.user.username }}
+                                        </a>
+                                    </td>
+                                    <td class="column_DECT">{{ userAngelType.user.dect }}</td>
+                                    <td class="column_actions">
+                                        <div class="btn-group">
+                                            <a href="https://engel.ctdo.de/user-angeltypes?action=update&user_angeltype_id=21&supporter=1" class="btn btn-default btn-xs">
+                                                Add supporter rights</a>
+                                            <a href="{{ url('angeltypes_remove_angel', {'angelTypeId': angelType.id, 'userId': userAngelType.user.id, 'redirect': url('angeltypes_view', {'id': angelType.id})}) }}" class="btn btn-default btn-xs">Remove</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+
+                            <tr>
+                                <td class="column_Nick">Sum</td>
+                                <td class="column_DECT">{{ angelType.userAngelTypes|length }}</td>
+                                <td class="column_actions"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane " id="Shifts">
+                        <div class="first">
+                            <div class="form-group">
+                                <ul class="nav nav-pills"></ul>
+                            </div>
+                            <div class="alert alert-info">No shifts found.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

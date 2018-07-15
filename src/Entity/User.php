@@ -41,7 +41,7 @@ class User implements UserInterface, \Serializable
     private $groups;
 
     /**
-     * @ORM\OneToMany(targetEntity="Engelsystem\Entity\UserAngelTypes", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Engelsystem\Entity\UserAngelTypes", mappedBy="user", cascade={"persist"}, orphanRemoval=true)
      * @var UserAngelTypes[]|Collection
      */
     private $userAngelTypes;
@@ -117,7 +117,6 @@ class User implements UserInterface, \Serializable
     private $size;
 
     /**
-     * @Assert\NotBlank()
      * @Assert\Length(max=4096)
      */
     private $plainPassword;
@@ -230,9 +229,9 @@ class User implements UserInterface, \Serializable
     /**
      * @var int
      *
-     * @ORM\Column(name="got_voucher", type="integer", nullable=false)
+     * @ORM\Column(name="voucher", type="integer", nullable=false)
      */
-    private $gotVoucher = false;
+    private $voucher = 0;
 
     /**
      * @var \DateTime|null
@@ -323,7 +322,8 @@ class User implements UserInterface, \Serializable
         }, $this->getGroups()->getValues());
     }
 
-    public function hasPermission(string $wantedPermission) {
+    public function hasPermission(string $wantedPermission)
+    {
         foreach ($this->getGroups() as $group) {
             if ($group->hasPermission($wantedPermission)) {
                 return true;
@@ -683,14 +683,14 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getGotVoucher(): ?int
+    public function getVoucher(): ?int
     {
-        return $this->gotVoucher;
+        return $this->voucher;
     }
 
-    public function setGotVoucher(int $gotVoucher): self
+    public function setVoucher(int $voucher): self
     {
-        $this->gotVoucher = $gotVoucher;
+        $this->voucher = $voucher;
 
         return $this;
     }
@@ -743,6 +743,11 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
+    public function resetApiKey()
+    {
+        $this->apiKey = $this->generateApiKey();
+    }
+
     /**
      * @return Collection|Group[]
      */
@@ -787,8 +792,8 @@ class User implements UserInterface, \Serializable
 
     public function addUserAngelTypes(UserAngelTypes $userAngelTypes): self
     {
-        if (!$this->groups->contains($userAngelTypes)) {
-            $this->groups[] = $userAngelTypes;
+        if (!$this->userAngelTypes->contains($userAngelTypes)) {
+            $this->userAngelTypes[] = $userAngelTypes;
         }
 
         return $this;
@@ -796,11 +801,22 @@ class User implements UserInterface, \Serializable
 
     public function removeUserAngelTypes(UserAngelTypes $userAngelTypes): self
     {
-        if ($this->groups->contains($userAngelTypes)) {
-            $this->groups->removeElement($userAngelTypes);
+        if ($this->userAngelTypes->contains($userAngelTypes)) {
+            $this->userAngelTypes->removeElement($userAngelTypes);
         }
 
         return $this;
+    }
+
+    private function generateApiKey()
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < 32; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 
     public function __toString()

@@ -3,13 +3,28 @@
 namespace Engelsystem\Controller;
 
 use Engelsystem\Entity\AngelType;
-use Engelsystem\Entity\User;
 use Engelsystem\Entity\UserAngelTypes;
+use Engelsystem\Form\AngelTypeType;
+use Engelsystem\Service\StructService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AngeltypesController extends Controller
 {
+    /**
+     * @var StructService
+     */
+    private $structService;
+
+    /**
+     * AngeltypesController constructor.
+     */
+    public function __construct(StructService $structService)
+    {
+        $this->structService = $structService;
+    }
+
     /**
      * @Route("/angeltypes", name="angeltypes")
      */
@@ -20,54 +35,192 @@ class AngeltypesController extends Controller
         ]);
     }
 
-    protected function getAngeltypeStruct(AngelType $angelType)
+    /**
+     * @Route("/angeltypes/{id<\d+>}", name="angeltypes_view")
+     */
+    public function view(int $id)
     {
-        return array_merge([
-            'id' => $angelType->getId(),
-            'name' => $angelType->getName(),
-            'contactName' => $angelType->getContactName(),
-            'contactDECT' => $angelType->getContactDect(),
-            'contactEmail' => $angelType->getContactEmail(),
-            'noSelfSignup' => $angelType->getNoSelfSignup(),
-            'requiresDriverLicense' => $angelType->getRequiresDriverLicense(),
-            'restricted' => $angelType->getRestricted(),
-        ], $this->isUserMember($angelType));
+        $angelType = $this->getDoctrine()->getRepository(AngelType::class)->find($id);
+
+        if ($angelType === null) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('angeltypes/view.html.twig', [
+            'angelType' => $this->structService->getAngeltypeStruct($angelType)
+        ]);
     }
 
     /**
-     * @param AngelType $angelType
-     * @return array ['member' => true, 'memberAwait' => true]
+     * @Route("/angeltypes/{id<\d+>}/edit", name="angeltypes_edit")
      */
-    protected function isUserMember(AngelType $angelType): array
+    public function edit(int $id, Request $request)
     {
-        $memberState = [
-            'member' => false,
-            'memberAwait' => false,
-        ];
+        $angelType = $this->getDoctrine()->getRepository(AngelType::class)->find($id);
 
-        $user = $this->getUser();
-        if ($user instanceof User) {
-            /** @var UserAngelTypes $userAngelType */
-            foreach ($user->getUserAngelTypes()->toArray() as $userAngelType) {
-                if ($userAngelType->getAngelType() === $angelType) {
-                    $memberState['member'] = true;
-
-                    if ($userAngelType->getConfirmUser() === null && $userAngelType->isCoordinator() !== true) {
-                        $memberState['memberAwait'] = true;
-                    }
-
-                    return $memberState;
-                }
-            }
+        if ($angelType === null) {
+            throw $this->createNotFoundException();
         }
 
-        return $memberState;
+        $angelTypeForm = $this->createForm(AngelTypeType::class, $angelType);
+
+        $angelTypeForm->handleRequest($request);
+        if ($angelTypeForm->isSubmitted() && $angelTypeForm->isValid()) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($angelType);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('angeltypes_view', ['id' => $angelType->getId()]);
+        }
+
+        return $this->render('angeltypes/edit.html.twig', [
+            'angelTypeForm' => $angelTypeForm->createView(),
+            'angelType' => $this->structService->getAngeltypeStruct($angelType)
+        ]);
+    }
+
+    /**
+     * @Route("/angeltypes/create", name="angeltypes_create")
+     */
+    public function create(Request $request)
+    {
+        $angelType = new AngelType();
+        $angelTypeForm = $this->createForm(AngelTypeType::class, $angelType);
+
+        $angelTypeForm->handleRequest($request);
+        if ($angelTypeForm->isSubmitted() && $angelTypeForm->isValid()) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($angelType);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('angeltypes_view', ['id' => $angelType->getId()]);
+        }
+
+        return $this->render('angeltypes/create.html.twig', [
+            'angelTypeForm' => $angelTypeForm->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/angeltypes/{id<\d+>}/delete", name="angeltypes_delete")
+     */
+    public function delete(int $id)
+    {
+        $angelType = $this->getDoctrine()->getRepository(AngelType::class)->find($id);
+
+        if ($angelType === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $this->getDoctrine()->getManager()->remove($angelType);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('angeltypes');
+    }
+
+    /**
+     * @Route("/angeltypes/{id<\d+>}/add_angel", name="angeltypes_add")
+     */
+    public function add(int $id)
+    {
+        $angelType = $this->getDoctrine()->getRepository(AngelType::class)->find($id);
+
+        if ($angelType === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $this->getDoctrine()->getManager()->remove($angelType);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('angeltypes');
+    }
+
+    /**
+     * @Route("/angeltypes/{angelTypeId<\d+>}/remove/{userId<\d+>}", name="angeltypes_remove_angel")
+     */
+    public function remove(int $angelTypeId, int $userId, Request $request)
+    {
+        $userAngelType = $this->getDoctrine()->getRepository(UserAngelTypes::class)->findOneBy(['angelType' => $angelTypeId, 'user' => $userId]);
+
+        if ($userAngelType === null) {
+            throw $this->createNotFoundException();
+        }
+
+
+        $this->getDoctrine()->getManager()->remove($userAngelType);
+        $this->getDoctrine()->getManager()->flush();
+
+        $redirectUrl = $request->get('redirect', null);
+
+        if ($redirectUrl !== null) {
+            return $this->redirect($redirectUrl);
+        }
+
+        return $this->redirectToRoute('angeltypes');
+    }
+
+    /**
+     * @Route("/angeltypes/{id<\d+>}/join", name="angeltypes_join")
+     */
+    public function join(int $id, Request $request)
+    {
+        $angelType = $this->getDoctrine()->getRepository(AngelType::class)->find($id);
+
+        if ($angelType === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $userAngelType = new UserAngelTypes();
+        $userAngelType->setUser($this->getUser());
+        $userAngelType->setAngelType($angelType);
+
+        if ($angelType->getNoSelfSignup() === false) {
+            $userAngelType->setConfirmUser($this->getUser());
+        }
+
+        $this->getDoctrine()->getManager()->persist($userAngelType);
+        $this->getDoctrine()->getManager()->flush();
+
+        $redirectUrl = $request->get('redirect', null);
+
+        if ($redirectUrl !== null) {
+            return $this->redirect($redirectUrl);
+        }
+
+        return $this->redirectToRoute('angeltypes');
+    }
+
+    /**
+     * @Route("/angeltypes/{id<\d+>}/leave", name="angeltypes_leave")
+     */
+    public function leave(int $id, Request $request)
+    {
+        $angelType = $this->getDoctrine()->getRepository(AngelType::class)->find($id);
+
+        if ($angelType === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $userAngelType = $this->getDoctrine()->getRepository(UserAngelTypes::class)->findOneBy(['angelType' => $angelType, 'user' => $this->getUser()]);
+
+        $this->getDoctrine()->getManager()->remove($userAngelType);
+        $this->getDoctrine()->getManager()->flush();
+
+        $redirectUrl = $request->get('redirect', null);
+
+        if ($redirectUrl !== null) {
+            return $this->redirect($redirectUrl);
+        }
+
+        return $this->redirectToRoute('angeltypes');
     }
 
     protected function getAngeltypes()
     {
         $angelTypes = $this->getDoctrine()->getRepository(AngelType::class)->findAll();
 
-        return array_map([$this, 'getAngeltypeStruct'], $angelTypes);
+        return array_map([$this->structService, 'getAngeltypeStruct'], $angelTypes);
     }
 }

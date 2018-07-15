@@ -1,0 +1,551 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}All Users{% endblock %}
+
+{% block content %}
+    <div class="col-md-12"><h1>All users</h1>
+        <div class="form-group">
+            <div class="btn-group"><a href="https://engel.ctdo.de/register" class="btn btn-default "> <span
+                            class="glyphicon glyphicon-plus"></span> New user</a></div>
+        </div>
+        <table class="table table-striped data">
+            <thead>
+            <tr>
+                <th class="column_Nick"><a href="https://engel.ctdo.de/users?OrderBy=Nick">Nick <span
+                                class="caret"></span></a></th>
+                <th class="column_Vorname"><a href="https://engel.ctdo.de/users?OrderBy=Vorname">Prename</a></th>
+                <th class="column_Name"><a href="https://engel.ctdo.de/users?OrderBy=Name">Name</a></th>
+                <th class="column_DECT"><a href="https://engel.ctdo.de/users?OrderBy=DECT">DECT</a></th>
+                <th class="column_Gekommen"><a href="https://engel.ctdo.de/users?OrderBy=Gekommen">Arrived</a></th>
+                <th class="column_got_voucher"><a href="https://engel.ctdo.de/users?OrderBy=got_voucher">Voucher</a>
+                </th>
+                <th class="column_freeloads">Freeloads</th>
+                <th class="column_Aktiv"><a href="https://engel.ctdo.de/users?OrderBy=Aktiv">Active</a></th>
+                <th class="column_force_active"><a href="https://engel.ctdo.de/users?OrderBy=force_active">Forced</a>
+                </th>
+                <th class="column_Tshirt"><a href="https://engel.ctdo.de/users?OrderBy=Tshirt">T-Shirt</a></th>
+                <th class="column_Size"><a href="https://engel.ctdo.de/users?OrderBy=Size">Size</a></th>
+                <th class="column_lastLogIn"><a href="https://engel.ctdo.de/users?OrderBy=lastLogIn">Last login</a></th>
+                <th class="column_actions"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="column_Nick"><a class="text-muted"
+                                           href="https://engel.ctdo.de/users?action=view&amp;user_id=1"><span
+                                class="icon-icon_angel"></span> admin</a></td>
+                <td class="column_Vorname">Bill</td>
+                <td class="column_Name">Gates</td>
+                <td class="column_DECT">-</td>
+                <td class="column_Gekommen"><span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                </td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_force_active"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Tshirt"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Size">XL</td>
+                <td class="column_lastLogIn">07/13/2018 01:47 pm</td>
+                <td class="column_actions">
+                    <div class="btn-group"><a href="https://engel.ctdo.de/admin-user?id=1"
+                                              class="btn btn-default btn-xs"> <span
+                                    class="glyphicon glyphicon-edit"></span> </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column_Nick"><a class="text-muted"
+                                           href="https://engel.ctdo.de/users?action=view&amp;user_id=4"><span
+                                class="icon-icon_angel"></span> blast0r</a></td>
+                <td class="column_Vorname"></td>
+                <td class="column_Name"></td>
+                <td class="column_DECT">-</td>
+                <td class="column_Gekommen"><span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                </td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_force_active"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Tshirt"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Size">L</td>
+                <td class="column_lastLogIn">07/15/2018 03:43 pm</td>
+                <td class="column_actions">
+                    <div class="btn-group"><a href="https://engel.ctdo.de/admin-user?id=4"
+                                              class="btn btn-default btn-xs"> <span
+                                    class="glyphicon glyphicon-edit"></span> </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column_Nick"><a class="text-muted"
+                                           href="https://engel.ctdo.de/users?action=view&amp;user_id=8"><span
+                                class="icon-icon_angel"></span> claas</a></td>
+                <td class="column_Vorname">Claas</td>
+                <td class="column_Name"></td>
+                <td class="column_DECT"></td>
+                <td class="column_Gekommen"><span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                </td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_force_active"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Tshirt"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Size">4XL</td>
+                <td class="column_lastLogIn">07/13/2018 02:40 pm</td>
+                <td class="column_actions">
+                    <div class="btn-group"><a href="https://engel.ctdo.de/admin-user?id=8"
+                                              class="btn btn-default btn-xs"> <span
+                                    class="glyphicon glyphicon-edit"></span> </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column_Nick"><a class="text-muted"
+                                           href="https://engel.ctdo.de/users?action=view&amp;user_id=9"><span
+                                class="icon-icon_angel"></span> davebloggt</a></td>
+                <td class="column_Vorname">David</td>
+                <td class="column_Name">Mehren</td>
+                <td class="column_DECT"></td>
+                <td class="column_Gekommen"><span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                </td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_force_active"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Tshirt"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Size">L</td>
+                <td class="column_lastLogIn">07/14/2018 04:56 pm</td>
+                <td class="column_actions">
+                    <div class="btn-group"><a href="https://engel.ctdo.de/admin-user?id=9"
+                                              class="btn btn-default btn-xs"> <span
+                                    class="glyphicon glyphicon-edit"></span> </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column_Nick"><a class="text-muted"
+                                           href="https://engel.ctdo.de/users?action=view&amp;user_id=15"><span
+                                class="icon-icon_angel"></span> dl1av</a></td>
+                <td class="column_Vorname"></td>
+                <td class="column_Name"></td>
+                <td class="column_DECT"></td>
+                <td class="column_Gekommen"><span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                </td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_force_active"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Tshirt"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Size">XL</td>
+                <td class="column_lastLogIn">07/15/2018 06:33 pm</td>
+                <td class="column_actions">
+                    <div class="btn-group"><a href="https://engel.ctdo.de/admin-user?id=15"
+                                              class="btn btn-default btn-xs"> <span
+                                    class="glyphicon glyphicon-edit"></span> </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column_Nick"><a class="text-muted"
+                                           href="https://engel.ctdo.de/users?action=view&amp;user_id=5"><span
+                                class="icon-icon_angel"></span> fionera</a></td>
+                <td class="column_Vorname">Tim</td>
+                <td class="column_Name">Windelschmidt</td>
+                <td class="column_DECT"></td>
+                <td class="column_Gekommen"><span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                </td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_force_active"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Tshirt"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Size">L</td>
+                <td class="column_lastLogIn">07/15/2018 07:31 pm</td>
+                <td class="column_actions">
+                    <div class="btn-group"><a href="https://engel.ctdo.de/admin-user?id=5"
+                                              class="btn btn-default btn-xs"> <span
+                                    class="glyphicon glyphicon-edit"></span> </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column_Nick"><a class="text-muted"
+                                           href="https://engel.ctdo.de/users?action=view&amp;user_id=21"><span
+                                class="icon-icon_angel"></span> Fisch</a></td>
+                <td class="column_Vorname">Philipp</td>
+                <td class="column_Name">Kramer</td>
+                <td class="column_DECT"></td>
+                <td class="column_Gekommen"><span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                </td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_force_active"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Tshirt"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Size">L</td>
+                <td class="column_lastLogIn">07/15/2018 03:59 pm</td>
+                <td class="column_actions">
+                    <div class="btn-group"><a href="https://engel.ctdo.de/admin-user?id=21"
+                                              class="btn btn-default btn-xs"> <span
+                                    class="glyphicon glyphicon-edit"></span> </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column_Nick"><a class="text-muted"
+                                           href="https://engel.ctdo.de/users?action=view&amp;user_id=18"><span
+                                class="icon-icon_angel"></span> freakfairy</a></td>
+                <td class="column_Vorname"></td>
+                <td class="column_Name"></td>
+                <td class="column_DECT"></td>
+                <td class="column_Gekommen"><span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                </td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_force_active"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Tshirt"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Size">M-G</td>
+                <td class="column_lastLogIn">07/15/2018 01:50 pm</td>
+                <td class="column_actions">
+                    <div class="btn-group"><a href="https://engel.ctdo.de/admin-user?id=18"
+                                              class="btn btn-default btn-xs"> <span
+                                    class="glyphicon glyphicon-edit"></span> </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column_Nick"><a class="text-muted"
+                                           href="https://engel.ctdo.de/users?action=view&amp;user_id=11"><span
+                                class="icon-icon_angel"></span> Julian</a></td>
+                <td class="column_Vorname">Julian</td>
+                <td class="column_Name">Grube</td>
+                <td class="column_DECT"></td>
+                <td class="column_Gekommen"><span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                </td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_force_active"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Tshirt"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Size">S</td>
+                <td class="column_lastLogIn">01/01/1970 01:00 am</td>
+                <td class="column_actions">
+                    <div class="btn-group"><a href="https://engel.ctdo.de/admin-user?id=11"
+                                              class="btn btn-default btn-xs"> <span
+                                    class="glyphicon glyphicon-edit"></span> </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column_Nick"><a class="text-muted"
+                                           href="https://engel.ctdo.de/users?action=view&amp;user_id=6"><span
+                                class="icon-icon_angel"></span> Kessy</a></td>
+                <td class="column_Vorname"></td>
+                <td class="column_Name"></td>
+                <td class="column_DECT"></td>
+                <td class="column_Gekommen"><span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                </td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_force_active"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Tshirt"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Size">2XL</td>
+                <td class="column_lastLogIn">07/15/2018 02:52 pm</td>
+                <td class="column_actions">
+                    <div class="btn-group"><a href="https://engel.ctdo.de/admin-user?id=6"
+                                              class="btn btn-default btn-xs"> <span
+                                    class="glyphicon glyphicon-edit"></span> </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column_Nick"><a class="text-muted"
+                                           href="https://engel.ctdo.de/users?action=view&amp;user_id=12"><span
+                                class="icon-icon_angel"></span> Marc</a></td>
+                <td class="column_Vorname">Marc</td>
+                <td class="column_Name">Gehling</td>
+                <td class="column_DECT"></td>
+                <td class="column_Gekommen"><span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                </td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_force_active"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Tshirt"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Size">XL</td>
+                <td class="column_lastLogIn">07/13/2018 08:14 pm</td>
+                <td class="column_actions">
+                    <div class="btn-group"><a href="https://engel.ctdo.de/admin-user?id=12"
+                                              class="btn btn-default btn-xs"> <span
+                                    class="glyphicon glyphicon-edit"></span> </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column_Nick"><a class="text-muted"
+                                           href="https://engel.ctdo.de/users?action=view&amp;user_id=10"><span
+                                class="icon-icon_angel"></span> marv</a></td>
+                <td class="column_Vorname"></td>
+                <td class="column_Name"></td>
+                <td class="column_DECT"></td>
+                <td class="column_Gekommen"><span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                </td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_force_active"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Tshirt"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Size">2XL</td>
+                <td class="column_lastLogIn">07/13/2018 05:48 pm</td>
+                <td class="column_actions">
+                    <div class="btn-group"><a href="https://engel.ctdo.de/admin-user?id=10"
+                                              class="btn btn-default btn-xs"> <span
+                                    class="glyphicon glyphicon-edit"></span> </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column_Nick"><a class="text-muted"
+                                           href="https://engel.ctdo.de/users?action=view&amp;user_id=14"><span
+                                class="icon-icon_angel"></span> md</a></td>
+                <td class="column_Vorname"></td>
+                <td class="column_Name"></td>
+                <td class="column_DECT"></td>
+                <td class="column_Gekommen"><span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                </td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_force_active"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Tshirt"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Size">L</td>
+                <td class="column_lastLogIn">07/14/2018 02:10 am</td>
+                <td class="column_actions">
+                    <div class="btn-group"><a href="https://engel.ctdo.de/admin-user?id=14"
+                                              class="btn btn-default btn-xs"> <span
+                                    class="glyphicon glyphicon-edit"></span> </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column_Nick"><a class="text-muted"
+                                           href="https://engel.ctdo.de/users?action=view&amp;user_id=13"><span
+                                class="icon-icon_angel"></span> nospoon</a></td>
+                <td class="column_Vorname"></td>
+                <td class="column_Name"></td>
+                <td class="column_DECT"></td>
+                <td class="column_Gekommen"><span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                </td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_force_active"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Tshirt"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Size">XL</td>
+                <td class="column_lastLogIn">07/13/2018 11:47 pm</td>
+                <td class="column_actions">
+                    <div class="btn-group"><a href="https://engel.ctdo.de/admin-user?id=13"
+                                              class="btn btn-default btn-xs"> <span
+                                    class="glyphicon glyphicon-edit"></span> </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column_Nick"><a class="text-muted"
+                                           href="https://engel.ctdo.de/users?action=view&amp;user_id=19"><span
+                                class="icon-icon_angel"></span> rebexca</a></td>
+                <td class="column_Vorname">Rebecca</td>
+                <td class="column_Name"></td>
+                <td class="column_DECT"></td>
+                <td class="column_Gekommen"><span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                </td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_force_active"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Tshirt"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Size">M-G</td>
+                <td class="column_lastLogIn">07/15/2018 02:01 pm</td>
+                <td class="column_actions">
+                    <div class="btn-group"><a href="https://engel.ctdo.de/admin-user?id=19"
+                                              class="btn btn-default btn-xs"> <span
+                                    class="glyphicon glyphicon-edit"></span> </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column_Nick"><a class="text-muted"
+                                           href="https://engel.ctdo.de/users?action=view&amp;user_id=16"><span
+                                class="icon-icon_angel"></span> Reverend</a></td>
+                <td class="column_Vorname">leo</td>
+                <td class="column_Name"></td>
+                <td class="column_DECT"></td>
+                <td class="column_Gekommen"><span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                </td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_force_active"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Tshirt"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Size">L</td>
+                <td class="column_lastLogIn">07/14/2018 02:46 pm</td>
+                <td class="column_actions">
+                    <div class="btn-group"><a href="https://engel.ctdo.de/admin-user?id=16"
+                                              class="btn btn-default btn-xs"> <span
+                                    class="glyphicon glyphicon-edit"></span> </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column_Nick"><a class="text-muted"
+                                           href="https://engel.ctdo.de/users?action=view&amp;user_id=20"><span
+                                class="icon-icon_angel"></span> Rubik</a></td>
+                <td class="column_Vorname"></td>
+                <td class="column_Name"></td>
+                <td class="column_DECT"></td>
+                <td class="column_Gekommen"><span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                </td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_force_active"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Tshirt"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Size">L</td>
+                <td class="column_lastLogIn">07/15/2018 04:01 pm</td>
+                <td class="column_actions">
+                    <div class="btn-group"><a href="https://engel.ctdo.de/admin-user?id=20"
+                                              class="btn btn-default btn-xs"> <span
+                                    class="glyphicon glyphicon-edit"></span> </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column_Nick"><a class="text-muted"
+                                           href="https://engel.ctdo.de/users?action=view&amp;user_id=7"><span
+                                class="icon-icon_angel"></span> Shantalya</a></td>
+                <td class="column_Vorname">Shantalya</td>
+                <td class="column_Name"></td>
+                <td class="column_DECT">SHAN</td>
+                <td class="column_Gekommen"><span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                </td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_force_active"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Tshirt"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Size">3XL</td>
+                <td class="column_lastLogIn">07/13/2018 01:25 pm</td>
+                <td class="column_actions">
+                    <div class="btn-group"><a href="https://engel.ctdo.de/admin-user?id=7"
+                                              class="btn btn-default btn-xs"> <span
+                                    class="glyphicon glyphicon-edit"></span> </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column_Nick"><a class="text-muted"
+                                           href="https://engel.ctdo.de/users?action=view&amp;user_id=17"><span
+                                class="icon-icon_angel"></span> SilSon</a></td>
+                <td class="column_Vorname"></td>
+                <td class="column_Name"></td>
+                <td class="column_DECT"></td>
+                <td class="column_Gekommen"><span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                </td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_force_active"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Tshirt"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Size">L</td>
+                <td class="column_lastLogIn">07/15/2018 06:53 pm</td>
+                <td class="column_actions">
+                    <div class="btn-group"><a href="https://engel.ctdo.de/admin-user?id=17"
+                                              class="btn btn-default btn-xs"> <span
+                                    class="glyphicon glyphicon-edit"></span> </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column_Nick"><a class="text-muted"
+                                           href="https://engel.ctdo.de/users?action=view&amp;user_id=2"><span
+                                class="icon-icon_angel"></span> smash</a></td>
+                <td class="column_Vorname"></td>
+                <td class="column_Name"></td>
+                <td class="column_DECT"></td>
+                <td class="column_Gekommen"><span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                </td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_force_active"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Tshirt"><span class="text-danger"> <span
+                                class="glyphicon glyphicon-remove"></span> </span></td>
+                <td class="column_Size">3XL</td>
+                <td class="column_lastLogIn">07/15/2018 03:55 pm</td>
+                <td class="column_actions">
+                    <div class="btn-group"><a href="https://engel.ctdo.de/admin-user?id=2"
+                                              class="btn btn-default btn-xs"> <span
+                                    class="glyphicon glyphicon-edit"></span> </a></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column_Nick"><strong>Sum</strong></td>
+                <td class="column_Vorname">&nbsp;</td>
+                <td class="column_Name">&nbsp;</td>
+                <td class="column_DECT">&nbsp;</td>
+                <td class="column_Gekommen">0</td>
+                <td class="column_got_voucher">0</td>
+                <td class="column_freeloads">0</td>
+                <td class="column_Aktiv">0</td>
+                <td class="column_force_active">0</td>
+                <td class="column_Tshirt">0</td>
+                <td class="column_Size">&nbsp;</td>
+                <td class="column_lastLogIn">&nbsp;</td>
+                <td class="column_actions"><strong>20</strong></td>
+            </tr>
+            </tbody>
+        </table>
+    </div><
+{% endblock %}

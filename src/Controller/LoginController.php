@@ -2,7 +2,10 @@
 
 namespace Engelsystem\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Engelsystem\Entity\AngelType;
 use Engelsystem\Entity\User;
+use Engelsystem\Entity\UserAngelTypes;
 use Engelsystem\Form\LoginType;
 use Engelsystem\Form\RegisterType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -50,6 +53,7 @@ class LoginController extends Controller
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -63,10 +67,29 @@ class LoginController extends Controller
         $registerForm->handleRequest($request);
         if ($registerForm->isSubmitted() && $registerForm->isValid()) {
 
+            $userAngelTypeCollection = new ArrayCollection();
+            /** @var AngelType $angelType */
+            foreach ($registerForm->get('angelTypes')->getData() as $angelType) {
+                if ($angelType->getNoSelfSignup()) {
+                    continue;
+                }
+
+                $userAngelType = new UserAngelTypes();
+                $userAngelType->setUser($user);
+                $userAngelType->setAngelType($angelType);
+
+                if (!$angelType->getRestricted()) {
+                    $userAngelType->setConfirmUser($user);
+                }
+
+                $userAngelTypeCollection->add($userAngelType);
+            }
+            $user->setUserAngelTypes($userAngelTypeCollection);
+
             $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
             $user->setCreateDate(new \DateTime());
-            $user->setApiKey('');
+            $user->resetApiKey();
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);

@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ user.username }}
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <h1>
+            <span class="icon-icon_angel"></span> {{ user.username }}
+            <small>{{ user.prename }} {{ user.surname }}</small>
+        </h1>
+        <div class="row space-top">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="btn-group">
+                        <a href="{{ url('user_edit', {'id': user.id}) }}" class="btn btn-default ">
+                            <span class="glyphicon glyphicon-edit"></span> Edit</a>
+
+                        <a href="https://engel.ctdo.de/user-driver-licenses?user_id=21" class="btn btn-default ">
+                            <span class="glyphicon glyphicon-road"></span> driving license</a>
+
+                        {% if user.arrived %}
+                            <a href="{{ url('user_unarrived', {'id': user.id}) }}" class="btn btn-default ">Unarrive</a>
+                            {% else %}
+                            <a href="{{ url('user_arrived', {'id': user.id}) }}" class="btn btn-default ">Arrived</a>
+                        {% endif %}
+
+
+                        <a href="{{ url('user_add_voucher', {'id': user.id}) }}" class="btn btn-default ">
+                            <span class="glyphicon glyphicon-cutlery"></span> Add Vocher</a>
+                        <a href="{{ url('user_remove_voucher', {'id': user.id}) }}" class="btn btn-default ">Remove Vocher</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <h1>
+                    <span class="glyphicon glyphicon-phone"></span>
+                </h1>
+            </div>
+            <div class="col-md-3">
+                <h4>User state</h4>
+                {% if user.arrived and user.free %}
+                    <br>
+                    <span class="text-success">Free</span>
+                {% endif %}
+
+                {% if user.arrived %}
+                    <br>
+                    <span class="text-success"> <span
+                                class="glyphicon glyphicon-home"></span> Arrived at {{ user.arrivalDate|date('Y-m-d') }}</span>
+                {% else %}
+                    <br>
+                    <span class="text-danger">Not arrived (Planned: {{ user.plannedArrivalDate|date('Y-m-d') }})</span>
+                {% endif %}
+
+                {% if user.vouchers > 0 %}
+                    <br>
+                    <span class="text-success"> <span
+                                class="glyphicon glyphicon-cutlery"></span> Got {{ user.vouchers }} voucher</span>
+                {% else %}
+                    <br>
+                    <span class="text-danger">Got no vouchers</span>
+                {% endif %}
+            </div>
+            <div class="col-md-3">
+                <h4>Angeltypes</h4>
+                {% for userAngelType in user.userAngelTypes %}
+                    {% if userAngelType.angelType.member and not userAngelType.angelType.memberAwait %}
+                        <a href="{{ url('angeltypes_view', {'id': userAngelType.angelType.id}) }}"
+                           class="text-success">{{ userAngelType.angelType.name }}</a>
+                    {% else %}
+                        <a href="{{ url('angeltypes_view', {'id': userAngelType.angelType.id}) }}"
+                           class="text-warning">{{ userAngelType.angelType.name }}</a>
+                    {% endif %}
+                    <br>
+                {% endfor %}
+            </div>
+            <div class="col-md-3"><h4>Rights</h4>
+                {% for group in user.groups %}
+                    {% if group.displayName is not null %}
+                        {{ group.displayName }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <h2>Shifts</h2>
+        <h2>iCal export</h2>
+        <p>Export your own shifts.
+            <a href="{{ url('export_ical', {'apiKey': user.apiKey}) }}">iCal
+                format</a> or <a href="{{ url('export_json', {'apiKey': user.apiKey}) }}">JSON
+                format</a> available (please keep secret, otherwise <a
+                    href="{{ url('user_reset_api_key', {'id': user.id}) }}">reset the api key</a>).
+        </p>
+    </div>
+{% endblock %}

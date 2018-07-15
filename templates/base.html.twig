@@ -106,10 +106,10 @@
                     </div>
                 {% endfor %}
             {% endfor %}
+        </div>
 
             {% block content %}
             {% endblock %}
-        </div>
         <div class="row" id="footer">
             <div class="col-md-12">
                 <hr/>
@@ -141,20 +141,19 @@
         </div>
     </div>
 {% block javascripts %}
-    <script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="vendor/bootstrap-datepicker-1.7.1/js/bootstrap-datepicker.min.js"></script>
-    <script type="text/javascript"
-            src="vendor/bootstrap-datepicker-1.7.1/locales/bootstrap-datepicker.de.min.js"></script>
-    <script type="text/javascript" src="vendor/Chart.min.js"></script>
-    <script type="text/javascript" src="js/forms.js"></script>
-    <script type="text/javascript" src="vendor/moment-with-locales.min.js"></script>
+    <script type="text/javascript" src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('vendor/bootstrap-datepicker-1.7.1/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('vendor/bootstrap-datepicker-1.7.1/locales/bootstrap-datepicker.de.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('vendor/Chart.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/forms.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('vendor/moment-with-locales.min.js') }}"></script>
     <script type="text/javascript">
         $(function () {
             moment.locale("%locale%");
         });
     </script>
-    <script type="text/javascript" src="js/moment-countdown.js"></script>
-    <script type="text/javascript" src="js/sticky-headers.js"></script>
+    <script type="text/javascript" src="{{ asset('js/moment-countdown.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/sticky-headers.js') }}"></script>
 {% endblock %}
 {% endblock %}
 </body>

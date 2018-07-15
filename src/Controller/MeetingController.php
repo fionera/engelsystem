@@ -7,6 +7,7 @@ use Engelsystem\Entity\MeetingComment;
 use Engelsystem\Form\MeetingCommentType;
 use Engelsystem\Form\MeetingType;
 use Engelsystem\Service\MarkdownService;
+use Engelsystem\Service\StructService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,16 +15,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class MeetingController extends Controller
 {
     /**
-     * @var MarkdownService
+     * @var StructService
      */
-    private $markdownService;
+    private $structService;
 
     /**
      * MeetingController constructor.
      */
-    public function __construct(MarkdownService $markdownService)
+    public function __construct(StructService $structService)
     {
-        $this->markdownService = $markdownService;
+        $this->structService = $structService;
     }
 
     /**
@@ -82,7 +83,7 @@ class MeetingController extends Controller
 
         return $this->render('meeting/edit.html.twig', [
             'meetingForm' => $meetingForm->createView(),
-            'meeting' => $this->getMeetingStruct($meeting)
+            'meeting' => $this->structService->getMeetingStruct($meeting)
         ]);
     }
 
@@ -140,7 +141,7 @@ class MeetingController extends Controller
         $this->addFlash('success', 'meeting_edit_successfully');
 
         return $this->render('meeting/comments.html.twig', [
-            'meeting' => $this->getMeetingStruct($meeting),
+            'meeting' => $this->structService->getMeetingStruct($meeting),
             'meetingCommentForm' => $meetingCommentForm->createView()
         ]);
     }
@@ -173,39 +174,15 @@ class MeetingController extends Controller
         $this->addFlash('success', 'meeting_edit_successfully');
 
         return $this->render('meeting/comments.html.twig', [
-            'meeting' => $this->getMeetingStruct($meetingComment->getMeeting()),
+            'meeting' => $this->structService->getMeetingStruct($meetingComment->getMeeting()),
             'meetingCommentForm' => $meetingCommentForm->createView()
         ]);
-    }
-
-    private function getMeetingStruct(Meeting $meeting): array
-    {
-        return
-            [
-                'id' => $meeting->getId(),
-                'subject' => $meeting->getSubject(),
-                'message' => $this->markdownService->parse($meeting->getMessage()),
-                'author' => $meeting->getAuthor()->getUsername(),
-                'comments' => array_map([$this, 'getCommentStruct'], $meeting->getComments()->toArray()),
-                'date' => $meeting->getPostDate()
-            ];
-    }
-
-    private function getCommentStruct(MeetingComment $meetingComment)
-    {
-        return
-            [
-                'id' => $meetingComment->getId(),
-                'message' => $this->markdownService->parse($meetingComment->getMessage()),
-                'author' => $meetingComment->getAuthor()->getUsername(),
-                'date' => $meetingComment->getPostDate()
-            ];
     }
 
     protected function getMeeting()
     {
         $meeting = $this->getDoctrine()->getRepository(Meeting::class)->findBy([], ['postDate' => 'desc'], 10);
 
-        return array_map([$this, 'getMeetingStruct'], $meeting);
+        return array_map([$this->structService, 'getMeetingStruct'], $meeting);
     }
 }

@@ -104,13 +104,12 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="">What do you want to do? (<a href="https://engel.ctdo.de/angeltypes?action=about">Description of jobtypes</a>)</label>
+                    <label for="">What do you want to do? (<a href="{{ url('angeltypes') }}">Description
+                            of jobtypes</a>)</label>
+                    {{ form_errors(registerForm.angelTypes) }}
+                    {{ form_widget(registerForm.angelTypes) }}
+                    {{ form_help(registerForm.angelTypes) }}
                 </div>
-                {#<div class="checkbox">#}
-                    {#<label><input type="checkbox" id="angel_types_4" name="angel_types_4"#}
-                                                    {#value="checked" checked="checked"/>TODO: Engeltype</label>#}
-                {#</div>#}
-
                 <span class="help-block"><span class="glyphicon glyphicon-info-sign"></span> Restricted angel types need will be confirmed later by a supporter. You can change your selection in the options section.</span>
             </div>
             <div class="col-md-6">

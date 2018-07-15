@@ -6,7 +6,7 @@
     <div class="col-md-12"><h1>Angeltypes</h1>
         <div class="form-group">
             <div class="btn-group">
-                <a href="https://engel.ctdo.de/angeltypes?action=edit" class="btn btn-default add">New angeltype</a>
+                <a href="{{ url('angeltypes_create') }}" class="btn btn-default add">New Angeltype</a>
                 <a href="https://engel.ctdo.de/angeltypes?action=about" class="btn btn-default ">Teams/Job
                     description</a>
             </div>
@@ -26,7 +26,7 @@
             {% for angelType in angelTypeList %}
                 <tr>
                     <td class="column_name">
-                        <a href="https://engel.ctdo.de/angeltypes?action=view&amp;angeltype_id=11">{{ angelType.name }}</a>
+                        <a href="{{ url('angeltypes_view', {'id': angelType.id}) }}">{{ angelType.name }}</a>
                     </td>
                     <td class="column_restricted">
                         {% if angelType.restricted %}
@@ -51,14 +51,28 @@
                     </td>
                     <td class="column_actions">
                         <div class="btn-group">
-                            <a href="https://engel.ctdo.de/angeltypes?action=view&amp;angeltype_id=11"
-                               class="btn btn-default btn-xs">view</a>
-                            <a href="https://engel.ctdo.de/angeltypes?action=edit&amp;angeltype_id=11"
-                               class="btn btn-default btn-xs">edit</a>
-                            <a href="https://engel.ctdo.de/angeltypes?action=delete&amp;angeltype_id=11"
-                               class="btn btn-default btn-xs">delete</a>
-                            <a href="https://engel.ctdo.de/user-angeltypes?action=add&amp;angeltype_id=11"
-                               class="btn btn-default btn-xs">join</a>
+                            <a href="{{ url('angeltypes_view', {'id': angelType.id}) }}"
+                               class="btn btn-default btn-xs">View</a>
+
+                            {% if (hasPermission('angeltype_edit') and angelType.coordinator) or hasPermission('angeltype_edit_all') %}
+                            <a href="{{ url('angeltypes_edit', {'id': angelType.id}) }}"
+                               class="btn btn-default btn-xs">Edit</a>
+                            {% endif %}
+
+                            {% if hasPermission('angeltype_delete_all') %}
+                            <a href="{{ url('angeltypes_delete', {'id': angelType.id}) }}"
+                               class="btn btn-default btn-xs">Delete</a>
+                            {% endif %}
+
+                            {% if hasPermission('angeltype_join') and not (angelType.member or angelType.memberAwait) %}
+                            <a href="{{ url('angeltypes_join', {'id': angelType.id}) }}"
+                               class="btn btn-default btn-xs">Join</a>
+                            {% endif %}
+
+                            {% if hasPermission('angeltype_leave') and (angelType.member or angelType.memberAwait) %}
+                                <a href="{{ url('angeltypes_leave', {'id': angelType.id}) }}"
+                                   class="btn btn-default btn-xs">Leave</a>
+                            {% endif %}
                         </div>
                     </td>
                 </tr>

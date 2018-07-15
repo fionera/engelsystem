@@ -4,24 +4,26 @@ namespace Engelsystem\Form;
 
 use Engelsystem\Entity\AngelType;
 use Engelsystem\Entity\User;
+use Engelsystem\Entity\UserAngelTypes;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RegisterType extends AbstractType
+class EditUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /** @var User|null $user */
+        $user = $builder->getData();
+
         $builder
             ->add('username', TextType::class, ['required' => true])
             ->add('email', EmailType::class, ['required' => true])
@@ -49,11 +51,6 @@ class RegisterType extends AbstractType
             ])
             ->add('prename', TextType::class, ['required' => false])
             ->add('surname', TextType::class, ['required' => false])
-            ->add('plainPassword', RepeatedType::class, array(
-                'type' => PasswordType::class,
-                'first_options'  => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
-            ))
             ->add('age', TextType::class, ['required' => false])
             ->add('hometown', TextType::class, ['required' => false])
             ->add('angelTypes', EntityType::class, [
@@ -62,16 +59,25 @@ class RegisterType extends AbstractType
                 'class' => AngelType::class,
                 'choice_label' => 'name',
                 'mapped' => false,
-                'choice_attr' => function (AngelType $angelType) {
+                'choice_attr' => function (AngelType $angelType) use ($user) {
                     $attributes = [
                         'disabled' => $angelType->getNoSelfSignup()
                     ];
 
+                    if ($user !== null) {
+                        /** @var UserAngelTypes $userAngelType */
+                        foreach ($angelType->getUserAngelTypes()->toArray() as $userAngelType) {
+                            if ($userAngelType->getUser()->getId() === $user->getId()) {
+                                $attributes['checked'] = 'checked';
+                            }
+                        }
+
+                    }
+
                     return $attributes;
                 },
             ])
-            ->add('register', SubmitType::class)
-        ;
+            ->add('save', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

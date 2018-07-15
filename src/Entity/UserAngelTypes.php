@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * UserAngelTypes
  *
  * @ORM\Entity
+ * @ORM\Table(name="user_angel_types",uniqueConstraints={@ORM\UniqueConstraint(name="user_angel_type_unique", columns={"user_id", "angel_type_id"})})
  */
 class UserAngelTypes
 {
@@ -25,12 +26,12 @@ class UserAngelTypes
      *
      * @ORM\Column(name="coordinator", type="boolean", nullable=false)
      */
-    private $coordinator;
+    private $coordinator = false;
 
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="userAngelTypes")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
@@ -38,7 +39,7 @@ class UserAngelTypes
     /**
      * @var AngelType
      *
-     * @ORM\ManyToOne(targetEntity="AngelType")
+     * @ORM\ManyToOne(targetEntity="AngelType", inversedBy="userAngelTypes")
      * @ORM\JoinColumn(name="angel_type_id", referencedColumnName="id", nullable=false)
      */
     private $angelType;
@@ -104,4 +105,8 @@ class UserAngelTypes
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->user->getUsername() . '/' . $this->angelType->getName();
+    }
 }

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h2>
+                {% block formTypeH2 %}
+                {% endblock %}
+            </h2>
+
+            <div class="form-group">
+                <div class="btn-group">
+                    <a href="{{ url('angeltypes') }}" class="btn btn-default back">Angeltypes</a></div>
+            </div>
+
+            {{ form_start(angelTypeForm) }}
+
+            {{ form_row(angelTypeForm.name) }}
+
+            {{ form_label(angelTypeForm.restricted) }}
+            {{ form_widget(angelTypeForm.restricted) }}
+            {{ form_help(angelTypeForm.restricted,{'attr': {'data-help': 'Restricted angel types can only be used by an angel if enabled by a supporter (double opt-in).'}}) }}
+
+            {{ form_row(angelTypeForm.noSelfSignup) }}
+            {{ form_row(angelTypeForm.requiresDriverLicense) }}
+            {{ form_row(angelTypeForm.showOnDashboard) }}
+
+            {{ form_label(angelTypeForm.description) }}
+            {{ form_widget(angelTypeForm.description) }}
+            {{ form_help(angelTypeForm.description,{'attr': {'data-help': 'Please use markdown for the description.'}}) }}
+
+            <h3>Contact</h3>
+            <span class="help-block">
+                <span class="glyphicon glyphicon-info-sign"></span> Primary contact person/desk for user questions.
+            </span>
+
+            {{ form_row(angelTypeForm.contactName) }}
+            {{ form_row(angelTypeForm.contactDect) }}
+            {{ form_row(angelTypeForm.contactEmail) }}
+            {{ form_row(angelTypeForm.save) }}
+
+            {{ form_end(angelTypeForm) }}
+        </div>
+    </div>
+{% endblock %}
