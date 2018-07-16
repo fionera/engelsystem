@@ -6,7 +6,10 @@
     <div class="col-md-12"><h1>Angeltypes</h1>
         <div class="form-group">
             <div class="btn-group">
-                <a href="{{ url('angeltypes_create') }}" class="btn btn-default add">New Angeltype</a>
+                {% if hasPermission('angeltype_create') %}
+                    <a href="{{ url('angeltypes_create') }}" class="btn btn-default add">New Angeltype</a>
+                {% endif %}
+
                 <a href="https://engel.ctdo.de/angeltypes?action=about" class="btn btn-default ">Teams/Job
                     description</a>
             </div>
@@ -55,18 +58,18 @@
                                class="btn btn-default btn-xs">View</a>
 
                             {% if (hasPermission('angeltype_edit') and angelType.coordinator) or hasPermission('angeltype_edit_all') %}
-                            <a href="{{ url('angeltypes_edit', {'id': angelType.id}) }}"
-                               class="btn btn-default btn-xs">Edit</a>
+                                <a href="{{ url('angeltypes_edit', {'id': angelType.id}) }}"
+                                   class="btn btn-default btn-xs">Edit</a>
                             {% endif %}
 
                             {% if hasPermission('angeltype_delete_all') %}
-                            <a href="{{ url('angeltypes_delete', {'id': angelType.id}) }}"
-                               class="btn btn-default btn-xs">Delete</a>
+                                <a href="{{ url('angeltypes_delete', {'id': angelType.id}) }}"
+                                   class="btn btn-default btn-xs">Delete</a>
                             {% endif %}
 
                             {% if hasPermission('angeltype_join') and not (angelType.member or angelType.memberAwait) %}
-                            <a href="{{ url('angeltypes_join', {'id': angelType.id}) }}"
-                               class="btn btn-default btn-xs">Join</a>
+                                <a href="{{ url('angeltypes_join', {'id': angelType.id}) }}"
+                                   class="btn btn-default btn-xs">Join</a>
                             {% endif %}
 
                             {% if hasPermission('angeltype_leave') and (angelType.member or angelType.memberAwait) %}

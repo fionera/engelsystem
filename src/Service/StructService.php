@@ -8,6 +8,7 @@ use Engelsystem\Entity\Meeting;
 use Engelsystem\Entity\MeetingComment;
 use Engelsystem\Entity\News;
 use Engelsystem\Entity\NewsComment;
+use Engelsystem\Entity\Room;
 use Engelsystem\Entity\User;
 use Engelsystem\Entity\UserAngelTypes;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -197,11 +198,23 @@ class StructService
         ];
     }
 
-    public function getGroupStruct(Group $group) {
+    public function getGroupStruct(Group $group)
+    {
         return [
             'id' => $group->getId(),
             'name' => $group->getName(),
             'displayName' => $group->getDisplayName()
+        ];
+    }
+
+    public function getRoomStruct(Room $room)
+    {
+        return [
+            'id' => $room->getId(),
+            'name' => $room->getName(),
+            'description' => $room->getDescription(),
+            'mapUrl' => $room->getMapUrl(),
+            'fromFrab' => $room->getFromFrab(),
         ];
     }
 }

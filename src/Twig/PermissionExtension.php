@@ -15,6 +15,8 @@ class PermissionExtension extends AbstractExtension
      */
     private $container;
 
+    private $permissionNodeVisitor;
+
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
@@ -41,5 +43,15 @@ class PermissionExtension extends AbstractExtension
         }
 
         return $user->hasPermission($value);
+    }
+
+    public function getNodeVisitors()
+    {
+        return [$this->getPermissionNodeVisitor()];
+    }
+
+    public function getPermissionNodeVisitor()
+    {
+        return $this->permissionNodeVisitor ?: $this->permissionNodeVisitor = new PermissionNodeVisitor();
     }
 }

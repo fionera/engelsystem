@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rooms{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <h1>Rooms</h1>
+        <div class="form-group">
+            <div class="btn-group">
+                <a href="{{ url('room_create') }}" class="btn btn-default ">Add</a></div>
+        </div>
+        <table class="table table-striped data">
+            <thead>
+            <tr>
+                <th class="column_name">Name</th>
+                <th class="column_from_frab">Frab import</th>
+                <th class="column_map_url">Map</th>
+                <th class="column_actions"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for room in roomList %}
+                <tr>
+                    <td class="column_name">
+                        <a href="{{ url('room_view', {'id': room.id}) }}">
+                            <span class="glyphicon glyphicon-map-marker"></span> {{ room.name }}</a>
+                    </td>
+                    <td class="column_from_frab">
+                        {% if room.fromFrab %}
+                        {% else %}
+                            <span class="text-danger"> <span class="glyphicon glyphicon-remove"></span></span>
+                        {% endif %}
+                    </td>
+                    <td class="column_map_url">
+                        {% if room.mapUrl %}
+                        {% else %}
+                            <span class="text-danger"> <span class="glyphicon glyphicon-remove"></span></span>
+                        {% endif %}
+                    </td>
+                    <td class="column_actions">
+                        <div class="btn-group">
+                            <a href="{{ url('room_edit', {'id': room.id}) }}" class="btn btn-default btn-xs">Edit</a>
+                            <a href="{{ url('room_delete', {'id': room.id}) }}"
+                               class="btn btn-default btn-xs">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
