@@ -8,9 +8,11 @@
         {{ form_start(newsForm) }}
         {{ form_widget(newsForm) }}
         {{ form_end(newsForm) }}
+        {% if hasPermission('news_remove_all') or (hasPermission('news_remove') and comment.author == user.username) %}
         <a class="btn btn-danger" href="{{ url('news_delete', {'id': news.id}) }}">
             <span class="glyphicon glyphicon-trash"></span> Delete
         </a>
+        {% endif %}
     </div>
 
 {% endblock %}

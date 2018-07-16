@@ -6,8 +6,10 @@
     <div class="col-md-12">
         <h1>Rooms</h1>
         <div class="form-group">
-            <div class="btn-group">
-                <a href="{{ url('room_create') }}" class="btn btn-default ">Add</a></div>
+            {% if hasPermission('room_add') %}
+                <div class="btn-group">
+                    <a href="{{ url('room_create') }}" class="btn btn-default ">Add</a></div>
+            {% endif %}
         </div>
         <table class="table table-striped data">
             <thead>
@@ -39,9 +41,15 @@
                     </td>
                     <td class="column_actions">
                         <div class="btn-group">
-                            <a href="{{ url('room_edit', {'id': room.id}) }}" class="btn btn-default btn-xs">Edit</a>
-                            <a href="{{ url('room_delete', {'id': room.id}) }}"
-                               class="btn btn-default btn-xs">Delete</a>
+                            {% if hasPermission('room_edit') %}
+                                <a href="{{ url('room_edit', {'id': room.id}) }}"
+                                   class="btn btn-default btn-xs">Edit</a>
+                            {% endif %}
+
+                            {% if hasPermission('room_delete') %}
+                                <a href="{{ url('room_delete', {'id': room.id}) }}"
+                                   class="btn btn-default btn-xs">Delete</a>
+                            {% endif %}
                         </div>
                     </td>
                 </tr>

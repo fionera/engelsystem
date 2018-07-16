@@ -6,7 +6,6 @@ use Engelsystem\Entity\Meeting;
 use Engelsystem\Entity\MeetingComment;
 use Engelsystem\Form\MeetingCommentType;
 use Engelsystem\Form\MeetingType;
-use Engelsystem\Service\MarkdownService;
 use Engelsystem\Service\StructService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -76,10 +75,11 @@ class MeetingController extends Controller
             $entityManager->persist($meeting);
             $entityManager->flush();
 
+            $this->addFlash('success', 'meeting_edit_successfully');
+
             return $this->redirectToRoute('meeting');
         }
 
-        $this->addFlash('success', 'meeting_edit_successfully');
 
         return $this->render('meeting/edit.html.twig', [
             'meetingForm' => $meetingForm->createView(),

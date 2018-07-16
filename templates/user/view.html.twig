@@ -14,22 +14,36 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <div class="btn-group">
-                        <a href="{{ url('user_edit', {'id': user.id}) }}" class="btn btn-default ">
-                            <span class="glyphicon glyphicon-edit"></span> Edit</a>
+                        {% if hasPermission('user_edit_all') or (hasPermission('user_edit') and user.username == loggedInUser.username) %}
+                            <a href="{{ url('user_edit', {'id': user.id}) }}" class="btn btn-default ">
+                                <span class="glyphicon glyphicon-edit"></span> Edit</a>
+                        {% endif %}
 
                         <a href="https://engel.ctdo.de/user-driver-licenses?user_id=21" class="btn btn-default ">
                             <span class="glyphicon glyphicon-road"></span> driving license</a>
 
                         {% if user.arrived %}
-                            <a href="{{ url('user_unarrived', {'id': user.id}) }}" class="btn btn-default ">Unarrive</a>
-                            {% else %}
-                            <a href="{{ url('user_arrived', {'id': user.id}) }}" class="btn btn-default ">Arrived</a>
+                            {% if hasPermission('user_unarrive') %}
+                                <a href="{{ url('user_unarrived', {'id': user.id}) }}"
+                                   class="btn btn-default ">Unarrive</a>
+                            {% endif %}
+                        {% else %}
+                            {% if hasPermission('user_arrive') %}
+                                <a href="{{ url('user_arrived', {'id': user.id}) }}"
+                                   class="btn btn-default ">Arrived</a>
+                            {% endif %}
                         {% endif %}
 
 
-                        <a href="{{ url('user_add_voucher', {'id': user.id}) }}" class="btn btn-default ">
-                            <span class="glyphicon glyphicon-cutlery"></span> Add Vocher</a>
-                        <a href="{{ url('user_remove_voucher', {'id': user.id}) }}" class="btn btn-default ">Remove Vocher</a>
+                        {% if hasPermission('user_add_voucher') %}
+                            <a href="{{ url('user_add_voucher', {'id': user.id}) }}" class="btn btn-default ">
+                                <span class="glyphicon glyphicon-cutlery"></span> Add Voucher</a>
+                        {% endif %}
+
+                        {% if hasPermission('user_remove_voucher') %}
+                            <a href="{{ url('user_remove_voucher', {'id': user.id}) }}" class="btn btn-default ">Remove
+                                Voucher</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -87,12 +101,15 @@
             </div>
         </div>
         <h2>Shifts</h2>
-        <h2>iCal export</h2>
-        <p>Export your own shifts.
-            <a href="{{ url('export_ical', {'apiKey': user.apiKey}) }}">iCal
-                format</a> or <a href="{{ url('export_json', {'apiKey': user.apiKey}) }}">JSON
-                format</a> available (please keep secret, otherwise <a
-                    href="{{ url('user_reset_api_key', {'id': user.id}) }}">reset the api key</a>).
-        </p>
+
+        {% if user.username == loggedInUser.username %}
+            <h2>iCal export</h2>
+            <p>Export your own shifts.
+                <a href="{{ url('export_ical', {'apiKey': user.apiKey}) }}">iCal
+                    format</a> or <a href="{{ url('export_json', {'apiKey': user.apiKey}) }}">JSON
+                    format</a> available (please keep secret, otherwise <a
+                        href="{{ url('user_reset_api_key', {'id': user.id}) }}">reset the api key</a>).
+            </p>
+        {% endif %}
     </div>
 {% endblock %}

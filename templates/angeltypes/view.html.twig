@@ -24,7 +24,8 @@
                     {% endif %}
 
                     {% if hasPermission('angeltype_leave') and (angelType.member or angelType.memberAwait) %}
-                        <a href="{{ url('angeltypes_leave', {'id': angelType.id, 'redirect': url('angeltypes_view', {'id': angelType.id})}) }}" class="btn btn-default leave">Leave</a>
+                        <a href="{{ url('angeltypes_leave', {'id': angelType.id, 'redirect': url('angeltypes_view', {'id': angelType.id})}) }}"
+                           class="btn btn-default leave">Leave</a>
                     {% endif %}
                 </div>
             </div>
@@ -59,16 +60,21 @@
                             {% for userAngelType in angelType.userAngelTypes %}
                                 <tr>
                                     <td class="column_Nick">
-                                        <a class="text-muted" href="{{ url('user_view', {'id': userAngelType.user.id}) }}">
+                                        <a class="text-muted"
+                                           href="{{ url('user_view', {'id': userAngelType.user.id}) }}">
                                             <span class="icon-icon_angel"></span> {{ userAngelType.user.username }}
                                         </a>
                                     </td>
                                     <td class="column_DECT">{{ userAngelType.user.dect }}</td>
                                     <td class="column_actions">
                                         <div class="btn-group">
-                                            <a href="https://engel.ctdo.de/user-angeltypes?action=update&user_angeltype_id=21&supporter=1" class="btn btn-default btn-xs">
+                                            <a href="https://engel.ctdo.de/user-angeltypes?action=update&user_angeltype_id=21&supporter=1"
+                                               class="btn btn-default btn-xs">
                                                 Add supporter rights</a>
-                                            <a href="{{ url('angeltypes_remove_angel', {'angelTypeId': angelType.id, 'userId': userAngelType.user.id, 'redirect': url('angeltypes_view', {'id': angelType.id})}) }}" class="btn btn-default btn-xs">Remove</a>
+                                            {% if hasPermission('angeltype_remove_other') %}
+                                                <a href="{{ url('angeltypes_remove_angel', {'angelTypeId': angelType.id, 'userId': userAngelType.user.id, 'redirect': url('angeltypes_view', {'id': angelType.id})}) }}"
+                                                   class="btn btn-default btn-xs">Remove</a>
+                                            {% endif %}
                                         </div>
                                     </td>
                                 </tr>

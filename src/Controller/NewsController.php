@@ -7,7 +7,6 @@ use Engelsystem\Entity\NewsComment;
 use Engelsystem\Form\NewsCommentType;
 use Engelsystem\Form\NewsType;
 use Engelsystem\Service\StructService;
-use Parsedown;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -77,10 +76,11 @@ class NewsController extends Controller
             $entityManager->persist($news);
             $entityManager->flush();
 
+            $this->addFlash('success', 'news_edit_successfully');
+
             return $this->redirectToRoute('news');
         }
 
-        $this->addFlash('success', 'news_edit_successfully');
 
         return $this->render('news/edit.html.twig', [
             'newsForm' => $newsForm->createView(),

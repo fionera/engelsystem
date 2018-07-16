@@ -5,6 +5,7 @@ namespace Engelsystem\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Engelsystem\Entity\EventConfig;
 use Engelsystem\Entity\User;
+use Engelsystem\Service\StructService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -26,6 +27,10 @@ class RequestSubscriber implements EventSubscriberInterface
      * @var ContainerInterface
      */
     private $container;
+    /**
+     * @var StructService
+     */
+    private $structService;
 
     /**
      * RequestSubscriber constructor.
@@ -33,11 +38,12 @@ class RequestSubscriber implements EventSubscriberInterface
      * @param EntityManagerInterface $entityManager
      * @param TokenStorage $tokenStorage
      */
-    public function __construct(Environment $environment, EntityManagerInterface $entityManager, ContainerInterface $container)
+    public function __construct(Environment $environment, EntityManagerInterface $entityManager, ContainerInterface $container, StructService $structService)
     {
         $this->environment = $environment;
         $this->entityManager = $entityManager;
         $this->container = $container;
+        $this->structService = $structService;
     }
 
     public function onKernelRequest(GetResponseEvent $event)
@@ -49,9 +55,7 @@ class RequestSubscriber implements EventSubscriberInterface
             $authUser = $token->getUser();
 
             if ($authUser instanceof User) {
-                $user = [
-                    'username' => $authUser->getUsername()
-                ];
+                $user = $this->structService->getUserStruct($authUser);
             }
         }
 
@@ -59,7 +63,7 @@ class RequestSubscriber implements EventSubscriberInterface
         $config = [
             'theme' => getenv('DEFAULT_THEME'),
             'locales' => $this->getAvailableLanguages(),
-            'user' => $user
+            'loggedInUser' => $user
 //            'atom_link' => ($page == 'news' || $page == 'user_meetings')
 //                ? ' <link href="'
 //                . page_link_to('atom', $parameters)

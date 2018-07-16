@@ -8,9 +8,12 @@
         {{ form_start(meetingForm) }}
         {{ form_widget(meetingForm) }}
         {{ form_end(meetingForm) }}
+
+        {% if hasPermission('meeting_remove_all') or (hasPermission('meeting_remove') and comment.author == user.username) %}
         <a class="btn btn-danger" href="{{ url('meeting_delete', {'id': meeting.id}) }}">
             <span class="glyphicon glyphicon-trash"></span> Delete
         </a>
+        {% endif %}
     </div>
 
 {% endblock %}
