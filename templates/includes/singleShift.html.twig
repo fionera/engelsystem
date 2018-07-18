@@ -1,0 +1,44 @@
+<div class="shift panel {% if shift.neededHelper > 0 %}panel-danger{% else %}panel-success{% endif %}"
+     style="height: 475px">
+    <div class="panel-heading">
+        <a href="{{ url('shift', {'id': shift.id}) }}">
+            {{ shift.start|date('h:m') }} ‐ {{ shift.end|date('h:m') }} — {{ shift.shiftType.name }}
+        </a>
+        <div class="pull-right">
+            <div class="btn-group">
+                {% if hasPermission('shift_edit_all') or (hasPermission('shift_edit') and isCoordinator(shift.shiftType.angelType.id)) %}
+                <a href="{{ url('shift_edit', {'id': shift.id}) }}" class="btn btn-default btn-xs">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </a>
+
+                <a href="{{ url('shift_delete', {'id': shift.id}) }}" class="btn btn-default btn-xs">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </a>
+
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <span class="glyphicon glyphicon-info-sign"></span> {{ shift.name }}
+        <br>
+        <a href="https://engel.ctdo.de/rooms?action=view&amp;room_id=8"> <span
+                    class="glyphicon glyphicon-map-marker"></span> {{ shift.room.name }}</a>
+    </div>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <strong><a href="{{ url('angeltypes_view', {'id': shift.shiftType.angelType.id}) }}">{{ shift.shiftType.angelType.name }}</a>:</strong>
+            {% for shiftEntry in shift.shiftEntryList %}
+                <span style="">
+                <a class="text-muted" href="{{ url('user_view', {'id': shiftEntry.angel.id}) }}&amp;user_id=13">
+                <span class="icon-icon_angel"></span> {{ shiftEntry.angel.name }}</a></span>,
+            {% endfor %}
+
+            {% if shift.neededHelper > 0 %}
+                <a href="{{ url('shift_signup', {'id': shift.id}) }}">{{ shift.neededHelper }} helper needed</a>
+            {% endif %}
+            <a href="{{ url('shift_signup', {'id': shift.id}) }}" class="btn btn-default btn-xs btn-primary">Sign
+                up</a>
+        </li>
+    </ul>
+    <div class="shift-spacer"></div>
+</div>

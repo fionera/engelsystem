@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h2>
+                {% block formTypeH2 %}
+                {% endblock %}
+            </h2>
+
+            <div class="form-group">
+                <div class="btn-group">
+                    <a href="{{ url('room') }}" class="btn btn-default back">Rooms</a></div>
+            </div>
+
+            {{ form_start(roomForm) }}
+
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(roomForm.name) }}
+
+                    {{ form_label(roomForm.mapUrl) }}
+                    {{ form_widget(roomForm.mapUrl) }}
+                    {{ form_help(roomForm.mapUrl,{'attr': {'data-help': 'The map url is used to display an iframe on the room page.'}}) }}
+
+                    {{ form_row(roomForm.fromFrab) }}
+
+                    {{ form_label(roomForm.description) }}
+                    {{ form_widget(roomForm.description) }}
+                    {{ form_help(roomForm.description,{'attr': {'data-help': 'Please use markdown for the description.'}}) }}
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12"><h4>Needed angels:</h4></div>
+                        {% for key, needAngelType in roomForm.neededAngelTypes %}
+                            <div class="col-lg-4 col-md-6 col-xs-6">
+                                {{ form_label(needAngelType.count, angelTypeNameList[key]) }}
+
+                                <div class="input-group">
+                                    {{ form_widget(needAngelType.count) }}
+                                    <div class="input-group-btn">
+                                        <button id="spinner-room_neededAngelTypes_count_{{ key }}-down"
+                                                class="btn btn-default"
+                                                type="button">
+                                            <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                        <button id="spinner-room_neededAngelTypes_count_{{ key }}-up"
+                                                class="btn btn-default"
+                                                type="button">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {{ form_errors(needAngelType.count) }}
+
+                                <script type="text/javascript">
+                                    $("#spinner-room_neededAngelTypes_count_{{ key }}-down").click(function () {
+                                        var spinner = $("#room_neededAngelTypes_{{ key }}_count");
+                                        var spinnerVal = parseInt(spinner.val());
+                                        spinner.val(spinnerVal > 0 ? spinnerVal - 1 : 0);
+                                    });
+                                    $("#spinner-room_neededAngelTypes_count_{{ key }}-up").click(function () {
+                                        var spinner = $("#room_neededAngelTypes_{{ key }}_count");
+                                        spinner.val(parseInt(spinner.val()) + 1);
+                                    });
+                                </script>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {{ form_row(roomForm.save) }}
+            {{ form_end(roomForm) }}
+        </div>
+    </div>
+{% endblock %}

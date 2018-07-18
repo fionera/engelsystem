@@ -34,33 +34,46 @@
             <div class="collapse navbar-collapse" id="navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     {% if hasPermission('news_view') %}
-                        <li class="active"><a href="{{ url('news') }}">News</a>
+                        <li class=""><a href="{{ url('news') }}">News</a>
                         </li>
                     {% endif %}
 
                     {% if hasPermission('meeting_view') %}
-                        <li class="active"><a href="{{ url('meeting') }}">Meeting</a>
+                        <li class=""><a href="{{ url('meeting') }}">Meeting</a>
                         </li>
                     {% endif %}
 
                     {% if hasPermission('shifts_view') %}
-                        <li class="active"><a href="{{ url('shifts') }}">Shifts</a>
+                        <li class=""><a href="{{ url('shift') }}">Shifts</a>
                         </li>
                     {% endif %}
 
                     {% if hasPermission('angeltypes_view') %}
-                        <li class="active"><a href="{{ url('angeltypes') }}">Angeltypes</a>
+                        <li class=""><a href="{{ url('angeltypes') }}">Angeltypes</a>
                         </li>
                     {% endif %}
 
                     {% if hasPermission('ask_view') %}
-                        <li class="active"><a href="{{ url('ask') }}">Ask the Heaven</a>
+                        <li class=""><a href="{{ url('ask') }}">Ask the Heaven</a>
                         </li>
                     {% endif %}
 
                     {% if hasPermission('room_view') %}
-                        <li class="active"><a href="{{ url('room') }}"><span
-                                        class="glyphicon glyphicon-map-marker"></span> Rooms</a>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <span class="glyphicon glyphicon-map-marker"></span> Rooms <span
+                                        class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu" style="max-height: 871px; overflow-y: scroll;">
+                                <li class=""><a href="{{ url('room') }}"><span
+                                                class="glyphicon glyphicon-list"></span> Room Overview</a></li>
+                                <li class="divider"></li>
+                                {% for room in rooms %}
+                                    <li class="">
+                                        <a href="{{ url('room_view', {'id': room.id}) }}"><span
+                                                    class="glyphicon glyphicon-map-marker"></span> {{ room.name }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
                         </li>
                     {% endif %}
                 </ul>

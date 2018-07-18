@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -47,6 +48,13 @@ class Room
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
+
+    /**
+     * @var NeededAngelTypes[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="Engelsystem\Entity\NeededAngelTypes", mappedBy="room", orphanRemoval=true, cascade={"persist"})
+     */
+    private $neededAngelTypes;
 
     public function getId(): ?int
     {
@@ -101,4 +109,19 @@ class Room
         return $this;
     }
 
+    /**
+     * @return Collection|NeededAngelTypes[]
+     */
+    public function getNeededAngelTypes()
+    {
+        return $this->neededAngelTypes;
+    }
+
+    /**
+     * @param Collection|NeededAngelTypes[] $neededAngelTypes
+     */
+    public function setNeededAngelTypes($neededAngelTypes): void
+    {
+        $this->neededAngelTypes = $neededAngelTypes;
+    }
 }

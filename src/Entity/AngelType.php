@@ -88,9 +88,16 @@ class AngelType
     /**
      * @var UserAngelTypes[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="Engelsystem\Entity\UserAngelTypes", mappedBy="angelType")
+     * @ORM\OneToMany(targetEntity="Engelsystem\Entity\UserAngelTypes", mappedBy="angelType", orphanRemoval=true)
      */
     private $userAngelTypes;
+
+    /**
+     * @var NeededAngelTypes[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="Engelsystem\Entity\NeededAngelTypes", mappedBy="angelType", orphanRemoval=true)
+     */
+    private $neededAngelTypes;
 
     public function getId(): ?int
     {

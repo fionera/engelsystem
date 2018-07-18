@@ -6,7 +6,7 @@
     <div class="col-md-12">
         <h1>Rooms</h1>
         <div class="form-group">
-            {% if hasPermission('room_add') %}
+            {% if hasPermission('room_create') %}
                 <div class="btn-group">
                     <a href="{{ url('room_create') }}" class="btn btn-default ">Add</a></div>
             {% endif %}

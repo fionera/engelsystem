@@ -30,10 +30,7 @@ class NeededAngelTypes
     /**
      * @var Room
      *
-     * @ORM\ManyToOne(targetEntity="Room")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="room_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity="Room", inversedBy="neededAngelTypes")
      */
     private $room;
 
@@ -50,10 +47,7 @@ class NeededAngelTypes
     /**
      * @var Angeltype
      *
-     * @ORM\ManyToOne(targetEntity="AngelType")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="angel_type_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity="AngelType",inversedBy="neededAngelTypes")
      */
     private $angelType;
 

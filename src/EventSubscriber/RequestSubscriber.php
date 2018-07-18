@@ -4,6 +4,7 @@ namespace Engelsystem\EventSubscriber;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Engelsystem\Entity\EventConfig;
+use Engelsystem\Entity\Room;
 use Engelsystem\Entity\User;
 use Engelsystem\Service\StructService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -63,7 +64,8 @@ class RequestSubscriber implements EventSubscriberInterface
         $config = [
             'theme' => getenv('DEFAULT_THEME'),
             'locales' => $this->getAvailableLanguages(),
-            'loggedInUser' => $user
+            'loggedInUser' => $user,
+            'rooms' => array_map([$this->structService, 'getRoomStruct'], $this->entityManager->getRepository(Room::class)->findAll())
 //            'atom_link' => ($page == 'news' || $page == 'user_meetings')
 //                ? ' <link href="'
 //                . page_link_to('atom', $parameters)

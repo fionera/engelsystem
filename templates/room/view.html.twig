@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Room {{ room.name }}
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <h1><span class="glyphicon glyphicon-map-marker"></span> {{ room.name }}</h1>
+        <div class="">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#Shifts" aria-controls="Shifts" role="tab" data-toggle="tab">Shifts</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="Shifts">
+                    <div class="first">
+                        <div class="form-group">
+                            <ul class="nav nav-pills">
+                                <li class="dropdown active">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                        {{ currentDay }}
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu"
+                                        style="max-height: 871px; overflow-y: scroll;">
+                                        {% for day in days %}
+                                            <li class="">
+                                                <a href="">2018-07-20</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="shift-calendar">
+                            <div class="lane time" style="position: relative; z-index: 999;">
+                                <div class="header" style="position: relative; z-index: 900;">Time</div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick hour">07-20<br>11:00</div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick hour">07-20<br>12:00</div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick hour">07-20<br>13:00</div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick hour">07-20<br>14:00</div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick hour">07-20<br>15:00</div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick hour">07-20<br>16:00</div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick hour">07-20<br>17:00</div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick hour">07-20<br>18:00</div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick hour">07-20<br>19:00</div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick hour">07-20<br>20:00</div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick hour">07-20<br>21:00</div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick hour">07-20<br>22:00</div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick hour">07-20<br>23:00</div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+                                <div class="tick hour">07-21<br>00:00</div>
+                                <div class="tick"></div>
+                            </div>
+                            <div class="lane">
+                                <div class="header" style="position: relative; z-index: 900;">
+                                    <a href="https://engel.ctdo.de/rooms?action=view&amp;room_id=2"> <span
+                                                class="glyphicon glyphicon-map-marker"></span> Cafe</a>
+                                </div>
+                                <div class="tick"></div>
+                                <div class="tick"></div>
+
+                                {% for shift in shifts %}
+                                    {% include 'includes/singleShift.html.twig' with {'shift': shift} only %}
+                                {% endfor %}
+                                ￼
+                                <div class="tick hour"></div>
+                                <div class="tick"></div>
+                            </div>
+                        </div>
+                        <div class="legend"><span class="label label-primary">Your shift</span>
+                            <span class="label label-danger">Help needed</span>
+                            <span class="label label-warning">Other angeltype needed / collides with my shifts</span>
+                            <span class="label label-success">Shift is full</span>
+                            <span class="label label-default">Shift running/ended or user not arrived</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
