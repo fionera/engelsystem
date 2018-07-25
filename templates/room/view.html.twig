@@ -7,115 +7,75 @@
 {% block content %}
     <div class="col-md-12">
         <h1><span class="glyphicon glyphicon-map-marker"></span> {{ room.name }}</h1>
+        <div class="form-group">
+            <div class="btn-group">
+                <a href="{{ url('room') }}" class="btn btn-default back">Rooms</a>
+
+                {% if hasPermission('room_edit') %}
+                    <a href="{{ url('room_edit', {'id': room.id}) }}"
+                       class="btn btn-default edit">Edit</a>
+                {% endif %}
+
+                {% if hasPermission('room_delete') %}
+                    <a href="{{ url('room_delete', {'id': room.id}) }}" class="btn btn-default delete">Delete</a>
+                {% endif %}
+            </div>
+        </div>
         <div class="">
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active">
+                    <a href="#Info" aria-controls="Info" role="tab" data-toggle="tab">Info</a>
+                </li>
+                <li role="presentation">
                     <a href="#Shifts" aria-controls="Shifts" role="tab" data-toggle="tab">Shifts</a>
                 </li>
             </ul>
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="Shifts">
+                <div role="tabpanel" class="tab-pane active" id="Info">
                     <div class="first">
-                        <div class="form-group">
-                            <ul class="nav nav-pills">
-                                <li class="dropdown active">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                        <span class="caret"></span>
-                                        {{ currentDay }}
-                                    </a>
-                                    <ul class="dropdown-menu" role="menu"
-                                        style="max-height: 871px; overflow-y: scroll;">
-                                        {% for day in days %}
-                                            <li class="">
-                                                <a href="">2018-07-20</a>
+                        <div class="col-md-3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Needed angels:</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <ul class="list-group">
+                                        {% for neededAngelType in room.neededAngelTypes %}
+                                            <li class="list-group-item">{{ neededAngelType.angelType.name }}
+                                                <span class="badge">{{ neededAngelType.count }}</span>
                                             </li>
                                         {% endfor %}
                                     </ul>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="shift-calendar">
-                            <div class="lane time" style="position: relative; z-index: 999;">
-                                <div class="header" style="position: relative; z-index: 900;">Time</div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick hour">07-20<br>11:00</div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick hour">07-20<br>12:00</div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick hour">07-20<br>13:00</div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick hour">07-20<br>14:00</div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick hour">07-20<br>15:00</div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick hour">07-20<br>16:00</div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick hour">07-20<br>17:00</div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick hour">07-20<br>18:00</div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick hour">07-20<br>19:00</div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick hour">07-20<br>20:00</div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick hour">07-20<br>21:00</div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick hour">07-20<br>22:00</div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick hour">07-20<br>23:00</div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-                                <div class="tick hour">07-21<br>00:00</div>
-                                <div class="tick"></div>
-                            </div>
-                            <div class="lane">
-                                <div class="header" style="position: relative; z-index: 900;">
-                                    <a href="https://engel.ctdo.de/rooms?action=view&amp;room_id=2"> <span
-                                                class="glyphicon glyphicon-map-marker"></span> Cafe</a>
                                 </div>
-                                <div class="tick"></div>
-                                <div class="tick"></div>
-
-                                {% for shift in shifts %}
-                                    {% include 'includes/singleShift.html.twig' with {'shift': shift} only %}
-                                {% endfor %}
-                                ￼
-                                <div class="tick hour"></div>
-                                <div class="tick"></div>
                             </div>
                         </div>
-                        <div class="legend"><span class="label label-primary">Your shift</span>
-                            <span class="label label-danger">Help needed</span>
-                            <span class="label label-warning">Other angeltype needed / collides with my shifts</span>
-                            <span class="label label-success">Shift is full</span>
-                            <span class="label label-default">Shift running/ended or user not arrived</span>
+                        <div class="col-md-3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Description:</h3>
+                                </div>
+                                <div class="panel-body">
+                                    {{ room.description }}
+                                </div>
+                            </div>
                         </div>
+                        <div class="col-md-3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Map URL:</h3>
+                                </div>
+                                <div class="panel-body">
+                                    {{ room.mapUrl }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="Shifts">
+                    <div class="first">
+
+                        {% include 'includes/multiDayLaneView.html.twig' with {'multiDayLaneView': multiDayLaneView} only %}
+
                     </div>
                 </div>
             </div>

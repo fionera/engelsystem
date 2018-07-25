@@ -1,0 +1,42 @@
+<div class="shift-calendar">
+    <div class="lane time" style="position: relative; z-index: 999;">
+        <div class="header" style="position: relative; z-index: 900;">Time</div>
+        <div class="tick"></div>
+        <div class="tick"></div>
+
+        {% for shiftHour in laneView.shiftHours %}
+            <div class="tick hour">{{ shiftHour.date|date('m-d') }}
+                <br>{{ shiftHour.date|date('H:i') }}</div>
+            {% for tick in 0..shiftHour.ticks %}
+                <div class="tick"></div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+    {% for lane in laneView.lanes %}
+        <div class="lane">
+            <div class="header" style="position: relative; z-index: 900;">
+                <a href="https://engel.ctdo.de/rooms?action=view&amp;room_id=2"> <span
+                            class="glyphicon glyphicon-map-marker"></span> Cafe</a>
+            </div>
+            <div class="tick"></div>
+            <div class="tick"></div>
+
+            {% for shift in lane %}
+                {% if shift.ticks is defined %}
+                    {% for tick in shift.ticks %}
+                        <div class="tick{% if tick.isHour %} hour{% endif %}"></div>
+                    {% endfor %}
+                {% else %}
+                    {% include 'includes/singleShift.html.twig' with {'shift': shift} only %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
+<div class="legend"><span class="label label-primary">Your shift</span>
+    <span class="label label-danger">Help needed</span>
+    <span class="label label-warning">Other angeltype needed / collides with my shifts</span>
+    <span class="label label-success">Shift is full</span>
+    <span class="label label-default">Shift running/ended or user not arrived</span>
+</div>

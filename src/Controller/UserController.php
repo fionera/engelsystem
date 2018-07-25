@@ -8,6 +8,11 @@ use Engelsystem\Entity\User;
 use Engelsystem\Entity\UserAngelTypes;
 use Engelsystem\Form\EditUserType;
 use Engelsystem\Service\StructService;
+use Kilik\TableBundle\Components\Column;
+use Kilik\TableBundle\Components\Table;
+use Kilik\TableBundle\KilikTableBundle;
+use Kilik\TableBundle\Services\TableService;
+use Kilik\TableBundle\Services\TableServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,14 +23,42 @@ class UserController extends Controller
      * @var StructService
      */
     private $structService;
+    /**
+     * @var TableServiceInterface
+     */
+    private $tableService;
 
     /**
      * UserController constructor.
      * @param StructService $structService
      */
-    public function __construct(StructService $structService)
+    public function __construct(StructService $structService, TableServiceInterface $tableService)
     {
         $this->structService = $structService;
+        $this->tableService = $tableService;
+    }
+
+    public function getOrganisationTable()
+    {
+        $queryBuilder = $this->getDoctrine()->getRepository(User::class)->createQueryBuilder('o')
+            ->select('o');
+
+        $table = (new Table())
+            ->setRowsPerPage(15)// custom rows per page
+            ->setId('tabledemo_organisation_list')
+            ->setPath('')
+            ->setQueryBuilder($queryBuilder, 'o')
+            ->addColumn(
+                (new Column())->setLabel('Name')
+                    ->setSort(['o.name' => 'asc'])
+//                    ->setFilter(
+//                        (new Filter())
+//                            ->setField('o.name')
+//                            ->setName('o_name')
+//                    )
+            );
+
+        return $table;
     }
 
     /**
@@ -33,8 +66,10 @@ class UserController extends Controller
      */
     public function index()
     {
+        $table = $this->getOrganisationTable();
+
         return $this->render('user/index.html.twig', [
-            'controller_name' => 'UserController',
+            'table' => $this->tableService->createFormView($table),
         ]);
     }
 

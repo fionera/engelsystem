@@ -1,20 +1,115 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}Shifts{% endblock %}
 
 {% block content %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(filterForm, {'attr': {'class': 'form-inline'}}) }}
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>Shifts</h1>
+                    <div class="form-group">
+                        {{ form_widget(filterForm.from_date) }}
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            {{ form_widget(filterForm.from_time) }}
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" title="Now" type="button" onclick="set_to_now('form_from');">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    –
+                    <div class="form-group">
+                        {{ form_widget(filterForm.to_date) }}
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            {{ form_widget(filterForm.to_time) }}
+                            {#<input class="form-control" id="end_time" name="end_time" size="5" pattern="^\d{1,2}:\d{2}$"#}
+                            {#placeholder="HH:MM" maxlength="5" value="20:51">#}
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" title="Now" type="button" onclick="set_to_now('form_to');">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'src/Controller/ShiftController.php'|file_link(0) }}">src/Controller/ShiftController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'templates/shift/index.html.twig'|file_link(0) }}">templates/shift/index.html.twig</a></code></li>
-    </ul>
-</div>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-info btn-sm" style="margin-top: 20px; margin-bottom:10px" type="button"
+                            data-toggle="collapse" data-target="#collapseRoomSelect" aria-expanded="false"
+                            aria-controls="collapseRoomSelect">
+                        collapse/show filters
+                    </button>
+                    <div class="collapse in row" id="collapseRoomSelect">
+                        <div class="col-xs-4 col-xxs-12">
+                            <h4>Rooms</h4>
+                            <div class="form-group">
+                                <div class="btn-group">
+                                    <a href="javascript: checkAll('selection_rooms', true)"
+                                       class="btn btn-default ">All</a>
+                                    <a href="javascript: checkAll('selection_rooms', false)" class="btn btn-default ">None</a>
+                                </div>
+                            </div>
+                            <div id="selection_rooms" class="selection rooms">
+                                {{ form_widget(filterForm.rooms) }}
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-xxs-12">
+                            <h4>Angeltypes<sup>1</sup></h4>
+                            <div class="form-group">
+                                <div class="btn-group">
+                                    <a href="javascript: checkAll('selection_types', true)"
+                                       class="btn btn-default ">All</a>
+                                    <a href="javascript: checkAll('selection_types', false)" class="btn btn-default ">None</a>
+                                    <a href="javascript: checkOwnTypes('selection_types', [4,5,6,7])"
+                                       class="btn btn-default ">Own</a>
+                                </div>
+                            </div>
+                            <div id="selection_types" class="selection types">
+                                {{ form_widget(filterForm.angelTypes) }}
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-xxs-12">
+                            <h4>Occupancy</h4>
+                            <div class="form-group">
+                                <div class="btn-group">
+                                    <a href="javascript: checkAll('selection_filled', true)" class="btn btn-default ">All</a>
+                                    <a href="javascript: checkAll('selection_filled', false)" class="btn btn-default ">None</a>
+                                </div>
+                            </div>
+                            <div id="selection_filled" class="selection filled">
+                                {{ form_widget(filterForm.occupancy_occupied, {'label': 'Occupied'}) }}
+                                {{ form_widget(filterForm.occupancy_free, {'label': 'Free'}) }}
+                            </div>
+                        </div>
+                        <div class="col-sm-12"><p><sup>1</sup>The tasks shown here are influenced by the angeltypes
+                                you joined already! <a href="https://engel.ctdo.de/angeltypes?action=about">Description
+                                    of the jobs.</a></p></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    {{ form_widget(filterForm.filter) }}
+                </div>
+            </div>
+            {{ form_end(filterForm) }}
+
+
+            <div class="alert alert-info">No shifts found.</div>
+            <h2>iCal export</h2>
+            <p>Export your own shifts. <a href="https://engel.ctdo.de/ical?key=d92f72e407db8b805a9b8a5120541b09">iCal
+                    format</a> or <a
+                        href="https://engel.ctdo.de/shifts-json-export?key=d92f72e407db8b805a9b8a5120541b09">JSON
+                    format</a> available (please keep secret, otherwise <a
+                        href="https://engel.ctdo.de/user-myshifts?reset=1">reset the api key</a>).</p>
+        </div>
+    </div>
 {% endblock %}

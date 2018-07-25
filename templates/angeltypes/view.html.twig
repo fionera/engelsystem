@@ -91,10 +91,7 @@
                     </div>
                     <div role="tabpanel" class="tab-pane " id="Shifts">
                         <div class="first">
-                            <div class="form-group">
-                                <ul class="nav nav-pills"></ul>
-                            </div>
-                            <div class="alert alert-info">No shifts found.</div>
+                            {% include 'includes/multiDayLaneView.html.twig' with {'multiDayLaneView': multiDayLaneView} only %}
                         </div>
                     </div>
                 </div>

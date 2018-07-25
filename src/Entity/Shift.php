@@ -25,19 +25,19 @@ class Shift
      *
      * @ORM\Column(name="title", type="text", length=65535, nullable=true)
      */
-    private $title;
+    private $name;
 
     /**
-     * @var int
+     * @var \DateTime
      *
-     * @ORM\Column(name="start", type="integer", nullable=false)
+     * @ORM\Column(name="start", type="datetime", nullable=false)
      */
     private $start;
 
     /**
-     * @var int
+     * @var \DateTime
      *
-     * @ORM\Column(name="end", type="integer", nullable=false)
+     * @ORM\Column(name="end", type="datetime", nullable=false)
      */
     private $end;
 
@@ -58,14 +58,14 @@ class Shift
     /**
      * @var int
      *
-     * @ORM\Column(name="created_at_timestamp", type="integer", nullable=false)
+     * @ORM\Column(name="created_at_timestamp", type="datetime", nullable=false)
      */
     private $createdAtTimestamp;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="edited_at_timestamp", type="integer", nullable=false)
+     * @ORM\Column(name="edited_at_timestamp", type="datetime", nullable=false)
      */
     private $editedAtTimestamp;
 
@@ -80,12 +80,9 @@ class Shift
     private $room;
 
     /**
-     * @var Shifttypes
+     * @var ShiftType
      *
-     * @ORM\ManyToOne(targetEntity="ShiftTypes")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="shifttype_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity="ShiftType", inversedBy="shifts")
      */
     private $shiftType;
 
@@ -114,36 +111,36 @@ class Shift
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getName(): ?string
     {
-        return $this->title;
+        return $this->name;
     }
 
-    public function setTitle(?string $title): self
+    public function setName(?string $name): self
     {
-        $this->title = $title;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getStart(): ?int
+    public function getStart(): ?\DateTime
     {
         return $this->start;
     }
 
-    public function setStart(int $start): self
+    public function setStart(\DateTime $start): self
     {
         $this->start = $start;
 
         return $this;
     }
 
-    public function getEnd(): ?int
+    public function getEnd(): ?\DateTime
     {
         return $this->end;
     }
 
-    public function setEnd(int $end): self
+    public function setEnd(\DateTime $end): self
     {
         $this->end = $end;
 
@@ -174,24 +171,24 @@ class Shift
         return $this;
     }
 
-    public function getCreatedAtTimestamp(): ?int
+    public function getCreatedAtTimestamp(): ?\DateTime
     {
         return $this->createdAtTimestamp;
     }
 
-    public function setCreatedAtTimestamp(int $createdAtTimestamp): self
+    public function setCreatedAtTimestamp(\DateTime $createdAtTimestamp): self
     {
         $this->createdAtTimestamp = $createdAtTimestamp;
 
         return $this;
     }
 
-    public function getEditedAtTimestamp(): ?int
+    public function getEditedAtTimestamp(): ?\DateTime
     {
         return $this->editedAtTimestamp;
     }
 
-    public function setEditedAtTimestamp(int $editedAtTimestamp): self
+    public function setEditedAtTimestamp(\DateTime $editedAtTimestamp): self
     {
         $this->editedAtTimestamp = $editedAtTimestamp;
 
@@ -210,12 +207,12 @@ class Shift
         return $this;
     }
 
-    public function getShiftType(): ?ShiftTypes
+    public function getShiftType(): ?ShiftType
     {
         return $this->shiftType;
     }
 
-    public function setShiftType(?ShiftTypes $shiftType): self
+    public function setShiftType(?ShiftType $shiftType): self
     {
         $this->shiftType = $shiftType;
 

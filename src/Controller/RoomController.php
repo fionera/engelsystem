@@ -4,13 +4,18 @@ namespace Engelsystem\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Engelsystem\Entity\AngelType;
+use Engelsystem\Entity\EventConfig;
 use Engelsystem\Entity\NeededAngelTypes;
 use Engelsystem\Entity\Room;
+use Engelsystem\Entity\Shift;
 use Engelsystem\Form\RoomType;
+use Engelsystem\Service\LaneService;
 use Engelsystem\Service\StructService;
+use Engelsystem\Structs\Lane;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\VarDumper\VarDumper;
 
 class RoomController extends Controller
 {
@@ -18,14 +23,20 @@ class RoomController extends Controller
      * @var StructService
      */
     private $structService;
+    /**
+     * @var LaneService
+     */
+    private $laneService;
 
     /**
      * RoomController constructor.
      * @param StructService $structService
+     * @param LaneService $laneService
      */
-    public function __construct(StructService $structService)
+    public function __construct(StructService $structService, LaneService $laneService)
     {
         $this->structService = $structService;
+        $this->laneService = $laneService;
     }
 
 
@@ -161,13 +172,17 @@ class RoomController extends Controller
             throw $this->createNotFoundException();
         }
 
+        $shifts = $this->getDoctrine()->getRepository(Shift::class)->findBy(['room' => $room]);
+
         return $this->render('room/view.html.twig', [
             'room' => $this->structService->getRoomStruct($room),
             'currentDay' => '',
             'days' => [],
-            'shifts' => []
+            'multiDayLaneView' => $this->laneService->createMultiDayLaneView($shifts),
         ]);
     }
+
+
 
     private function getNeededAngelTypesEntity(AngelType $angelType, Room $room)
     {

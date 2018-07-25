@@ -1,0 +1,29 @@
+{% if multiDayLaneView|length == 0 %}
+    <div class="form-group">
+        <ul class="nav nav-pills"></ul>
+    </div>
+    <div class="alert alert-info">No shifts found.</div>
+{% else %}
+    <div class="form-group">
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button"
+                    data-toggle="dropdown">{{ multiDayLaneView|keys|first }}
+                <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                {% for day in multiDayLaneView|keys %}
+                    <li>
+                        <a data-toggle="tab" href="#day-{{ day }}">{{ day }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="tab-content">
+        {% for day,laneView in multiDayLaneView %}
+            <div id="day-{{ day }}" class="tab-pane fade in{% if loop.first %} active{% endif %}">
+                {% include 'includes/laneView.html.twig' with {'laneView': laneView} only %}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}

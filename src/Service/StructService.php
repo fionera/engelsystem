@@ -6,11 +6,16 @@ use Engelsystem\Entity\AngelType;
 use Engelsystem\Entity\Group;
 use Engelsystem\Entity\Meeting;
 use Engelsystem\Entity\MeetingComment;
+use Engelsystem\Entity\NeededAngelTypes;
 use Engelsystem\Entity\News;
 use Engelsystem\Entity\NewsComment;
 use Engelsystem\Entity\Room;
+use Engelsystem\Entity\Shift;
+use Engelsystem\Entity\ShiftType;
 use Engelsystem\Entity\User;
 use Engelsystem\Entity\UserAngelTypes;
+use Engelsystem\Structs\Lane;
+use Engelsystem\Structs\LaneView;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -215,6 +220,81 @@ class StructService
             'description' => $room->getDescription(),
             'mapUrl' => $room->getMapUrl(),
             'fromFrab' => $room->getFromFrab(),
+            'neededAngelTypes' => array_map([$this, 'getNeededAngelTypeStruct'], $room->getNeededAngelTypes()->toArray())
         ];
+    }
+
+    public function getShiftStruct(Shift $shift)
+    {
+        $diff = $shift->getEnd()->diff($shift->getStart());
+
+        $length = $diff->h * 4;
+        $length += $diff->i / 15;
+
+        return [
+            'id' => $shift->getId(),
+            'name' => $shift->getName(),
+            'start' => $shift->getStart(),
+            'end' => $shift->getEnd(),
+            'length' => $length,
+            'neededHelper' => 1,
+            'shiftType' => $this->getShiftTypeStruct($shift->getShiftType()),
+            'room' => $this->getRoomStruct($shift->getRoom()),
+            'shiftEntryList' => []
+        ];
+    }
+
+    public function getShiftTypeStruct(ShiftType $shiftType)
+    {
+        return [
+            'name' => $shiftType->getName(),
+            'angelType' => $this->getAngeltypeStruct($shiftType->getAngelType())
+        ];
+    }
+
+    public function getLaneStruct(Lane $lane)
+    {
+        return [
+            'shifts' => array_map([$this, 'getShiftStruct'], $lane->getShifts()),
+            'ticks' => $lane->getTicks()
+        ];
+    }
+
+    public function getLaneViewStruct(LaneView $laneView)
+    {
+        $structs = [];
+        foreach ($laneView->get() as $lane) {
+
+            $struct = [];
+            foreach ($lane as $entry) {
+                if ($entry instanceof Shift) {
+                    $struct[] = $this->getShiftStruct($entry);
+                } else {
+                    $struct[] = $entry;
+                }
+            }
+
+            $structs[] = $struct;
+        }
+
+        return [
+            'lanes' => $structs,
+            'shiftHours' => $laneView->getShiftHours(),
+        ];
+    }
+
+    public function getNeededAngelTypeStruct(NeededAngelTypes $neededAngelTypes, bool $withRoom = false)
+    {
+        $neededAngelTypeStruct = [
+            'id' => $neededAngelTypes->getId(),
+            'angelType' => $this->getAngeltypeStruct($neededAngelTypes->getAngelType()),
+            'count' => $neededAngelTypes->getCount(),
+        ];
+
+        if ($withRoom) {
+            $neededAngelTypeStruct['room'] = $neededAngelTypes->getRoom();
+        }
+
+        return $neededAngelTypeStruct;
     }
 }

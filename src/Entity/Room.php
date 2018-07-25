@@ -124,4 +124,9 @@ class Room
     {
         $this->neededAngelTypes = $neededAngelTypes;
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

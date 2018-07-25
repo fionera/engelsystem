@@ -79,16 +79,36 @@ function setHours(hours) {
     setInput(from, to);
 }
 
+function set_to_now(id) {
+    document.getElementById(id + '_time').value = moment().format('HH:mm');
+    var days = document.getElementById(id + '_date').getElementsByTagName('option');
+    for (var i = 0; i < days.length; i++) {
+        if (days[i].value === moment().format('YYYY-MM-DD')) {
+            days[i].selected = true;
+        }
+    }
+}
+
 $(function () {
     /**
      * Disable every submit button after clicking (to prevent double-clicking)
      */
-    $("form").submit(function (ev) {
-        $("input[type='submit']").prop("readonly", true).addClass("disabled");
-        return true;
+    // $("form").submit(function (ev) {
+    //     $("input[type='submit']").prop("readonly", true).addClass("disabled");
+    //     return true;
+    // });
+
+    $('#Select').on('change', function (e) {
+        $('.tab-pane').hide();
+        $('.tab-pane').eq($(this).val()).show();
     });
 
-    $(".dropdown-menu").css("max-height", function () {
-        return ($(window).height() - 50) + "px";
-    }).css("overflow-y", "scroll");
+    // $(".dropdown-menu").css("max-height", function () {
+    //     return ($(window).height() - 50) + "px";
+    // }).css("overflow-y", "scroll");
+
+    $('.dropdown-menu li').click(function () {
+        $('li').removeClass('active');
+        $(this).parent().parent().find('button').get(0).innerHTML = $(this).get(0).innerText + '<span class="caret"></span>';
+    })
 });

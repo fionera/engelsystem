@@ -49,7 +49,6 @@ class RequestSubscriber implements EventSubscriberInterface
 
     public function onKernelRequest(GetResponseEvent $event)
     {
-
         $user = [];
         if (null !== $token = $this->container->get('security.token_storage')->getToken()) {
             /** @var UserInterface $user */

@@ -15,6 +15,12 @@ services:
                             # fetching services directly from the container via $container->get() won't work.
                             # The best practice is to be explicit about your dependencies anyway.
 
+        bind:
+            # pass this value to any $adminEmail argument for any service
+            # that's defined in this file (including controller arguments)
+            $eventDays: "@=service('Engelsystem\\\\Service\\\\EventConfigService').getEventDays()"
+
+
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     Engelsystem\:
@@ -27,5 +33,7 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
+    Kilik\TableBundle\Services\TableServiceInterface:
+        alias: kilik_table
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

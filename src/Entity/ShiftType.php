@@ -2,14 +2,15 @@
 
 namespace Engelsystem\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ShiftTypes
+ * ShiftType
  *
  * @ORM\Entity
  */
-class ShiftTypes
+class ShiftType
 {
     /**
      * @var int
@@ -37,12 +38,16 @@ class ShiftTypes
     /**
      * @var AngelType
      *
-     * @ORM\ManyToOne(targetEntity="AngelType")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="angel_type_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity="AngelType", inversedBy="shiftType")
      */
     private $angelType;
+
+    /**
+     * @var Shift[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="Engelsystem\Entity\Shift", mappedBy="shiftType")
+     */
+    private $shifts;
 
     public function getId(): ?int
     {
@@ -85,4 +90,24 @@ class ShiftTypes
         return $this;
     }
 
+    /**
+     * @return Collection
+     */
+    public function getShifts()
+    {
+        return $this->shifts;
+    }
+
+    /**
+     * @param Collection $shifts
+     */
+    public function setShifts(?array $shifts): void
+    {
+        $this->shifts = $shifts;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

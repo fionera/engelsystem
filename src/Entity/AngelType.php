@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * AngelTypes
+ * AngelType
  *
  * @ORM\Entity
  */
@@ -98,6 +98,13 @@ class AngelType
      * @ORM\OneToMany(targetEntity="Engelsystem\Entity\NeededAngelTypes", mappedBy="angelType", orphanRemoval=true)
      */
     private $neededAngelTypes;
+
+    /**
+     * @var ShiftType[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="ShiftType", mappedBy="angelType")
+     */
+    private $shiftType;
 
     public function getId(): ?int
     {
@@ -218,6 +225,22 @@ class AngelType
     public function getUserAngelTypes()
     {
         return $this->userAngelTypes ?? new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|NeededAngelTypes[]
+     */
+    public function getNeededAngelTypes()
+    {
+        return $this->neededAngelTypes ?? new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|ShiftType[]
+     */
+    public function getShiftTypes()
+    {
+        return $this->shiftType ?? new ArrayCollection();
     }
 
     public function __toString()

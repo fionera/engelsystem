@@ -76,6 +76,30 @@
                             </ul>
                         </li>
                     {% endif %}
+
+                    {% if hasPermission('admin_dropdown') %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <span class="glyphicon glyphicon-map-marker"></span> Rooms <span
+                                        class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu" style="max-height: 871px; overflow-y: scroll;">
+
+                                {% if hasPermission('admin_show_angels') %}
+                                    <li class="">
+                                        <a href="{{ url('user') }}"><span class="glyphicon glyphicon-list"></span> Show Angels</a>
+                                    </li>
+                                {% endif %}
+
+                                <li class="divider"></li>
+                                {% for room in rooms %}
+                                    <li class="">
+                                        <a href="{{ url('room_view', {'id': room.id}) }}"><span
+                                                    class="glyphicon glyphicon-map-marker"></span> {{ room.name }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endif %}
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">

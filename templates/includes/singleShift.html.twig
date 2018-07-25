@@ -1,16 +1,16 @@
 <div class="shift panel {% if shift.neededHelper > 0 %}panel-danger{% else %}panel-success{% endif %}"
-     style="height: 475px">
+     style="height: {{ 30 * shift.length }}px">
     <div class="panel-heading">
         <a href="{{ url('shift', {'id': shift.id}) }}">
-            {{ shift.start|date('h:m') }} ‐ {{ shift.end|date('h:m') }} — {{ shift.shiftType.name }}
+            {{ shift.start|date('H:i') }} ‐ {{ shift.end|date('H:i') }} — {{ shift.shiftType.name }}
         </a>
         <div class="pull-right">
             <div class="btn-group">
-                {% if hasPermission('shift_edit_all') or (hasPermission('shift_edit') and isCoordinator(shift.shiftType.angelType.id)) %}
+                {#{% if hasPermission('shift_edit_all') or (hasPermission('shift_edit') and isCoordinator(shift.shiftType.angelType.id)) %}#}
                 <a href="{{ url('shift_edit', {'id': shift.id}) }}" class="btn btn-default btn-xs">
                     <span class="glyphicon glyphicon-edit"></span>
                 </a>
-
+{#{% endif %}#}
                 <a href="{{ url('shift_delete', {'id': shift.id}) }}" class="btn btn-default btn-xs">
                     <span class="glyphicon glyphicon-trash"></span>
                 </a>

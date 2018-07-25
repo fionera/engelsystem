@@ -2,8 +2,16 @@
 
 namespace Engelsystem\Controller;
 
-use Symfony\Component\Routing\Annotation\Route;
+use Engelsystem\Entity\AngelType;
+use Engelsystem\Entity\Room;
+use Engelsystem\Form\ShiftFilterType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ShiftController extends Controller
 {
@@ -12,8 +20,10 @@ class ShiftController extends Controller
      */
     public function index()
     {
+        $filterForm = $this->createForm(ShiftFilterType::class);
+
         return $this->render('shift/index.html.twig', [
-            'controller_name' => 'ShiftController',
+            'filterForm' => $filterForm->createView(),
         ]);
     }
 

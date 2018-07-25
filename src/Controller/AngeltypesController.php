@@ -2,11 +2,16 @@
 
 namespace Engelsystem\Controller;
 
+use Doctrine\Common\Collections\Collection;
 use Engelsystem\Entity\AngelType;
+use Engelsystem\Entity\Shift;
+use Engelsystem\Entity\ShiftType;
 use Engelsystem\Entity\UserAngelTypes;
 use Engelsystem\Form\AngelTypeType;
+use Engelsystem\Service\LaneService;
 use Engelsystem\Service\StructService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,13 +21,18 @@ class AngeltypesController extends Controller
      * @var StructService
      */
     private $structService;
+    /**
+     * @var LaneService
+     */
+    private $laneService;
 
     /**
      * AngeltypesController constructor.
      */
-    public function __construct(StructService $structService)
+    public function __construct(StructService $structService, LaneService $laneService)
     {
         $this->structService = $structService;
+        $this->laneService = $laneService;
     }
 
     /**
@@ -46,8 +56,21 @@ class AngeltypesController extends Controller
             throw $this->createNotFoundException();
         }
 
+        /** @var Collection $shiftTypes */
+        $shiftTypes = $angelType->getShiftTypes();
+
+        $shifts = [];
+        /** @var ShiftType $shiftType */
+        foreach ($shiftTypes->getIterator() as $shiftType) {
+            /** @var Shift $shift */
+            foreach ($shiftType->getShifts()->getIterator() as $shift) {
+                $shifts[] = $shift;
+            }
+        }
+
         return $this->render('angeltypes/view.html.twig', [
-            'angelType' => $this->structService->getAngeltypeStruct($angelType)
+            'angelType' => $this->structService->getAngeltypeStruct($angelType),
+            'multiDayLaneView' => $this->laneService->createMultiDayLaneView($shifts),
         ]);
     }
 
