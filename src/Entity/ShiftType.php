@@ -45,7 +45,7 @@ class ShiftType
     /**
      * @var Shift[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="Engelsystem\Entity\Shift", mappedBy="shiftType")
+     * @ORM\OneToMany(targetEntity="Shift", mappedBy="shiftType")
      */
     private $shifts;
 
@@ -101,7 +101,7 @@ class ShiftType
     /**
      * @param Collection $shifts
      */
-    public function setShifts(?array $shifts): void
+    public function setShifts($shifts): void
     {
         $this->shifts = $shifts;
     }

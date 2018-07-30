@@ -24,16 +24,20 @@ class LaneService
         $this->structService = $structService;
     }
 
+    /**
+     * @param Lane[] $lanes
+     * @param Shift $shift
+     */
     public function addShift(array &$lanes, Shift $shift)
     {
         foreach ($lanes as $lane) {
-            if ($lane->getLastEnd() <= $shift->getStart()) {
+            if ($lane->getLastEnd() <= $shift->getStart() && $shift->getRoom() === $lane->getRoom()) {
                 $lane->addShift($shift);
                 return;
             }
         }
 
-        $lane = new Lane([$shift]);
+        $lane = new Lane([$shift], $shift->getRoom());
 
         $lanes[] = $lane;
     }

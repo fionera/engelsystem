@@ -3,12 +3,15 @@
 namespace Engelsystem\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Engelsystem\Entity\AngelType;
 use Engelsystem\Entity\User;
 use Engelsystem\Entity\UserAngelTypes;
 use Engelsystem\Form\EditUserType;
+use Engelsystem\Service\StatisticsService;
 use Engelsystem\Service\StructService;
 use Kilik\TableBundle\Components\Column;
+use Kilik\TableBundle\Components\Filter;
 use Kilik\TableBundle\Components\Table;
 use Kilik\TableBundle\KilikTableBundle;
 use Kilik\TableBundle\Services\TableService;
@@ -24,41 +27,19 @@ class UserController extends Controller
      */
     private $structService;
     /**
-     * @var TableServiceInterface
+     * @var StatisticsService
      */
-    private $tableService;
+    private $statisticsService;
 
     /**
      * UserController constructor.
      * @param StructService $structService
+     * @param StatisticsService $statisticsService
      */
-    public function __construct(StructService $structService, TableServiceInterface $tableService)
+    public function __construct(StructService $structService, StatisticsService $statisticsService)
     {
         $this->structService = $structService;
-        $this->tableService = $tableService;
-    }
-
-    public function getOrganisationTable()
-    {
-        $queryBuilder = $this->getDoctrine()->getRepository(User::class)->createQueryBuilder('o')
-            ->select('o');
-
-        $table = (new Table())
-            ->setRowsPerPage(15)// custom rows per page
-            ->setId('tabledemo_organisation_list')
-            ->setPath('')
-            ->setQueryBuilder($queryBuilder, 'o')
-            ->addColumn(
-                (new Column())->setLabel('Name')
-                    ->setSort(['o.name' => 'asc'])
-//                    ->setFilter(
-//                        (new Filter())
-//                            ->setField('o.name')
-//                            ->setName('o_name')
-//                    )
-            );
-
-        return $table;
+        $this->statisticsService = $statisticsService;
     }
 
     /**
@@ -66,10 +47,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        $table = $this->getOrganisationTable();
+        $users = $this->getDoctrine()->getRepository(User::class)->findAll();
 
         return $this->render('user/index.html.twig', [
-            'table' => $this->tableService->createFormView($table),
+            'users' => array_map([$this->structService, 'getUserStruct'], $users),
+            'stats' => $this->statisticsService->getStaticsStruct()
         ]);
     }
 

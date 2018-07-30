@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ shift.shiftType.name }}{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <h1>{{ shift.shiftType.name }}
+            <small class="moment-countdown" data-timestamp="1532066400">7 days ago</small>
+        </h1>
+        <div class="form-group">
+            <div class="btn-group"><a href="{{ url('shift_edit', {'id': shift.id}) }}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-pencil"></span> Edit
+                </a>
+                <a href="{{ url('shift_delete', {'id': shift.id}) }}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-trash"></span> Delete
+                </a>
+                <a href="{{ url('shift_type_view', {'id': shift.shiftType.id}) }}" class="btn btn-default">
+                    {{ shift.shiftType.name }}
+                </a>
+                <a href="{{ url('room_view', {'id': shift.room.id}) }}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-map-marker"></span> {{ shift.room.name }}
+                </a>
+                <a href="{{ url('user_view', {'id': loggedInUser.id}) }}" class="btn btn-default">
+                    <span class="icon-icon_angel"></span> My shifts
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3 col-xs-6">
+                <h4>Title</h4>
+                <p class="lead">{{ shift.name }}</p>
+            </div>
+            <div class="col-sm-3 col-xs-6">
+                <h4>Start</h4>
+                <p class="lead text-success">
+                    <span class="glyphicon glyphicon-calendar"></span> {{ shift.start|date('Y-m-d') }}
+                    <br>
+                    <span class="glyphicon glyphicon-time"></span> {{ shift.start|date('H:i') }}
+                </p>
+            </div>
+            <div class="col-sm-3 col-xs-6">
+                <h4>End</h4>
+                <p class="lead text-success">
+                    <span class="glyphicon glyphicon-calendar"></span> {{ shift.end|date('Y-m-d') }}
+                    <br>
+                    <span class="glyphicon glyphicon-time"></span> {{ shift.end|date('H:i') }}
+                </p>
+            </div>
+            <div class="col-sm-3 col-xs-6">
+                <h4>Location</h4>
+                <p class="lead">
+                    <a href="{{ url('room_view', {'id': shift.room.id}) }}">
+                        <span class="glyphicon glyphicon-map-marker"></span> {{ shift.room.name }}
+                    </a>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>Needed angels</h2>
+                <div class="list-group">
+                    {% for neededAngelType in shift.neededAngelTypes %}
+                        <div class="list-group-item">
+                            <div class="pull-right">
+                                <a href="{{ url('shift_signup', {'id': shift.id}) }}" class="btn btn-default ">Sign up</a>
+                            </div>
+                            <h3>
+                                <a href="{{ url('angeltypes_view', {'id': neededAngelType.angelType.id}) }}">{{ neededAngelType.angelType.name }}</a>
+                            </h3>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20"
+                                     aria-valuemin="0" aria-valuemax="100" style="width: 20%">1 / {{ neededAngelType.count }} {#TODO: Get registered angels#}
+                                </div>
+                            </div>
+                            {#<a class="" href="https://engel.ctdo.de/users?action=view&amp;user_id=8"><span#}
+                                        {#class="icon-icon_angel"></span> claas</a>#}
+                            {#<div class="btn-group"><a href="https://engel.ctdo.de/user-myshifts?edit=1&amp;id=8"#}
+                                                      {#class="btn btn-default btn-xs"> <span#}
+                                            {#class="glyphicon glyphicon-pencil"></span> </a><a#}
+                                        {#href="https://engel.ctdo.de/shift-entries?action=delete&amp;shift_entry_id=1"#}
+                                        {#class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-trash"></span> </a>#}
+                            {#</div>#}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-sm-6"><h2>Description</h2>
+                <p>{{ shift.shiftType.description }}</p>
+            </div>
+        </div>
+        <span class="glyphicon glyphicon-plus"></span> created at {{ shift.createdAt|date('Y-m-d H:i') }} by
+        <a class="" href="{{ url('user_view', {'id': shift.createdBy.id}) }}"><span class="icon-icon_angel"></span> {{ shift.createdBy.username }}
+        </a>
+    </div>
+{% endblock %}

@@ -39,7 +39,7 @@ class ShiftEntry
      *
      * @ORM\Column(name="freeloaded", type="boolean", nullable=false)
      */
-    private $freeloaded;
+    private $freeloaded = false;
 
     /**
      * @var Shift
@@ -54,10 +54,7 @@ class ShiftEntry
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="shiftEntries")
      */
     private $user;
 

@@ -37,10 +37,7 @@ class NeededAngelTypes
     /**
      * @var Shift
      *
-     * @ORM\ManyToOne(targetEntity="Shift")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="shift_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity="Shift", inversedBy="neededAngelTypes")
      */
     private $shift;
 
@@ -104,4 +101,8 @@ class NeededAngelTypes
         return $this;
     }
 
+    public function __toString()
+    {
+        return 'AngelType: ' . $this->getAngelType()->getName() . '; Amount: '. $this->getCount();
+    }
 }

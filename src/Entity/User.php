@@ -261,6 +261,13 @@ class User implements UserInterface, \Serializable
      */
     private $emailByHumanAllowed;
 
+    /**
+     * @var Collection|ShiftEntry[]
+     *
+     * @ORM\OneToMany(targetEntity="Engelsystem\Entity\ShiftEntry", mappedBy="user")
+     */
+    private $shiftEntries;
+
     public function __construct()
     {
         $this->groups = new ArrayCollection();
@@ -803,6 +810,41 @@ class User implements UserInterface, \Serializable
     {
         if ($this->userAngelTypes->contains($userAngelTypes)) {
             $this->userAngelTypes->removeElement($userAngelTypes);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ShiftEntry[]
+     */
+    public function getShiftEntries()
+    {
+        return $this->shiftEntries;
+    }
+
+
+    /**
+     * @param Collection|ShiftEntry[] $shiftEntries
+     */
+    public function setShiftEntries($shiftEntries): void
+    {
+        $this->shiftEntries = $shiftEntries;
+    }
+
+    public function addShiftEntry(ShiftEntry $shiftEntry): self
+    {
+        if (!$this->shiftEntries->contains($shiftEntry)) {
+            $this->shiftEntries[] = $shiftEntry;
+        }
+
+        return $this;
+    }
+
+    public function removeShiftEntry(ShiftEntry $shiftEntry): self
+    {
+        if ($this->shiftEntries->contains($shiftEntry)) {
+            $this->shiftEntries->removeElement($shiftEntry);
         }
 
         return $this;

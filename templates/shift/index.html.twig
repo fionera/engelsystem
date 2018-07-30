@@ -16,7 +16,8 @@
                         <div class="input-group">
                             {{ form_widget(filterForm.from_time) }}
                             <div class="input-group-btn">
-                                <button class="btn btn-default" title="Now" type="button" onclick="set_to_now('form_from');">
+                                <button class="btn btn-default" title="Now" type="button"
+                                        onclick="set_to_now('form_from');">
                                     <span class="glyphicon glyphicon-time"></span>
                                 </button>
                             </div>
@@ -32,7 +33,8 @@
                             {#<input class="form-control" id="end_time" name="end_time" size="5" pattern="^\d{1,2}:\d{2}$"#}
                             {#placeholder="HH:MM" maxlength="5" value="20:51">#}
                             <div class="input-group-btn">
-                                <button class="btn btn-default" title="Now" type="button" onclick="set_to_now('form_to');">
+                                <button class="btn btn-default" title="Now" type="button"
+                                        onclick="set_to_now('form_to');">
                                     <span class="glyphicon glyphicon-time"></span>
                                 </button>
                             </div>
@@ -97,13 +99,13 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    {{ form_widget(filterForm.filter) }}
+                    {{ form_widget(filterForm.filter, {'attr': {'class': 'btn-primary', 'style': 'width: 75%; margin-bottom: 20px;'}}) }}
                 </div>
             </div>
             {{ form_end(filterForm) }}
 
+            {% include 'includes/multiDayLaneView.html.twig' with {'multiDayLaneView': multiDayLaneView} only %}
 
-            <div class="alert alert-info">No shifts found.</div>
             <h2>iCal export</h2>
             <p>Export your own shifts. <a href="https://engel.ctdo.de/ical?key=d92f72e407db8b805a9b8a5120541b09">iCal
                     format</a> or <a

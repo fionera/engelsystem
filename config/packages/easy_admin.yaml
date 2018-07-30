@@ -17,7 +17,7 @@ easy_admin:
         - Engelsystem\Entity\Room
         - Engelsystem\Entity\Shift
         - Engelsystem\Entity\ShiftEntry
-        - Engelsystem\Entity\ShiftTypes
+        - Engelsystem\Entity\ShiftType
         - Engelsystem\Entity\User
         - Engelsystem\Entity\UserAngelTypes
         - Engelsystem\Entity\UserDriverLicenses

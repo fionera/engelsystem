@@ -11,6 +11,7 @@ use Engelsystem\Entity\News;
 use Engelsystem\Entity\NewsComment;
 use Engelsystem\Entity\Room;
 use Engelsystem\Entity\Shift;
+use Engelsystem\Entity\ShiftEntry;
 use Engelsystem\Entity\ShiftType;
 use Engelsystem\Entity\User;
 use Engelsystem\Entity\UserAngelTypes;
@@ -193,12 +194,24 @@ class StructService
             'arrived' => $user->getArrived(),
             'plannedArrivalDate' => $user->getPlannedArrivalDate(),
             'arrivalDate' => $user->getArrivalDate(),
+            'lastLogin' => $user->getLastLogin(),
             'vouchers' => $user->getVoucher(),
             'userAngelTypes' => array_map(function (UserAngelTypes $userAngelTypes) {
                 return $this->getUserAngelTypeStruct($userAngelTypes, true, false, false);
             }, $user->getUserAngelTypes()->toArray()),
             'groups' => array_map([$this, 'getGroupStruct'], $user->getGroups()->toArray()),
             'apiKey' => $user->getApiKey(),
+            'active' => $user->getActive(),
+            'forceActive' => $user->getForceActive(),
+            'tshirt' => $user->getTShirt(),
+            'size' => $user->getSize(),
+            'freeloads' => array_sum(array_map(function (ShiftEntry $shiftEntry) {
+                if ($shiftEntry->getFreeloaded()) {
+                    return $shiftEntry->getShift()->getStart()->diff($shiftEntry->getShift()->getEnd())->h;
+                }
+
+                return 0;
+            }, $user->getShiftEntries()->toArray())),
             'free' => true, //TODO: Search for shift
         ];
     }
@@ -239,15 +252,20 @@ class StructService
             'length' => $length,
             'neededHelper' => 1,
             'shiftType' => $this->getShiftTypeStruct($shift->getShiftType()),
+            'neededAngelTypes' => array_map([$this, 'getNeededAngelTypeStruct'], $shift->getNeededAngelTypes()->toArray()),
             'room' => $this->getRoomStruct($shift->getRoom()),
-            'shiftEntryList' => []
+            'shiftEntryList' => [],
+            'createdAt' => $shift->getCreatedAtTimestamp(),
+            'createdBy' => $this->getUserStruct($shift->getCreatedByUser()),
         ];
     }
 
     public function getShiftTypeStruct(ShiftType $shiftType)
     {
         return [
+            'id' => $shiftType->getId(),
             'name' => $shiftType->getName(),
+            'description' => $shiftType->getDescription(),
             'angelType' => $this->getAngeltypeStruct($shiftType->getAngelType())
         ];
     }
@@ -262,23 +280,25 @@ class StructService
 
     public function getLaneViewStruct(LaneView $laneView)
     {
-        $structs = [];
-        foreach ($laneView->get() as $lane) {
+        $lanes = [];
+        foreach ($laneView->getLanes() as $lane) {
 
             $struct = [];
-            foreach ($lane as $entry) {
+            foreach ($lane['entries'] as $entry) {
                 if ($entry instanceof Shift) {
-                    $struct[] = $this->getShiftStruct($entry);
+                    $struct['shifts'][] = $this->getShiftStruct($entry);
                 } else {
-                    $struct[] = $entry;
+                    $struct['shifts'][] = $entry;
                 }
             }
 
-            $structs[] = $struct;
+            $struct['room'] = $this->getRoomStruct($lane['room']);
+
+            $lanes[] = $struct;
         }
 
         return [
-            'lanes' => $structs,
+            'lanes' => $lanes,
             'shiftHours' => $laneView->getShiftHours(),
         ];
     }

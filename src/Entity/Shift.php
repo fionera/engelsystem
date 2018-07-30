@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,7 +24,7 @@ class Shift
     /**
      * @var string|null
      *
-     * @ORM\Column(name="title", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="title", type="text", length=65535, nullable=false)
      */
     private $name;
 
@@ -85,6 +86,13 @@ class Shift
      * @ORM\ManyToOne(targetEntity="ShiftType", inversedBy="shifts")
      */
     private $shiftType;
+
+    /**
+     * @var NeededAngelTypes[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="Engelsystem\Entity\NeededAngelTypes", mappedBy="shift")
+     */
+    private $neededAngelTypes;
 
     /**
      * @var User
@@ -243,4 +251,24 @@ class Shift
         return $this;
     }
 
+    /**
+     * @return Collection|NeededAngelTypes[]
+     */
+    public function getNeededAngelTypes()
+    {
+        return $this->neededAngelTypes;
+    }
+
+    /**
+     * @param Collection|NeededAngelTypes[] $neededAngelTypes
+     */
+    public function setNeededAngelTypes($neededAngelTypes): void
+    {
+        $this->neededAngelTypes = $neededAngelTypes;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

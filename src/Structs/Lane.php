@@ -2,6 +2,7 @@
 
 namespace Engelsystem\Structs;
 
+use Engelsystem\Entity\Room;
 use Engelsystem\Entity\Shift;
 
 class Lane
@@ -17,11 +18,19 @@ class Lane
     private $lastEnd;
 
     /**
-     * Lane constructor.
+     * @var Room
      */
-    public function __construct(array $shifts)
+    private $room;
+
+    /**
+     * Lane constructor.
+     * @param array $shifts
+     * @param Room $room
+     */
+    public function __construct(array $shifts, Room $room)
     {
         $this->shifts = $shifts;
+        $this->room = $room;
     }
 
     public function getLastEnd()
@@ -52,6 +61,14 @@ class Lane
     public function getShifts(): array
     {
         return $this->shifts;
+    }
+
+    /**
+     * @return Room
+     */
+    public function getRoom(): Room
+    {
+        return $this->room;
     }
 
     public function getTicks(): array

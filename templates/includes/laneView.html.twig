@@ -16,13 +16,12 @@
     {% for lane in laneView.lanes %}
         <div class="lane">
             <div class="header" style="position: relative; z-index: 900;">
-                <a href="https://engel.ctdo.de/rooms?action=view&amp;room_id=2"> <span
-                            class="glyphicon glyphicon-map-marker"></span> Cafe</a>
+                <a href="{{ url('room_view', {'id': lane.room.id}) }}"> <span class="glyphicon glyphicon-map-marker"></span> {{ lane.room.name }}</a>
             </div>
             <div class="tick"></div>
             <div class="tick"></div>
 
-            {% for shift in lane %}
+            {% for shift in lane.shifts %}
                 {% if shift.ticks is defined %}
                     {% for tick in shift.ticks %}
                         <div class="tick{% if tick.isHour %} hour{% endif %}"></div>

@@ -4,13 +4,137 @@
 
 {% block content %}
     <div class="sm-12">
-        {% embed "@KilikTable/_defaultTable.html.twig" with {"table": table} %}
-            {% block tableTitle %}
-                <b>Organisations list</b>
-                <div class="navbar navbar-right">
-                    <a href="{{ path("user") }}"><span class="glyphicon glyphicon-home"></span> return to examples list</a>
+        <div class="col-md-12"><h1>All users</h1>
+            <div class="form-group">
+                <div class="btn-group">
+                    <a href="{{ url('user_create') }}" class="btn btn-default ">
+                        <span class="glyphicon glyphicon-plus"></span> New user
+                    </a>
                 </div>
-            {% endblock tableTitle %}
-        {% endembed %}
+            </div>
+            <table class="table table-striped data">
+                <thead>
+                <tr>
+                    <th class="column_Nick">
+                        <a href="https://engel.ctdo.de/users?OrderBy=Nick">Nick <span class="caret"></span></a>
+                    </th>
+                    <th class="column_Vorname">
+                        <a href="https://engel.ctdo.de/users?OrderBy=Vorname">Prename</a>
+                    </th>
+                    <th class="column_Name">
+                        <a href="https://engel.ctdo.de/users?OrderBy=Name">Name</a>
+                    </th>
+                    <th class="column_DECT">
+                        <a href="https://engel.ctdo.de/users?OrderBy=DECT">DECT</a>
+                    </th>
+                    <th class="column_Gekommen">
+                        <a href="https://engel.ctdo.de/users?OrderBy=Gekommen">Arrived</a>
+                    </th>
+                    <th class="column_got_voucher">
+                        <a href="https://engel.ctdo.de/users?OrderBy=got_voucher">Voucher</a>
+                    </th>
+                    <th class="column_freeloads">Freeloads</th>
+                    <th class="column_Aktiv">
+                        <a href="https://engel.ctdo.de/users?OrderBy=Aktiv">Active</a>
+                    </th>
+                    <th class="column_force_active">
+                        <a href="https://engel.ctdo.de/users?OrderBy=force_active">Forced</a>
+                    </th>
+                    <th class="column_Tshirt">
+                        <a href="https://engel.ctdo.de/users?OrderBy=Tshirt">T-Shirt</a>
+                    </th>
+                    <th class="column_Size">
+                        <a href="https://engel.ctdo.de/users?OrderBy=Size">Size</a>
+                    </th>
+                    <th class="column_lastLogIn">
+                        <a href="https://engel.ctdo.de/users?OrderBy=lastLogIn">Last login</a>
+                    </th>
+                    <th class="column_actions"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td class="column_Nick">
+                            <a class="" href="{{ url('user_view', {'id': user.id}) }}"><span
+                                        class="icon-icon_angel"></span> {{ user.username }}</a>
+                        </td>
+                        <td class="column_Vorname">
+                            {{ user.prename }}
+                        </td>
+                        <td class="column_Name">
+                            {{ user.surname }}
+                        </td>
+                        <td class="column_DECT">
+                            {{ user.dect }}
+                        </td>
+                        <td class="column_Gekommen">
+                            {% if user.arrived %}
+                                <span class="text-success"> <span class="glyphicon glyphicon-ok"></span> </span>
+                            {% else %}
+                                <span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                            {% endif %}
+                        </td>
+                        <td class="column_got_voucher">
+                            {{ user.vouchers }}
+                        </td>
+                        <td class="column_freeloads">
+                            {{ user.freeloads }}
+                        </td>
+                        <td class="column_Aktiv">
+                            {% if user.active %}
+                                <span class="text-success"> <span class="glyphicon glyphicon-ok"></span> </span>
+                            {% else %}
+                                <span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                            {% endif %}
+                        </td>
+                        <td class="column_force_active">
+                            {% if user.forceActive %}
+                                <span class="text-success"> <span class="glyphicon glyphicon-ok"></span> </span>
+                            {% else %}
+                                <span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                            {% endif %}
+                        </td>
+                        <td class="column_Tshirt">
+                            {% if user.tshirt %}
+                                <span class="text-success"> <span class="glyphicon glyphicon-ok"></span> </span>
+                            {% else %}
+                                <span class="text-danger"> <span class="glyphicon glyphicon-remove"></span> </span>
+                            {% endif %}
+                        </td>
+                        <td class="column_Size">
+                            {{ user.size }}
+                        </td>
+                        <td class="column_lastLogIn">
+                            {{ user.lastLogin|date('Y-m-d H:i') }}
+                        </td>
+                        <td class="column_actions">
+                            <div class="btn-group">
+                                <a href="{{ url('user_edit', {'id': user.id}) }}" class="btn btn-default btn-xs">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                <tr>
+                    <td class="column_Nick"><strong>Sum</strong></td>
+                    <td class="column_Vorname">&nbsp;</td>
+                    <td class="column_Name">&nbsp;</td>
+                    <td class="column_DECT">&nbsp;</td>
+                    <td class="column_Gekommen">{{ stats.arrived }}</td>
+                    <td class="column_got_voucher">{{ stats.vouchers }}</td>
+                    <td class="column_freeloads">{{ stats.freeloads }}</td>
+                    <td class="column_Aktiv">{{ stats.active }}</td>
+                    <td class="column_force_active">{{ stats.forceActive }}</td>
+                    <td class="column_Tshirt">{{ stats.tshirts }}</td>
+                    <td class="column_Size">&nbsp;</td>
+                    <td class="column_lastLogIn">&nbsp;</td>
+                    <td class="column_actions"><strong>{{ users|length }}</strong></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock %}

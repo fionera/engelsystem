@@ -32,7 +32,10 @@ class LaneView
         $this->endTime = $endTime;
     }
 
-    public function get()
+    /**
+     * @return array
+     */
+    public function getLanes()
     {
         $lanes = [];
 
@@ -43,21 +46,22 @@ class LaneView
             $shift = null;
             foreach ($lane->getShifts() as $shift) {
                 if ($currentTime < $shift->getStart()) {
-                    $laneEntries[] = [
+                    $laneEntries['entries'][] = [
                         'ticks' => $this->getTicks($currentTime, $shift->getStart())
                     ];
                 }
 
-                $laneEntries[] = $shift;
+                $laneEntries['entries'][] = $shift;
                 $currentTime = $shift->getEnd();
             }
 
             if ($shift !== null && $shift->getEnd() < $this->endTime) {
-                $laneEntries[] = [
+                $laneEntries['entries'][] = [
                     'ticks' => $this->getTicks($shift->getEnd(), $this->endTime)
                 ];
             }
 
+            $laneEntries['room'] = $lane->getRoom();
             $lanes[] = $laneEntries;
         }
 

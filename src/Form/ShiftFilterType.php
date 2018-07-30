@@ -32,37 +32,41 @@ class ShiftFilterType extends AbstractType
     {
         $builder
             ->add('from_date', ChoiceType::class, [
-                'choices' => array_combine($this->eventDays, $this->eventDays)
+                'choices' => array_combine($this->eventDays, $this->eventDays),
             ])
             ->add('from_time', TimeType::class, [
                 'widget' => 'single_text',
                 'data' => new \DateTime(),
-                'input' => 'datetime'
+                'input' => 'datetime',
             ])
             ->add('to_date', ChoiceType::class, [
-                'choices' => array_combine($this->eventDays, $this->eventDays)
+                'choices' => array_combine($this->eventDays, $this->eventDays),
             ])
             ->add('to_time', TimeType::class, [
                 'widget' => 'single_text',
                 'data' => new \DateTime(),
-                'input' => 'datetime'
+                'input' => 'datetime',
             ])
             ->add('rooms', EntityType::class, [
                 'multiple' => true,
                 'expanded' => true,
                 'class' => Room::class,
                 'choice_label' => 'name',
-                'mapped' => false,
+                'required' => false
             ])
             ->add('angelTypes', EntityType::class, [
                 'multiple' => true,
                 'expanded' => true,
                 'class' => AngelType::class,
                 'choice_label' => 'name',
-                'mapped' => false,
+                'required' => false
             ])
-            ->add('occupancy_free', CheckboxType::class)
-            ->add('occupancy_occupied', CheckboxType::class)
+            ->add('occupancy_free', CheckboxType::class, [
+                'required' => false
+            ])
+            ->add('occupancy_occupied', CheckboxType::class, [
+                'required' => false
+            ])
             ->add('filter', SubmitType::class)
         ;
     }
