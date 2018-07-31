@@ -3,10 +3,11 @@
 namespace Engelsystem\EventSubscriber;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Engelsystem\Entity\EventConfig;
 use Engelsystem\Entity\Room;
 use Engelsystem\Entity\User;
+use Engelsystem\Service\EventConfigService;
 use Engelsystem\Service\StructService;
+use Engelsystem\Structs\EventConfig;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -32,6 +33,10 @@ class RequestSubscriber implements EventSubscriberInterface
      * @var StructService
      */
     private $structService;
+    /**
+     * @var EventConfigService
+     */
+    private $eventConfigService;
 
     /**
      * RequestSubscriber constructor.
@@ -39,12 +44,13 @@ class RequestSubscriber implements EventSubscriberInterface
      * @param EntityManagerInterface $entityManager
      * @param TokenStorage $tokenStorage
      */
-    public function __construct(Environment $environment, EntityManagerInterface $entityManager, ContainerInterface $container, StructService $structService)
+    public function __construct(Environment $environment, EntityManagerInterface $entityManager, ContainerInterface $container, StructService $structService, EventConfigService $eventConfigService)
     {
         $this->environment = $environment;
         $this->entityManager = $entityManager;
         $this->container = $container;
         $this->structService = $structService;
+        $this->eventConfigService = $eventConfigService;
     }
 
     public function onKernelRequest(GetResponseEvent $event)
@@ -81,8 +87,8 @@ class RequestSubscriber implements EventSubscriberInterface
 //            'event_info' => EventConfig_info($event_config) . ' <br />'
         ];
 
-        /** @var EventConfig|null $eventConfig */
-        $eventConfig = $this->entityManager->getRepository(EventConfig::class)->find(getenv('EVENT_ID'));
+        /** @var EventConfig $eventConfig */
+        $eventConfig = $this->eventConfigService->getEventConfig();
 
         if ($eventConfig !== null) {
             $config['eventConfig'] = [

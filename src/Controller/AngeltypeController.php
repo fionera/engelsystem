@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AngeltypesController extends Controller
+class AngeltypeController extends Controller
 {
     /**
      * @var StructService
@@ -27,7 +27,9 @@ class AngeltypesController extends Controller
     private $laneService;
 
     /**
-     * AngeltypesController constructor.
+     * AngeltypeController constructor.
+     * @param StructService $structService
+     * @param LaneService $laneService
      */
     public function __construct(StructService $structService, LaneService $laneService)
     {
@@ -36,17 +38,17 @@ class AngeltypesController extends Controller
     }
 
     /**
-     * @Route("/angeltypes", name="angeltypes")
+     * @Route("/angeltype", name="angeltype")
      */
     public function index()
     {
-        return $this->render('angeltypes/index.html.twig', [
+        return $this->render('angeltype/index.html.twig', [
             'angelTypeList' => $this->getAngeltypes()
         ]);
     }
 
     /**
-     * @Route("/angeltypes/{id<\d+>}", name="angeltypes_view")
+     * @Route("/angeltype/{id<\d+>}", name="angeltype_view")
      */
     public function view(int $id)
     {
@@ -68,14 +70,14 @@ class AngeltypesController extends Controller
             }
         }
 
-        return $this->render('angeltypes/view.html.twig', [
+        return $this->render('angeltype/view.html.twig', [
             'angelType' => $this->structService->getAngeltypeStruct($angelType),
             'multiDayLaneView' => $this->laneService->createMultiDayLaneView($shifts),
         ]);
     }
 
     /**
-     * @Route("/angeltypes/{id<\d+>}/edit", name="angeltypes_edit")
+     * @Route("/angeltype/{id<\d+>}/edit", name="angeltype_edit")
      */
     public function edit(int $id, Request $request)
     {
@@ -94,17 +96,17 @@ class AngeltypesController extends Controller
             $entityManager->persist($angelType);
             $entityManager->flush();
 
-            return $this->redirectToRoute('angeltypes_view', ['id' => $angelType->getId()]);
+            return $this->redirectToRoute('angeltype_view', ['id' => $angelType->getId()]);
         }
 
-        return $this->render('angeltypes/edit.html.twig', [
+        return $this->render('angeltype/edit.html.twig', [
             'angelTypeForm' => $angelTypeForm->createView(),
             'angelType' => $this->structService->getAngeltypeStruct($angelType)
         ]);
     }
 
     /**
-     * @Route("/angeltypes/create", name="angeltypes_create")
+     * @Route("/angeltype/create", name="angeltype_create")
      */
     public function create(Request $request)
     {
@@ -118,16 +120,16 @@ class AngeltypesController extends Controller
             $entityManager->persist($angelType);
             $entityManager->flush();
 
-            return $this->redirectToRoute('angeltypes_view', ['id' => $angelType->getId()]);
+            return $this->redirectToRoute('angeltype_view', ['id' => $angelType->getId()]);
         }
 
-        return $this->render('angeltypes/create.html.twig', [
+        return $this->render('angeltype/create.html.twig', [
             'angelTypeForm' => $angelTypeForm->createView()
         ]);
     }
 
     /**
-     * @Route("/angeltypes/{id<\d+>}/delete", name="angeltypes_delete")
+     * @Route("/angeltype/{id<\d+>}/delete", name="angeltype_delete")
      */
     public function delete(int $id)
     {
@@ -140,11 +142,11 @@ class AngeltypesController extends Controller
         $this->getDoctrine()->getManager()->remove($angelType);
         $this->getDoctrine()->getManager()->flush();
 
-        return $this->redirectToRoute('angeltypes');
+        return $this->redirectToRoute('angeltype');
     }
 
     /**
-     * @Route("/angeltypes/{id<\d+>}/add_angel", name="angeltypes_add")
+     * @Route("/angeltype/{id<\d+>}/add_angel", name="angeltype_add")
      */
     public function add(int $id)
     {
@@ -157,11 +159,11 @@ class AngeltypesController extends Controller
         $this->getDoctrine()->getManager()->remove($angelType);
         $this->getDoctrine()->getManager()->flush();
 
-        return $this->redirectToRoute('angeltypes');
+        return $this->redirectToRoute('angeltype');
     }
 
     /**
-     * @Route("/angeltypes/{angelTypeId<\d+>}/remove/{userId<\d+>}", name="angeltypes_remove_angel")
+     * @Route("/angeltype/{angelTypeId<\d+>}/remove/{userId<\d+>}", name="angeltype_remove_angel")
      */
     public function remove(int $angelTypeId, int $userId, Request $request)
     {
@@ -181,11 +183,11 @@ class AngeltypesController extends Controller
             return $this->redirect($redirectUrl);
         }
 
-        return $this->redirectToRoute('angeltypes');
+        return $this->redirectToRoute('angeltype');
     }
 
     /**
-     * @Route("/angeltypes/{id<\d+>}/join", name="angeltypes_join")
+     * @Route("/angeltype/{id<\d+>}/join", name="angeltype_join")
      */
     public function join(int $id, Request $request)
     {
@@ -212,11 +214,11 @@ class AngeltypesController extends Controller
             return $this->redirect($redirectUrl);
         }
 
-        return $this->redirectToRoute('angeltypes');
+        return $this->redirectToRoute('angeltype');
     }
 
     /**
-     * @Route("/angeltypes/{id<\d+>}/leave", name="angeltypes_leave")
+     * @Route("/angeltype/{id<\d+>}/leave", name="angeltype_leave")
      */
     public function leave(int $id, Request $request)
     {
@@ -237,7 +239,7 @@ class AngeltypesController extends Controller
             return $this->redirect($redirectUrl);
         }
 
-        return $this->redirectToRoute('angeltypes');
+        return $this->redirectToRoute('angeltype');
     }
 
     protected function getAngeltypes()

@@ -12,8 +12,6 @@ class CreditsController extends Controller
      */
     public function index()
     {
-        return $this->render('credits/index.html.twig', [
-            'controller_name' => 'CreditsController',
-        ]);
+        return $this->render('credits/index.html.twig');
     }
 }

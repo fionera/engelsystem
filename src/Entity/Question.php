@@ -5,11 +5,11 @@ namespace Engelsystem\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Questions
+ * Question
  *
  * @ORM\Entity
  */
-class Questions
+class Question
 {
     /**
      * @var int
@@ -18,7 +18,7 @@ class Questions
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $qid;
+    private $id;
 
     /**
      * @var string
@@ -54,9 +54,9 @@ class Questions
      */
     private $answer_user;
 
-    public function getQid(): ?int
+    public function getId(): ?int
     {
-        return $this->qid;
+        return $this->id;
     }
 
     public function getQuestion(): ?string

@@ -130,7 +130,7 @@ class ShiftController extends Controller
     }
 
     /**
-     * @Route("/shift/{id}", name="shift_view")
+     * @Route("/shift/{id<\d+>}", name="shift_view")
      */
     public function view(int $id)
     {
@@ -150,10 +150,7 @@ class ShiftController extends Controller
      */
     public function create()
     {
-        $shiftForm = $this->createForm(ShiftType::class);
-
         return $this->render('shift/create.html.twig', [
-            'shiftForm' => $shiftForm->createView(),
         ]);
     }
 

@@ -83,10 +83,10 @@
                 <h4>Angeltypes</h4>
                 {% for userAngelType in user.userAngelTypes %}
                     {% if userAngelType.angelType.member and not userAngelType.angelType.memberAwait %}
-                        <a href="{{ url('angeltypes_view', {'id': userAngelType.angelType.id}) }}"
+                        <a href="{{ url('angeltype_view', {'id': userAngelType.angelType.id}) }}"
                            class="text-success">{{ userAngelType.angelType.name }}</a>
                     {% else %}
-                        <a href="{{ url('angeltypes_view', {'id': userAngelType.angelType.id}) }}"
+                        <a href="{{ url('angeltype_view', {'id': userAngelType.angelType.id}) }}"
                            class="text-warning">{{ userAngelType.angelType.name }}</a>
                     {% endif %}
                     <br>

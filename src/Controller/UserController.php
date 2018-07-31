@@ -8,6 +8,7 @@ use Engelsystem\Entity\AngelType;
 use Engelsystem\Entity\User;
 use Engelsystem\Entity\UserAngelTypes;
 use Engelsystem\Form\EditUserType;
+use Engelsystem\Form\RegisterType;
 use Engelsystem\Service\StatisticsService;
 use Engelsystem\Service\StructService;
 use Kilik\TableBundle\Components\Column;
@@ -19,6 +20,7 @@ use Kilik\TableBundle\Services\TableServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends Controller
 {
@@ -69,6 +71,53 @@ class UserController extends Controller
         return $this->render('user/view.html.twig', [
             'user' => $this->structService->getUserStruct($user)
         ]);
+    }
+
+    /**
+     * @Route("/user/create", name="user_create")
+     */
+    public function create(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $user = new User();
+        $registerForm = $this->createForm(RegisterType::class, $user);
+
+        $registerForm->handleRequest($request);
+        if ($registerForm->isSubmitted() && $registerForm->isValid()) {
+
+            $userAngelTypeCollection = new ArrayCollection();
+            /** @var AngelType $angelType */
+            foreach ($registerForm->get('angelTypes')->getData() as $angelType) {
+                if ($angelType->getNoSelfSignup()) {
+                    continue;
+                }
+
+                $userAngelType = new UserAngelTypes();
+                $userAngelType->setUser($user);
+                $userAngelType->setAngelType($angelType);
+
+                if (!$angelType->getRestricted()) {
+                    $userAngelType->setConfirmUser($user);
+                }
+
+                $userAngelTypeCollection->add($userAngelType);
+            }
+            $user->setUserAngelTypes($userAngelTypeCollection);
+
+            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+            $user->setPassword($password);
+            $user->setCreateDate(new \DateTime());
+            $user->resetApiKey();
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('index');
+        }
+
+        return $this->render('user/create.html.twig', array(
+            'registerForm' => $registerForm->createView(),
+        ));
     }
 
     /**

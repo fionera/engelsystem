@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h2>
+                {% block formTypeH2 %}
+                {% endblock %}
+            </h2>
+
+            <div class="form-group">
+                <div class="btn-group">
+                    <a href="{{ url('config') }}" class="btn btn-default back">Event Config</a>
+                </div>
+            </div>
+
+            {{ form_start(eventConfigForm) }}
+            {{ form_widget(eventConfigForm) }}
+            {{ form_end(eventConfigForm) }}
+        </div>
+    </div>
+{% endblock %}

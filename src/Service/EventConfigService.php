@@ -3,6 +3,8 @@
 namespace Engelsystem\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Engelsystem\Entity\Config;
+use Engelsystem\Structs\EventConfig;
 
 class EventConfigService
 {
@@ -10,6 +12,8 @@ class EventConfigService
      * @var EntityManagerInterface
      */
     private $entityManager;
+
+    private $eventConfig;
 
     /**
      * EventConfigService constructor.
@@ -19,10 +23,67 @@ class EventConfigService
         $this->entityManager = $entityManager;
     }
 
+    public function getEventConfig(): EventConfig
+    {
+        if ($this->eventConfig !== null) {
+            return $this->eventConfig;
+        }
+
+        $eventConfig = new EventConfig();
+
+        $configList = $this->entityManager->getRepository(Config::class)->findAll();
+
+        /** @var Config $config */
+        foreach ($configList as $config) {
+            $eventConfig->set($config->getKey(), $config->getValue());
+        }
+
+        $this->eventConfig = $eventConfig;
+
+        return $eventConfig;
+    }
+
+    public function saveEventConfig(?EventConfig $eventConfig = null)
+    {
+        if ($eventConfig === null) {
+            $eventConfig = $this->getEventConfig();
+        }
+
+        $configList = $this->entityManager->getRepository(Config::class)->findAll();
+
+        /** @var Config[] $sorted */
+        $sorted = [];
+        /** @var Config $config */
+        foreach ($configList as $config) {
+            $sorted[$config->getKey()] = $config;
+        }
+
+        foreach ($eventConfig->getConfig() as $key => $value) {
+            if ($value !== null && !\is_string($value)) {
+                $value = serialize($value);
+            }
+
+            if (isset($sorted[$key]) && $sorted[$key] !== null) {
+                $sorted[$key]->setValue($value);
+            } else {
+                $sorted[$key] = new Config($key, $value);
+            }
+
+            $this->entityManager->persist($sorted[$key]);
+        }
+        $this->entityManager->flush();
+    }
+
     public function getEventDays()
     {
-        $startDate = new \DateTime('now');
-        $endDate = new \DateTime('90 days');
+        $eventConfig = $this->getEventConfig();
+
+        $startDate = $eventConfig->getEventStartDate();
+        $endDate = $eventConfig->getEventEndDate();
+
+        if ($startDate === null || $endDate === null) {
+            return [];
+        }
 
         $diff = $startDate->diff($endDate);
 

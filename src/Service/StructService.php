@@ -9,12 +9,14 @@ use Engelsystem\Entity\MeetingComment;
 use Engelsystem\Entity\NeededAngelTypes;
 use Engelsystem\Entity\News;
 use Engelsystem\Entity\NewsComment;
+use Engelsystem\Entity\Question;
 use Engelsystem\Entity\Room;
 use Engelsystem\Entity\Shift;
 use Engelsystem\Entity\ShiftEntry;
 use Engelsystem\Entity\ShiftType;
 use Engelsystem\Entity\User;
 use Engelsystem\Entity\UserAngelTypes;
+use Engelsystem\Structs\EventConfig;
 use Engelsystem\Structs\Lane;
 use Engelsystem\Structs\LaneView;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -316,5 +318,27 @@ class StructService
         }
 
         return $neededAngelTypeStruct;
+    }
+
+    public function getEventConfigStruct(EventConfig $eventConfig)
+    {
+        return [
+            'eventName' => $eventConfig->getEventName(),
+            'buildupStartDate' => $eventConfig->getBuildupStartDate(),
+            'eventStartDate' => $eventConfig->getEventStartDate(),
+            'eventEndDate' => $eventConfig->getEventEndDate(),
+            'teardownEndDate' => $eventConfig->getTeardownEndDate(),
+            'raw' => $eventConfig->getConfig(),
+        ];
+    }
+
+    public function getQuestionStruct(Question $question) {
+        return [
+            'id' => $question->getId(),
+            'question' => $question->getQuestion(),
+            'askUser' => $this->getUserStruct($question->getAskUser()),
+            'answer' => $question->getAnswer(),
+            'answerUser' => $this->getUserStruct($question->getAnswerUser()),
+        ];
     }
 }

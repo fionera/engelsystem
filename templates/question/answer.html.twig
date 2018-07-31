@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12"><h1>Answer questions</h1>
+        <h2>Unanswered questions</h2>
+        {% if openQuestions|length == 0 %}
+            <div class="alert alert-info">
+                No data found.
+            </div>
+        {% else %}
+            <table class="table table-striped data">
+                <thead>
+                <tr>
+                    <th class="column_from">From</th>
+                    <th class="column_question">Question</th>
+                    <th class="column_answer">Answer</th>
+                    <th class="column_actions"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for openQuestion in openQuestions %}
+                    <tr>
+                        <td class="column_from">
+                            <a class="" href="{{ url('user_view', {'id': openQuestion.askUser.id}) }}">
+                                <span class="icon-icon_angel"></span> {{ openQuestion.askUser.username }}
+                            </a>
+                        </td>
+                        <td class="column_question">
+                            {{ openQuestion.question }}
+                        </td>
+                        <td class="column_answer">
+                            {{ form_start(openQuestion.form) }}
+                            <div class="form-group">
+                                {{ form_widget(openQuestion.form.answer) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_widget(openQuestion.form.save) }}
+                            </div>
+                            {{ form_end(openQuestion.form) }}
+                        </td>
+                        <td class="column_actions">
+                            <a href="{{ url('question_remove', {'id': openQuestion.id}) }}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        <h2>Answered questions</h2>
+        {% if answeredQuestions|length == 0 %}
+            <div class="alert alert-info">
+                No data found.
+            </div>
+        {% else %}
+            <table class="table table-striped data">
+                <thead>
+                <tr>
+                    <th class="column_from">From</th>
+                    <th class="column_question">Question</th>
+                    <th class="column_answered_by">Answered by</th>
+                    <th class="column_answer">Answer</th>
+                    <th class="column_actions"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for answeredQuestion in answeredQuestions %}
+                    <tr>
+                        <td class="column_from">
+                            <a class="" href="{{ url('user_view', {'id': answeredQuestion.askUser.id}) }}">
+                                <span class="icon-icon_angel"></span> {{ answeredQuestion.askUser.username }}
+                            </a>
+                        </td>
+                        <td class="column_question">
+                            {{ answeredQuestion.question }}
+                        </td>
+                        <td class="column_answered_by">
+                            <a class="" href="{{ url('user_view', {'id': answeredQuestion.answerUser.id}) }}">
+                                <span class="icon-icon_angel"></span> {{ answeredQuestion.answerUser.username }}
+                            </a>
+                        </td>
+                        <td class="column_answer">
+                            {{ answeredQuestion.answer }}
+                        </td>
+                        <td class="column_actions">
+                            <a href="{{ url('question_remove', {'id': answeredQuestion.id}) }}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}
+

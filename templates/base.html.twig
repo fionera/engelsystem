@@ -48,13 +48,13 @@
                         </li>
                     {% endif %}
 
-                    {% if hasPermission('angeltypes_view') %}
-                        <li class=""><a href="{{ url('angeltypes') }}">Angeltypes</a>
+                    {% if hasPermission('angeltype_view') %}
+                        <li class=""><a href="{{ url('angeltype') }}">Angeltypes</a>
                         </li>
                     {% endif %}
 
-                    {% if hasPermission('ask_view') %}
-                        <li class=""><a href="{{ url('ask') }}">Ask the Heaven</a>
+                    {% if hasPermission('questions_view') %}
+                        <li class=""><a href="{{ url('question') }}">Ask the Heaven</a>
                         </li>
                     {% endif %}
 
@@ -84,12 +84,12 @@
                                 </a>
                             <ul class="dropdown-menu" role="menu" style="max-height: 871px; overflow-y: scroll;">
                                 <li class=""><a href="{{ url('user') }}">All Angels</a></li>
-                                <li class=""><a href="https://engel.ctdo.de/admin-questions">Answer questions</a></li>
+                                <li class=""><a href="{{ url('question_answer') }}">Answer questions</a></li>
                                 <li class=""><a href="{{ url('shift_create') }}">Create shifts</a></li>
                                 <li class=""><a href="https://engel.ctdo.de/admin-groups">Grouprights</a></li>
-                                <li class=""><a href="https://engel.ctdo.de/admin-import">Frab import</a></li>
-                                <li class=""><a href="https://engel.ctdo.de/admin-log">Log</a></li>
-                                <li class=""><a href="https://engel.ctdo.de/admin-event-config">Event config</a></li>
+                                {#<li class=""><a href="#">Frab import</a></li>#}
+                                {#<li class=""><a href="https://engel.ctdo.de/admin-log">Log</a></li>#}
+                                <li class=""><a href="{{ url('config') }}">Event config</a></li>
                             </ul>
                         </li>
                     {% endif %}

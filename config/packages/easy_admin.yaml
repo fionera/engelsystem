@@ -5,7 +5,7 @@ easy_admin:
 #        - App\Entity\Category
 #        - App\Entity\User
         - Engelsystem\Entity\AngelType
-        - Engelsystem\Entity\EventConfig
+        - Engelsystem\Entity\Config
         - Engelsystem\Entity\Group
         - Engelsystem\Entity\LogEntries
         - Engelsystem\Entity\Messages

@@ -24,3 +24,9 @@ en: English
 Edit: Edit
 Username: Username
 'Comments »': 'Comments »'
+'eventName': 'Event Name'
+'buildupStartDate': 'Buildup Start Date'
+'eventStartDate': 'Event Start Date'
+'eventEndDate': 'Event End Date'
+'teardownEndDate': 'Teardown End Date'
+'eventWelcomeMsg': 'Event Welcome Message'

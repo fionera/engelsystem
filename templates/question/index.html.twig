@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ask the Heaven{% endblock %}
+
+{% block content %}
+    <div class="col-md-12"><h1>Ask the Heaven</h1>
+        <h2>Open questions</h2>
+        {% if openQuestions|length == 0 %}
+            <div class="alert alert-info">
+                No data found.
+            </div>
+        {% else %}
+            <table class="table table-striped data">
+                <thead>
+                <tr>
+                    <th class="column_Question">
+                        Question
+                    </th>
+                    <th class="column_actions"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for openQuestion in openQuestions %}
+                    <tr>
+                        <td class="column_Question">
+                            {{ openQuestion.question }}
+                        </td>
+                        <td class="column_actions">
+                            <a href="{{ url('question_remove', {'id': openQuestion.id}) }}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        <h2>Answered questions</h2>
+        {% if answeredQuestions|length == 0 %}
+            <div class="alert alert-info">
+                No data found.
+            </div>
+        {% else %}
+            <table class="table table-striped data">
+                <thead>
+                <tr>
+                    <th class="column_Question">Question</th>
+                    <th class="column_answer_user">Answered by</th>
+                    <th class="column_Answer">Answer</th>
+                    <th class="column_actions"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for answeredQuestion in answeredQuestions %}
+                    <tr>
+                        <td class="column_Question">
+                            {{ answeredQuestion.question }}
+                        </td>
+                        <td class="column_answer_user">
+                            <a class="" href="{{ url('user_view', {'id': answeredQuestion.answerUser.id}) }}">
+                                <span class="icon-icon_angel"></span> {{ answeredQuestion.answerUser.username }}
+                            </a>
+                        </td>
+                        <td class="column_Answer">
+                            {{ answeredQuestion.answer }}
+                        </td>
+                        <td class="column_actions">
+                            <a href="{{ url('question_remove', {'id': answeredQuestion.id}) }}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        <h2>Ask the Heaven</h2>
+        {{ form_start(questionForm) }}
+        {{ form_widget(questionForm) }}
+        {{ form_end(questionForm) }}
+    </div>
+{% endblock %}

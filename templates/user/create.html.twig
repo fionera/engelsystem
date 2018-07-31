@@ -6,7 +6,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <h1>Register</h1>
+        <h1>Create Angel</h1>
         By completing this form you're registering as a Chaos-Angel. This script will create you an account in the angel
         task scheduler.
         {{ form_start(registerForm) }}
@@ -187,8 +187,9 @@
                 {{ form_label(registerForm.register, 'Register') }}
                 {{ form_widget(registerForm.register, {'attr': {'class': 'btn-primary'} }) }}
             </div>
-        </div>
-    </div>
+
     {{ form_widget(registerForm) }}
     {{ form_end(registerForm) }}
+        </div>
+    </div>
     {% endblock %}
