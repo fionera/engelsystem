@@ -70,35 +70,19 @@ class RequestSubscriber implements EventSubscriberInterface
             'theme' => getenv('DEFAULT_THEME'),
             'locales' => $this->getAvailableLanguages(),
             'loggedInUser' => $user,
-            'rooms' => array_map([$this->structService, 'getRoomStruct'], $this->entityManager->getRepository(Room::class)->findAll())
+            'rooms' => array_map([$this->structService, 'getRoomStruct'], $this->entityManager->getRepository(Room::class)->findAll()),
 //            'atom_link' => ($page == 'news' || $page == 'user_meetings')
 //                ? ' <link href="'
 //                . page_link_to('atom', $parameters)
 //                . '" type = "application/atom+xml" rel = "alternate" title = "Atom Feed">'
 //                : '',
-//            'start_page_url' => page_link_to('/'),
-//            'credits_url' => page_link_to('credits'),
-//            'menu' => make_menu(),
-//            'content' => msg() . $content,
-//            'header_toolbar' => header_toolbar(),
-//            'faq_url' => config('faq_url'),
-//            'contact_email' => config('contact_email'),
 //            'locale' => locale(),
 //            'event_info' => EventConfig_info($event_config) . ' <br />'
         ];
 
         /** @var EventConfig $eventConfig */
         $eventConfig = $this->eventConfigService->getEventConfig();
-
-        if ($eventConfig !== null) {
-            $config['eventConfig'] = [
-                'name' => $eventConfig->getEventName(),
-                'buildUpStart' => $eventConfig->getBuildupStartDate(),
-                'startDate' => $eventConfig->getEventStartDate(),
-                'endDate' => $eventConfig->getEventEndDate(),
-                'buildUpEnd' => $eventConfig->getEventEndDate(),
-            ];
-        }
+        $config['eventConfig'] = $this->structService->getEventConfigStruct($eventConfig);
 
         foreach ($config as $key => $value) {
             $this->environment->addGlobal($key, $value);

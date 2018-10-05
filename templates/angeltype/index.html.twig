@@ -7,7 +7,7 @@
         <div class="form-group">
             <div class="btn-group">
                 {% if hasPermission('angeltype_create') %}
-                    <a href="{{ url('angeltypes_create') }}" class="btn btn-default add">New Angeltype</a>
+                    <a href="{{ url('angeltype_create') }}" class="btn btn-default add">New Angeltype</a>
                 {% endif %}
 
                 <a href="https://engel.ctdo.de/angeltypes?action=about" class="btn btn-default ">Teams/Job
@@ -29,7 +29,7 @@
             {% for angelType in angelTypeList %}
                 <tr>
                     <td class="column_name">
-                        <a href="{{ url('angeltypes_view', {'id': angelType.id}) }}">{{ angelType.name }}</a>
+                        <a href="{{ url('angeltype_view', {'id': angelType.id}) }}">{{ angelType.name }}</a>
                     </td>
                     <td class="column_restricted">
                         {% if angelType.restricted %}
@@ -54,26 +54,26 @@
                     </td>
                     <td class="column_actions">
                         <div class="btn-group">
-                            <a href="{{ url('angeltypes_view', {'id': angelType.id}) }}"
+                            <a href="{{ url('angeltype_view', {'id': angelType.id}) }}"
                                class="btn btn-default btn-xs">View</a>
 
                             {% if (hasPermission('angeltype_edit') and angelType.coordinator) or hasPermission('angeltype_edit_all') %}
-                                <a href="{{ url('angeltypes_edit', {'id': angelType.id}) }}"
+                                <a href="{{ url('angeltype_edit', {'id': angelType.id}) }}"
                                    class="btn btn-default btn-xs">Edit</a>
                             {% endif %}
 
                             {% if hasPermission('angeltype_delete_all') %}
-                                <a href="{{ url('angeltypes_delete', {'id': angelType.id}) }}"
+                                <a href="{{ url('angeltype_delete', {'id': angelType.id}) }}"
                                    class="btn btn-default btn-xs">Delete</a>
                             {% endif %}
 
                             {% if hasPermission('angeltype_join') and not (angelType.member or angelType.memberAwait) %}
-                                <a href="{{ url('angeltypes_join', {'id': angelType.id}) }}"
+                                <a href="{{ url('angeltype_join', {'id': angelType.id}) }}"
                                    class="btn btn-default btn-xs">Join</a>
                             {% endif %}
 
                             {% if hasPermission('angeltype_leave') and (angelType.member or angelType.memberAwait) %}
-                                <a href="{{ url('angeltypes_leave', {'id': angelType.id}) }}"
+                                <a href="{{ url('angeltype_leave', {'id': angelType.id}) }}"
                                    class="btn btn-default btn-xs">Leave</a>
                             {% endif %}
                         </div>

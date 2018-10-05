@@ -1,7 +1,110 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
+    <div class="col-md-12">
+        <h1>Create shifts</h1>
+        {{ form_start(shiftForm) }}
 
+        <div class="form-group">
+            {{ form_label(shiftForm.shiftType) }}
+            {{ form_widget(shiftForm.shiftType) }}
+            {{ form_errors(shiftForm.shiftType) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(shiftForm.name) }}
+            {{ form_widget(shiftForm.name) }}
+            {{ form_errors(shiftForm.name) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(shiftForm.room) }}
+            {{ form_widget(shiftForm.room) }}
+            {{ form_errors(shiftForm.room) }}
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(shiftForm.start) }}
+                    {{ form_widget(shiftForm.start) }}
+                    {{ form_errors(shiftForm.start) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(shiftForm.end) }}
+                    {{ form_widget(shiftForm.end) }}
+                    {{ form_errors(shiftForm.end) }}
+                </div>
+                <h4>Mode</h4>
+                <div class="radio">
+                    <label>
+                        <input type="radio" id="mode" name="mode" value="single" checked="checked">
+                        Create one shift
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" id="mode" name="mode" value="multi">
+                        Create multiple shifts
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="form_length">Length</label>
+                    <input class="form-control" id="form_length" type="text" name="length" value="120">
+                </div>
+                <div class="radio"><label><input type="radio" id="mode" name="mode" value="variable"> Create
+                        multiple shifts with variable length</label></div>
+                <div class="form-group"><label for="form_change_hours">Shift change hours</label><input
+                            class="form-control" id="form_change_hours" type="text" name="change_hours"
+                            value="00, 04, 08, 10, 12, 14, 16, 18, 20, 22"></div>
+            </div>
+            <div class="col-md-6">
+                <h4>Needed angels</h4>
+                <div class="radio"><label><input type="radio" id="angelmode" name="angelmode" value="location">
+                        Take needed angels from room settings</label></div>
+                <div class="radio"><label><input type="radio" id="angelmode" name="angelmode" value="manually"
+                                                 checked="checked"> The following angels are needed</label>
+                </div>
+                <div class="row">
+
+                    {% for key, needAngelType in shiftForm.neededAngelTypes %}
+                        <div class="col-md-4">
+                            {{ form_label(needAngelType.count, angelTypeNameList[key]) }}
+
+                            <div class="input-group">
+                                {{ form_widget(needAngelType.count) }}
+                                <div class="input-group-btn">
+                                    <button id="spinner-shift_neededAngelTypes_count_{{ key }}-down"
+                                            class="btn btn-default"
+                                            type="button">
+                                        <span class="glyphicon glyphicon-minus"></span>
+                                    </button>
+                                    <button id="spinner-shift_neededAngelTypes_count_{{ key }}-up"
+                                            class="btn btn-default"
+                                            type="button">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            {{ form_errors(needAngelType.count) }}
+
+                            <script type="text/javascript">
+                                $("#spinner-shift_neededAngelTypes_count_{{ key }}-down").click(function () {
+                                    var spinner = $("#shift_neededAngelTypes_{{ key }}_count");
+                                    var spinnerVal = parseInt(spinner.val());
+                                    spinner.val(spinnerVal > 0 ? spinnerVal - 1 : 0);
+                                });
+                                $("#spinner-shift_neededAngelTypes_count_{{ key }}-up").click(function () {
+                                    var spinner = $("#shift_neededAngelTypes_{{ key }}_count");
+                                    spinner.val(parseInt(spinner.val()) + 1);
+                                });
+                            </script>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {{ form_widget(shiftForm.preview, {'attr': {'class': 'btn-primary'}}) }}
+        {{ form_end(shiftForm) }}
+    </div>
 {% endblock %}
 
 {% block title %}

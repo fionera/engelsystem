@@ -2,8 +2,6 @@
 
 namespace Engelsystem\Controller;
 
-use Engelsystem\Entity\EventConfig;
-use Engelsystem\Form\EventConfigType;
 use Engelsystem\Service\EventConfigService;
 use Engelsystem\Service\StructService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,11 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class ConfigController extends Controller
 {
     /**
-     * @var StructService
-     */
-    private $structService;
-
-    /**
      * @var EventConfigService
      */
     private $eventConfigService;
@@ -30,9 +23,8 @@ class ConfigController extends Controller
      * ConfigController constructor.
      * @param StructService $structService
      */
-    public function __construct(StructService $structService, EventConfigService $eventConfigService)
+    public function __construct(EventConfigService $eventConfigService)
     {
-        $this->structService = $structService;
         $this->eventConfigService = $eventConfigService;
     }
 
@@ -42,11 +34,7 @@ class ConfigController extends Controller
      */
     public function index()
     {
-        $eventConfig = $this->eventConfigService->getEventConfig();
-
-        return $this->render('config/index.html.twig', [
-            'eventConfig' => $this->structService->getEventConfigStruct($eventConfig),
-        ]);
+        return $this->render('config/index.html.twig');
     }
 
 
@@ -58,17 +46,17 @@ class ConfigController extends Controller
     {
         $eventConfig = $this->eventConfigService->getEventConfig();
 
-            switch ($key) {
-                case 'buildupStartDate':
-                case 'eventStartDate':
-                case 'eventEndDate':
-                case 'teardownEndDate':
-                    $type = DateTimeType::class;
-                    break;
-                default:
-                    $type = TextType::class;
-                    break;
-            }
+        switch ($key) {
+            case 'buildupStartDate':
+            case 'eventStartDate':
+            case 'eventEndDate':
+            case 'teardownEndDate':
+                $type = DateTimeType::class;
+                break;
+            default:
+                $type = TextType::class;
+                break;
+        }
 
         $eventConfigForm = $this->createFormBuilder()->add('key', TextType::class, [
             'disabled' => true,

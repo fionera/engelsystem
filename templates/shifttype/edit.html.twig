@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block content %}
+
+    <div class="col-md-12">
+        <h1>Edit Shiftype</h1>
+        {{ form_start(shiftTypeForm) }}
+
+        <div class="form-group">
+            {{ form_widget(shiftTypeForm.name) }}
+            {{ form_errors(shiftTypeForm.name) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_widget(shiftTypeForm.description) }}
+            {{ form_help(shiftTypeForm.description,{'attr': {'data-help': 'Please use markdown for the description.'}}) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_widget(shiftTypeForm.angelType) }}
+            {{ form_errors(shiftTypeForm.angelType) }}
+        </div>
+        <div class="form-group">
+            {{ form_widget(shiftTypeForm.save) }}
+        </div>
+
+        {{ form_end(shiftTypeForm) }}
+    </div>
+{% endblock %}

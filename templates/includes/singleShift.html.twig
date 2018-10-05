@@ -26,7 +26,7 @@
     </div>
     <ul class="list-group">
         <li class="list-group-item">
-            <strong><a href="{{ url('angeltypes_view', {'id': shift.shiftType.angelType.id}) }}">{{ shift.shiftType.angelType.name }}</a>:</strong>
+            <strong><a href="{{ url('angeltype_view', {'id': shift.shiftType.angelType.id}) }}">{{ shift.shiftType.angelType.name }}</a>:</strong>
             {% for shiftEntry in shift.shiftEntryList %}
                 <span style="">
                 <a class="text-muted" href="{{ url('user_view', {'id': shiftEntry.angel.id}) }}&amp;user_id=13">

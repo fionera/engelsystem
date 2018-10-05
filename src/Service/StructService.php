@@ -267,7 +267,7 @@ class StructService
         return [
             'id' => $shiftType->getId(),
             'name' => $shiftType->getName(),
-            'description' => $shiftType->getDescription(),
+            'description' => $this->markdownService->parse($shiftType->getDescription()),
             'angelType' => $this->getAngeltypeStruct($shiftType->getAngelType())
         ];
     }
@@ -328,6 +328,7 @@ class StructService
             'eventStartDate' => $eventConfig->getEventStartDate(),
             'eventEndDate' => $eventConfig->getEventEndDate(),
             'teardownEndDate' => $eventConfig->getTeardownEndDate(),
+            'contactMail' => $eventConfig->getContactMail(),
             'raw' => $eventConfig->getConfig(),
         ];
     }

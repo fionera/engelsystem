@@ -85,8 +85,9 @@
                             <ul class="dropdown-menu" role="menu" style="max-height: 871px; overflow-y: scroll;">
                                 <li class=""><a href="{{ url('user') }}">All Angels</a></li>
                                 <li class=""><a href="{{ url('question_answer') }}">Answer questions</a></li>
+                                <li class=""><a href="{{ url('shift_type') }}">Shifttypes</a></li>
                                 <li class=""><a href="{{ url('shift_create') }}">Create shifts</a></li>
-                                <li class=""><a href="https://engel.ctdo.de/admin-groups">Grouprights</a></li>
+                                <li class=""><a href="{{ url('group') }}">Grouprights</a></li>
                                 {#<li class=""><a href="#">Frab import</a></li>#}
                                 {#<li class=""><a href="https://engel.ctdo.de/admin-log">Log</a></li>#}
                                 <li class=""><a href="{{ url('config') }}">Event config</a></li>
@@ -156,24 +157,26 @@
                 <hr/>
                 <div class="text-center footer" style="margin-bottom: 10px;">
                     {% if eventConfig is defined %}
-                        {% if eventConfig.name is defined and eventConfig.startDate is defined and eventConfig.endDate is defined %}
-                            {% trans with {'%name%': eventConfig.name, '%startDate%': eventConfig.startDate, '%endDate%': eventConfig.endDate} %}
-                                %name%, starting %startDate% to %endDate%
+                        {% if eventConfig.eventName != null and eventConfig.eventStartDate != null and eventConfig.eventEndDate != null %}
+                            {% trans with {'%eventName%': eventConfig.eventName, '%eventStartDate%': eventConfig.eventStartDate, '%eventEndDate%': eventConfig.eventEndDate} %}
+                                %name%, starting %eventStartDate% to %eventEndDate%
                             {% endtrans %}
-                        {% elseif eventConfig.name is defined and eventConfig.startDate is defined %}
-                            {% trans with {'%name%': eventConfig.name, '%startDate%': eventConfig.startDate} %}
-                                %name%, starting %startDate%
+                        {% elseif eventConfig.eventName != null and eventConfig.eventStartDate != null %}
+                            {% trans with {'%eventName%': eventConfig.eventName, '%eventStartDate%': eventConfig.eventStartDate} %}
+                                %name%, starting %eventStartDate%
                             {% endtrans %}
-                        {% elseif eventConfig.startDate is defined and eventConfig.endDate is defined %}
-                            {% trans with {'%startDate%': eventConfig.startDate, '%endDate%': eventConfig.endDate} %}
-                                Event from %startDate% to %endDate%
+                        {% elseif eventConfig.eventStartDate != null and eventConfig.eventEndDate != null %}
+                            {% trans with {'%eventStartDate%': eventConfig.eventStartDate, '%eventEndDate%': eventConfig.eventEndDate} %}
+                                Event from %eventStartDate% to %eventEndDate%
                             {% endtrans %}
-                        {% elseif eventConfig.name is defined %}
-                            {{ eventConfig.name }}
+                        {% elseif eventConfig.eventName != null %}
+                            {{ eventConfig.eventName }}
                         {% endif %}
                     {% endif %}
-                    <a href="{{ url('faq') }}">FAQ</a>
-                    · <a href="%contact_email%"><span class="glyphicon glyphicon-envelope"></span> Contact</a>
+                    · <a href="{{ url('faq') }}">FAQ</a>
+                    {% if eventConfig.contactMail != null %}
+                    · <a href="mailto:{{ eventConfig.contactMail }}"><span class="glyphicon glyphicon-envelope"></span> Contact</a>
+                    {% endif %}
                     · <a href="https://github.com/engelsystem/engelsystem/issues">Bugs / Features</a>
                     · <a href="https://github.com/engelsystem/engelsystem/">Development Platform</a>
                     · <a href="{{ url('credits') }}">Credits</a>

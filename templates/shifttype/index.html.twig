@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Shifttypes{% endblock %}
+
+{% block content %}
+    <div class="col-md-12"
+    ><h1>Shifttypes</h1>
+        <div class="form-group">
+            <div class="btn-group">
+                <a href="{{ url('shift_type_create') }}" class="btn btn-default add">New Shifttype</a>
+            </div>
+        </div>
+        <table class="table table-striped data">
+            <thead>
+            <tr>
+                <th class="column_name">Name</th>
+                <th class="column_actions"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for shiftType in shiftTypes %}
+                <tr>
+                    <td class="column_name">
+                        <a href="{{ url('shift_type_view', {'id': shiftType.id}) }}">{{ shiftType.name }}</a>
+                    </td>
+                    <td class="column_actions">
+                        <div class="btn-group">
+                            <a href="{{ url('shift_type_edit', {'id': shiftType.id}) }}" class="btn btn-default btn-xs">edit</a>
+                            <a href="{{ url('shift_type_delete', {'id': shiftType.id}) }}" class="btn btn-default btn-xs">delete</a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -2,9 +2,11 @@
 
 namespace Engelsystem\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Engelsystem\Entity\AngelType;
+use Engelsystem\Entity\NeededAngelTypes;
 use Engelsystem\Entity\Room;
 use Engelsystem\Entity\Shift;
 use Engelsystem\Entity\ShiftEntry;
@@ -150,8 +152,51 @@ class ShiftController extends Controller
      */
     public function create()
     {
-        return $this->render('shift/create.html.twig', [
+        $shift = new Shift();
+        $shift->setStart(new \DateTime());
+        $shift->setEnd(new \DateTime());
+
+        $neededAngelTypeCollection = new ArrayCollection();
+        foreach ($this->getDoctrine()->getRepository(AngelType::class)->findAll() as $angelType) {
+            $neededAngelType = new NeededAngelTypes();
+            $neededAngelType->setShift($shift);
+            $neededAngelType->setAngelType($angelType);
+            $neededAngelType->setCount(0);
+
+            $neededAngelTypeCollection->add($neededAngelType);
+        }
+
+        $shift->setNeededAngelTypes($neededAngelTypeCollection);
+
+        $shiftForm = $this->createForm(ShiftType::class, $shift, [
+            'action' => $this->generateUrl('shift_preview')
         ]);
+
+        return $this->render('shift/create.html.twig', [
+            'shiftForm' => $shiftForm->createView(),
+            'angelTypeNameList' => array_map(function (NeededAngelTypes $neededAngelTypes) {
+                return $neededAngelTypes->getAngelType()->getName();
+            }, $neededAngelTypeCollection->toArray())
+        ]);
+    }
+
+    /**
+     * @Route("/shift/preview", name="shift_preview", methods={"POST"})
+     */
+    public function preview(Request $request)
+    {
+        $shift = new Shift();
+        $shiftForm = $this->createForm(ShiftType::class, $shift);
+
+        $shiftForm->handleRequest($request);
+        if ($shiftForm->isSubmitted() && $shiftForm->isValid()) {
+
+            return $this->render('shift/preview.html.twig', [
+                'controller_name' => 'ShiftController',
+            ]);
+        }
+
+        return $this->redirectToRoute('shift_create');
     }
 
     /**

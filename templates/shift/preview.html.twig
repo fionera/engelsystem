@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <table class="table table-striped data">
+            <thead>
+            <tr>
+                <th class="column_timeslot">Time and location</th>
+                <th class="column_title">Type and title</th>
+                <th class="column_needed_angels">Needed angels</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for shift in shifts %}
+                <tr>
+                    <td class="column_timeslot"><span class="glyphicon glyphicon-time"></span> 2018-07-31 00:00 -
+                        05:00<br><a href="https://engel.ctdo.de/rooms?action=view&amp;room_id=2"> <span
+                                    class="glyphicon glyphicon-map-marker"></span> Cafe</a></td>
+                    <td class="column_title"><a href="https://engel.ctdo.de/shifttypes?action=view&amp;shifttype_id=11">Abbau</a><br>sadasd
+                    </td>
+                    <td class="column_needed_angels"><b><a
+                                    href="https://engel.ctdo.de/angeltypes?action=view&amp;angeltype_id=11">Abbau-Angel</a>:</b>
+                        1<br></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+

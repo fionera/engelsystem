@@ -11,6 +11,7 @@ class EventConfig
         'eventEndDate' => null,
         'teardownEndDate' => null,
         'eventWelcomeMsg' => null,
+        'contactMail' => null,
     ];
 
     public function getEventName(): ?string
@@ -109,5 +110,10 @@ class EventConfig
     public function getConfig(): array
     {
         return $this->config;
+    }
+
+    public function getContactMail(): ?string
+    {
+        return $this->config['contactMail'];
     }
 }

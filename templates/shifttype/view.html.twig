@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ shiftType.name }}
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <h1>{{ shiftType.name }}
+            <small>for team {{ shiftType.angelType.name }}</small>
+        </h1>
+        <div class="form-group">
+            <div class="btn-group">
+                <a href="{{ url('shift_type') }}" class="btn btn-default back">Shifttypes</a>
+                <a href="{{ url('angeltype_view', {'id': shiftType.angelType.id}) }}" class="btn btn-default ">{{ shiftType.angelType.name }}</a>
+                <a href="{{ url('shift_type_edit', {'id': shiftType.id}) }}" class="btn btn-default edit">Edit</a>
+                <a href="{{ url('shift_type_delete', {'id': shiftType.id}) }}" class="btn btn-default delete">Delete</a>
+            </div>
+        </div>
+        <div>
+            <h2>Description</h2>
+            {{ shiftType.description|raw }}
+        </div>
+    </div>
+{% endblock %}
